@@ -25,30 +25,30 @@ const tasksTable = serviceFactory(sequelize.define("tasksModel", {}, { tableName
 
 module.exports.getAllUsers = function (req, res, next) {
 
-    usersTable.getAll(req, res, next, ['id', 'firstName', 'email', 'role']);
+    usersTable.getAll(req, res, next, ['id', 'firstName', 'email', 'role', 'deletedAt']);
 }
 
 module.exports.getAllTasks = function (req, res, next) {
 
-    tasksTable.getAll(req, res, next, ['id', 'taskType', 'taskName']);
+    tasksTable.getAll(req, res, next, ['id', 'taskType', 'taskName', 'deletedAt']);
 }
 
 module.exports.getOneUser = function (req, res, next) {
 
-    usersTable.getSingle(req, res, next, ['id', 'firstName', 'email', 'role']);
+    usersTable.getSingle(req, res, next, ['id', 'firstName', 'email', 'role', 'deletedAt']);
 }
 
 module.exports.getOneTask = function (req, res, next) {
 
-    tasksTable.getSingle(req, res, next, ['id', 'taskType', 'taskName']);
+    tasksTable.getSingle(req, res, next, ['id', 'taskType', 'taskName', 'deletedAt']);
 }
 
 module.exports.getAllUsersPaginate = function (req, res, next) {
 
-    usersTable.getAllPagination(req, res, next, ['id', 'firstName', 'email', 'role'], 1, 2);
+    usersTable.getAllPagination(req, res, next, ['id', 'firstName', 'email', 'role', 'deletedAt'], 1, 2);
 }
 
 module.exports.getAllUsersPagesLimit = function (req, res, next) {
 
-    usersTable.getAllPagination(req, res, next, ['id', 'firstName', 'email', 'role']);
+    usersTable.getAllPagination(req, res, next, ['id', 'firstName', 'email', 'role', 'deletedAt']);
 }

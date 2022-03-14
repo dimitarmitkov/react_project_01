@@ -2,7 +2,13 @@ module.exports = function serviceFactory(model) {
 
     function getAll(req, res, next, attributesArray) {
 
-        model.findAll({ attributes: attributesArray })
+        model.findAll(
+            { 
+                attributes: attributesArray,
+                where: {
+                    deletedAt: null
+                }
+            })
             .then(result => {
                 res.send(result);
             })
@@ -31,11 +37,9 @@ module.exports = function serviceFactory(model) {
         model.findAndCountAll(
             {
                 attributes: attributesArray,
-                // where: {
-                //     title: {
-                //       [Op.like]: 'foo%'
-                //     }
-                //  },
+                where: {
+                    deletedAt: null
+                },
                 offset: offsetData,
                 limit: limitData
             })
