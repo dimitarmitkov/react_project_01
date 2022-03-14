@@ -2,6 +2,10 @@ const { Sequelize } = require('sequelize');
 const cs = require("../connection/connectionData");
 const serviceFactory = require("../services/serviceFactory");
 const { QueryTypes } = require('sequelize');
+// const usersModel = require("../../models/users");
+// const tasksModel = require("../../models/tasks");
+// const userTasksModel = require("../../models/usertasks  ");
+
 
 const sequelize = new Sequelize(cs.database, cs.username, cs.password, {
     host: cs.host,
@@ -18,14 +22,19 @@ try {
     console.error('Unable to connect to the database:', error);
 }
 
-const usersTable = serviceFactory(sequelize.define("usersModel", {}, { tableName: "Users" }));
+let deletedAt = '';
 
-const tasksTable = serviceFactory(sequelize.define("tasksModel", {}, { tableName: "Tasks" }));
+const usersTable = serviceFactory(sequelize.define('usersModel', {deletedAt}, { tableName: "Users" }));
+
+const tasksTable = serviceFactory(sequelize.define('tasksModel', {deletedAt}, { tableName: "Tasks" }));
+
+const userTasksTable = serviceFactory(sequelize.define('userTasksModel', {deletedAt}, { tableName: "UserTasks" }));
+
 
 
 module.exports.getAllUsers = function (req, res, next) {
 
-    usersTable.getAll(req, res, next, ['id', 'firstName', 'email', 'role', 'deletedAt']);
+    usersTable.getAll(req, res, next, ['id', 'firstName', 'email', 'role', 'picture', 'deletedAt']);
 }
 
 module.exports.getAllTasks = function (req, res, next) {
@@ -51,4 +60,14 @@ module.exports.getAllUsersPaginate = function (req, res, next) {
 module.exports.getAllUsersPagesLimit = function (req, res, next) {
 
     usersTable.getAllPagination(req, res, next, ['id', 'firstName', 'email', 'role', 'deletedAt']);
+}
+
+module.exports.deleteOneUser = function (req, res, next) {
+
+    usersTable.deleteSingle(req, res, next, ['id', 'firstName', 'email', 'role', 'deletedAt']);
+}
+
+module.exports.deleteOneTask = function (req, res, next) {
+
+    tasksTable.deleteSingle(req, res, next, ['id', 'taskType', 'taskName', 'deletedAt']);
 }

@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'UserTasks',
+    paranoid: true
   });
   return UserTasks;
 };

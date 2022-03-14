@@ -19,8 +19,14 @@ module.exports.connect = function (path, app) {
   router.route("/users/:id")
   .get(tasksController.getOneUser);
 
+  router. route("/usersDelete/:id")
+  .get(tasksController.deleteOneUser);
+
   router.route("/tasks/:id")
   .get(tasksController.getOneTask);
+
+  router.route("/tasksDelete/:id")
+  .get(tasksController.deleteOneTask);
 
   app.use(path, router);
 };
