@@ -72,10 +72,12 @@ module.exports = function serviceFactory(model) {
             .catch(err => res.send(err));
     }
 
-    function deleteSingle(req, res, next, attributesArray, id) {
+    function deleteSingle(req, res, next, attributesArray, deletedObject) {
 
         const idData = parseInt(req.params.id);
         const t = new Date(Date.now()).toISOString();
+
+        let whereObj = deletedObject === 'user' ? { userId: idData } : { taskId: idData };
 
         model.update(
             { deletedAt: t },
@@ -89,19 +91,15 @@ module.exports = function serviceFactory(model) {
                         deletedAt: t,
                     },
                     {
-                        where: { userId: idData },
+                        where: whereObj,
                         attributes: ['id', 'userId', 'taskId', 'deletedAt']
                     })
                     .then(result => {
                         res.send('delete done');
                     })
                     .catch(err => res.send(err));
-
-                // res.send('ok');
             })
             .catch(err => res.send(err));
-
     }
-
     return { getAll, getSingle, getAllPagination, deleteSingle };
 }

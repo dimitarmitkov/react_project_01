@@ -64,10 +64,10 @@ module.exports.getAllUsersPagesLimit = function (req, res, next) {
 
 module.exports.deleteOneUser = function (req, res, next) {
 
-    usersTable.deleteSingle(req, res, next, ['id', 'firstName', 'email', 'role', 'deletedAt']);
+    usersTable.deleteSingle(req, res, next, ['id', 'firstName', 'email', 'role', 'deletedAt'], 'user');
 }
 
 module.exports.deleteOneTask = function (req, res, next) {
 
-    tasksTable.deleteSingle(req, res, next, ['id', 'taskType', 'taskName', 'deletedAt']);
+    tasksTable.deleteSingle(req, res, next, ['id', 'taskType', 'taskName', 'deletedAt'], 'task');
 }
