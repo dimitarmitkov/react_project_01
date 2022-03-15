@@ -101,10 +101,6 @@ module.exports = function serviceFactory(model) {
                     .catch(err => res.send(err));
             })
             .catch(err => res.send(err));
-
-            // User.addHook('afterUpdate', (user, options)=>{
-            //     console.log('after user update');
-            // })
     }
     return { getAll, getSingle, getAllPagination, deleteSingle };
 }
