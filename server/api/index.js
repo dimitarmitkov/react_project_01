@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const tasksController = require('./controllers/tasks');
+const authMiddleware = require('../api/middlewares/authenticate');
 
 module.exports.connect = function (path, app) {
   const router = Router();
@@ -8,7 +9,7 @@ module.exports.connect = function (path, app) {
   .get(tasksController.getAllTasks);
 
   router.route("/users")
-  .get(tasksController.getAllUsers);
+  .get(authMiddleware.auth , tasksController.getAllUsers);
 
   router.route("/usersPage")
   .get(tasksController.getAllUsersPaginate);
