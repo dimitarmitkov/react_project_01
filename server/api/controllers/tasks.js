@@ -2,6 +2,7 @@ const { Sequelize } = require('sequelize');
 const cs = require("../connection/connectionData");
 const serviceFactory = require("../services/serviceFactory");
 const { QueryTypes } = require('sequelize');
+const bcrypt = require("bcrypt");
 // const usersModel = require("../../models/users");
 // const tasksModel = require("../../models/tasks");
 // const userTasksModel = require("../../models/usertasks  ");
@@ -24,11 +25,11 @@ try {
 
 let deletedAt = '';
 
-const usersTable = serviceFactory(sequelize.define('usersModel', {deletedAt}, { tableName: "Users" }));
+const usersTable = serviceFactory(sequelize.define('usersModel', { deletedAt }, { tableName: "Users" }));
 
-const tasksTable = serviceFactory(sequelize.define('tasksModel', {deletedAt}, { tableName: "Tasks" }));
+const tasksTable = serviceFactory(sequelize.define('tasksModel', { deletedAt }, { tableName: "Tasks" }));
 
-const userTasksTable = serviceFactory(sequelize.define('userTasksModel', {deletedAt}, { tableName: "UserTasks" }));
+const userTasksTable = serviceFactory(sequelize.define('userTasksModel', { deletedAt }, { tableName: "UserTasks" }));
 
 
 
@@ -70,4 +71,134 @@ module.exports.deleteOneUser = function (req, res, next) {
 module.exports.deleteOneTask = function (req, res, next) {
 
     tasksTable.deleteSingle(req, res, next, ['id', 'taskType', 'taskName', 'deletedAt'], 'task');
+}
+
+module.exports.createSingleUser = function (req, res, next) {
+
+    // const {
+    //         firstName,
+    //         lastName,
+    //         insertPassword,
+    //         email,
+    //         role,
+    //         picture
+    //     } = req.body;
+
+    const {
+        firstName,
+        lastName,
+        insertPassword,
+        email,
+        role,
+        picture
+    } =
+    {
+        firstName: 'mitko',
+        lastName: 'dimitar',
+        insertPassword: '123456456456',
+        email: 'email@mmm.mmm',
+        role: 'admin',
+        picture: 'jklshjklsdfhjksdhfjksd'
+    }
+
+
+    const password = bcrypt.hashSync(`${insertPassword}`, 10);
+
+    const isValidPass = bcrypt.compareSync(`${insertPassword}`, `${password}`);
+
+    const usersCreatable = sequelize.define('usersModel', { firstName, lastName, password, email, role, picture }, { tableName: "Users" });
+
+    usersCreatable.create({
+        firstName,
+        lastName,
+        password,
+        email,
+        role,
+        picture
+    }).then(customer => {
+        console.log(customer.dataValues);
+    }).catch(next => {
+        res.status(400).send('already exists')
+    });
+}
+
+
+module.exports.createSingleTask = function (req, res, next) {
+
+    var minutesToAdd = 1;
+    var currentDate = new Date();
+    var futureDate = new Date(currentDate.getTime() + minutesToAdd * 60000).toISOString();
+
+
+    // let t = new Date(Date.now()).toISOString();
+
+    // const {
+    //         firstName,
+    //         lastName,
+    //         insertPassword,
+    //         email,
+    //         role,
+    //         picture
+    //     } = req.body;
+
+    const {
+        taskType,
+        taskName,
+        taskProgress,
+        initiatedAt,
+        initiatedByUserId,
+        selectedAt,
+        selectedByUserId,
+        progressAt,
+        progressByUserId,
+        reviewAt,
+        reviewByUserId,
+        doneAt,
+        doneByUserId
+    } =
+    {
+        taskType: 'project',
+        taskName: 'second task name',
+        taskProgress: 'initial',
+        // initiatedAt,
+        // initiatedByUserId,
+        // selectedAt,
+        // selectedByUserId,
+        // progressAt,
+        // progressByUserId,
+        // reviewAt,
+        // reviewByUserId,
+        // doneAt,
+        // doneByUserId
+    }
+
+
+    // const password = bcrypt.hashSync(`${insertPassword}`, 10);
+
+    // const isValidPass = bcrypt.compareSync(`${insertPassword}`, `${password}`);
+
+    const taskCreatable = sequelize.define('tasksModel',
+        // { taskType, taskName, taskProgress, initiatedAt, initiatedByUserId, selectedAt, selectedByUserId, progressAt, progressByUserId, reviewAt, reviewByUserId, doneAt, doneByUserId },
+        { taskType, taskName, taskProgress }, 
+        { tableName: "Tasks" });
+
+    taskCreatable.create({
+        taskType,
+        taskName,
+        taskProgress,
+        // initiatedAt,
+        // initiatedByUserId,
+        // selectedAt,
+        // selectedByUserId,
+        // progressAt,
+        // progressByUserId,
+        // reviewAt,
+        // reviewByUserId,
+        // doneAt,
+        // doneByUserId
+    }).then(task => {
+        console.log(task.dataValues);
+    }).catch(next => {
+        res.status(400).send('already exists')
+    });
 }

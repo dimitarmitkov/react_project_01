@@ -102,5 +102,27 @@ module.exports = function serviceFactory(model) {
             })
             .catch(err => res.send(err));
     }
-    return { getAll, getSingle, getAllPagination, deleteSingle };
+
+    function createUser (req, res, next, attributesArray, createObject) {
+    
+        try {
+            model.create({
+                firstName,
+                lastName,
+                password,
+                email,
+                role,
+                picture
+            }).then(customer => {
+                console.log(customer.dataValues.id);
+            }).catch(next => {
+                res.status(400).send('already exists')
+            });
+    
+        } catch (err) {
+            res.send("this email already exists.")
+        }
+    }
+
+    return { getAll, getSingle, getAllPagination, deleteSingle , createUser };
 }

@@ -6,28 +6,34 @@ module.exports.connect = function (path, app) {
   const router = Router();
 
   router.route("/tasks")
-  .get(tasksController.getAllTasks);
+    .get(tasksController.getAllTasks);
 
   router.route("/users")
-  .get(authMiddleware.auth , tasksController.getAllUsers);
+    .get(authMiddleware.auth, tasksController.getAllUsers);
 
   router.route("/usersPage")
-  .get(tasksController.getAllUsersPaginate);
+    .get(authMiddleware.auth, tasksController.getAllUsersPaginate);
 
   router.route("/usersPage/:osData,:limData")
-  .get(tasksController.getAllUsersPagesLimit);
+    .get(authMiddleware.auth, tasksController.getAllUsersPagesLimit);
 
   router.route("/users/:id")
-  .get(tasksController.getOneUser);
+    .get(authMiddleware.auth, tasksController.getOneUser);
 
-  router. route("/usersDelete/:id")
-  .get(tasksController.deleteOneUser);
+  router.route("/usersDelete/:id")
+    .get(authMiddleware.auth, tasksController.deleteOneUser);
 
   router.route("/tasks/:id")
-  .get(tasksController.getOneTask);
+    .get(authMiddleware.auth, tasksController.getOneTask);
 
   router.route("/tasksDelete/:id")
-  .get(tasksController.deleteOneTask);
+    .get(authMiddleware.auth, tasksController.deleteOneTask);
+
+  router.route("/createUser")
+    .get(authMiddleware.auth, tasksController.createSingleUser);
+
+  router.route("/createTask")
+    .get(authMiddleware.auth, tasksController.createSingleTask);
 
   app.use(path, router);
 };
