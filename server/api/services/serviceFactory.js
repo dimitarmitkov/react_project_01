@@ -1,6 +1,9 @@
 const { Sequelize } = require('sequelize');
 const cs = require("../connection/connectionData");
+const jwt = require("jsonwebtoken");
 const User = require("../../models/users");
+const bcrypt = require("bcrypt");
+const myKey = require("../connection/myKey");
 
 const sequelize = new Sequelize(cs.database, cs.username, cs.password, {
     host: cs.host,
@@ -93,7 +96,7 @@ module.exports = function serviceFactory(model) {
                     },
                     {
                         where: whereObj,
-                        attributes: ['id', 'userId', 'taskId', 'deletedAt']
+                        attributes: attributesArray
                     })
                     .then(result => {
                         res.send('delete done');
@@ -103,26 +106,77 @@ module.exports = function serviceFactory(model) {
             .catch(err => res.send(err));
     }
 
-    function createUser (req, res, next, attributesArray, createObject) {
-    
+    function editSingle(req, res, next, attributesArray, editObject) {
+
+        const idData = parseInt(req.params.id);
+
+        model.update(
+            {
+                firstName: 'changed FN',
+                lastName: 'DDDDDDDDDDDDD'
+            },
+            {
+                where: { id: idData },
+            })
+            .then(result => {
+
+                res.send('username of user ' + idData + ' is changed');
+            })
+            .catch(err => res.send(err));
+    }
+
+    function userLogin(req, res, next, attributesArray, editObject) {
+        const { insertEmail, insertPassword } = req.params;
+        console.log(insertEmail);
+        console.log(insertPassword);
+
+        // const userTable = sequelize.define("usersModel", {},
+        //     { tableName: "sers" });
         try {
-            model.create({
-                firstName,
-                lastName,
-                password,
-                email,
-                role,
-                picture
-            }).then(customer => {
-                console.log(customer.dataValues.id);
-            }).catch(next => {
-                res.status(400).send('already exists')
-            });
-    
+            model.findOne(
+                {
+                    attributes: ['id', 'firstName', 'email', 'password', 'role', 'deletedAt'],
+                    where: { email: insertEmail }
+                }).then(user => {
+                    if (user) {
+
+                        let checkPass = user.dataValues.password;
+                        const password_valid = bcrypt.compareSync(`${insertPassword}`, `${checkPass}`);
+
+                        if (password_valid) {
+                            let userId = user.dataValues.id;
+
+                                    let token = jwt.sign(
+                                        {
+                                            username: user.dataValues.firstName,
+                                            id: user.dataValues.id,
+                                            role: user.dataValues.role,
+                                            email: user.dataValues.email,
+                                            deletedAt: user.dataValues.deletedAt,
+                                        },
+                                        `${myKey}`,
+                                        { expiresIn: '3000s' });
+
+                                    res.cookie("access_token", token, {
+                                        httpOnly: true,
+                                        secure: process.env.NODE_ENV === "production"
+                                    })
+                                        .status(200)
+                                        .json({ message: "Successfully logged" });
+
+                        } else {
+                            res.status(400).json({ error: "Password Incorrect" });
+                        }
+
+                    } else {
+                        res.status(404).json({ error: "User does not exist" });
+                    }
+
+                }).catch(err => console.log(err));
         } catch (err) {
-            res.send("this email already exists.")
+            res.send("incorrect user or password.")
         }
     }
 
-    return { getAll, getSingle, getAllPagination, deleteSingle , createUser };
+    return { getAll, getSingle, getAllPagination, deleteSingle, editSingle, userLogin };
 }

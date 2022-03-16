@@ -24,8 +24,10 @@ try {
 }
 
 let deletedAt = '';
+let firstName = '';
+let lastName = '';
 
-const usersTable = serviceFactory(sequelize.define('usersModel', { deletedAt }, { tableName: "Users" }));
+const usersTable = serviceFactory(sequelize.define('usersModel', { firstName, lastName, deletedAt }, { tableName: "Users" }));
 
 const tasksTable = serviceFactory(sequelize.define('tasksModel', { deletedAt }, { tableName: "Tasks" }));
 
@@ -73,6 +75,16 @@ module.exports.deleteOneTask = function (req, res, next) {
     tasksTable.deleteSingle(req, res, next, ['id', 'taskType', 'taskName', 'deletedAt'], 'task');
 }
 
+module.exports.editOneUser = function (req, res, next) {
+
+    usersTable.editSingle(req, res, next, ['id', 'firstName', 'email', 'role', 'deletedAt'], 'user');
+}
+
+module.exports.userLogin = function (req, res, next) {
+
+    usersTable.userLogin(req, res, next, ['id', 'firstName', 'email', 'role', 'deletedAt'], 'user');
+}
+
 module.exports.createSingleUser = function (req, res, next) {
 
     // const {
@@ -93,10 +105,10 @@ module.exports.createSingleUser = function (req, res, next) {
         picture
     } =
     {
-        firstName: 'mitko',
-        lastName: 'dimitar',
-        insertPassword: '123456456456',
-        email: 'email@mmm.mmm',
+        firstName: 'connect',
+        lastName: 'user',
+        insertPassword: '123456',
+        email: 'connect@con.com',
         role: 'admin',
         picture: 'jklshjklsdfhjksdhfjksd'
     }

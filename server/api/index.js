@@ -21,7 +21,7 @@ module.exports.connect = function (path, app) {
     .get(authMiddleware.auth, tasksController.getOneUser);
 
   router.route("/usersDelete/:id")
-    .get(authMiddleware.auth, tasksController.deleteOneUser);
+    .get(authMiddleware.token, authMiddleware.auth, authMiddleware.isAdmin, tasksController.deleteOneUser);
 
   router.route("/tasks/:id")
     .get(authMiddleware.auth, tasksController.getOneTask);
@@ -34,6 +34,12 @@ module.exports.connect = function (path, app) {
 
   router.route("/createTask")
     .get(authMiddleware.auth, tasksController.createSingleTask);
+
+  router.route("/usersEdit/:id")
+    .get(authMiddleware.auth, tasksController.editOneUser);
+
+    router.route("/userLog/:insertEmail,:insertPassword")
+    .get(authMiddleware.auth, tasksController.userLogin);
 
   app.use(path, router);
 };
