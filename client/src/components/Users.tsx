@@ -55,9 +55,12 @@ class ShowUsersList extends React.Component<any, any> {
         }
 
         return (
+
+            
             <div className="ShowUsersList">
-                <div className="container">
-                    <div className="row">
+                {/* <div className="container"> */}
+                    {/* <div className="row">
+                        
                         <div className="col-md-12">
                             <br />
                             <h2 className="display-4 text-center">Users List</h2>
@@ -94,12 +97,13 @@ class ShowUsersList extends React.Component<any, any> {
 
                         </div>
 
-                    </div>
+                    </div> */}
 
-                    <div className="list">
+                   
+                {/* </div> */}
+                <div className="list">
                         {usersList}
                     </div>
-                </div>
             </div>
         );
     }

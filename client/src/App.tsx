@@ -10,54 +10,47 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button } from 'primereact/button';
 import ButtonBS from 'react-bootstrap/Button';
 import Users from './components/Users';
+import Tasks from './components/Tasks';
+import NavbarData from './components/navbar/NavbarData';
+import Sidebar from './components/sidebar/Sidebar';
+import SidebarTwo from './components/sidebar/SidebarTwo';
+import SidebarThree from './components/sidebar/SidebarThree';
+import { Container, Row, Col } from 'react-bootstrap';
+
 
 function App() {
   return (
     <Router>
+
+      <Container fluid>
+        <Row>
+          <Col>
+            <NavbarData />
+
+          </Col>
+
+        </Row>
+
+        <Row>
+
+          <Col sm={2} style={{ height: '100%' }}>
+            <SidebarThree />
+
+          </Col>
+
+          <Col sm={10}>
+            <Tasks />
+
+          </Col>
+        </Row>
+      </Container>
+
       <div>
 
-        <Users />
 
-        <Button label="Success" className="p-button-success" />
-        <Button label="Primary" className="p-button-rounded" />
-        <Button label="Secondary" className="p-button-rounded p-button-secondary" />
-        <ButtonBS variant="primary">Primary</ButtonBS>{' '}
-        <ButtonBS variant="secondary">Secondary</ButtonBS>{' '}
+
 
       </div>
-
-      {/* <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.tsx</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div> */}
-
-      {/* componentDidMount() {
-        
-        axios
-          .get('http://localhost:62000/api/v1/users/7')
-          .then(response => {
-          //  this.setState(response);
-          //  console.log(response.data);
-
-           <h1>response</h1>
-            })
-            .catch(err => {
-              console.log('Error from ShowBookList')
-            })
-          }; */}
-
 
 
 

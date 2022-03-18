@@ -42,7 +42,7 @@ module.exports.getAllUsers = function (req, res, next) {
 
 module.exports.getAllTasks = function (req, res, next) {
 
-    tasksTable.getAll(req, res, next, ['id', 'taskType', 'taskName', 'deletedAt']);
+    tasksTable.getAll(req, res, next, ['id', 'taskType', 'taskName', 'taskProgress', 'deletedAt']);
 }
 
 module.exports.getOneUser = function (req, res, next) {
@@ -169,9 +169,9 @@ module.exports.createSingleTask = function (req, res, next) {
         doneByUserId
     } =
     {
-        taskType: 'project',
-        taskName: 'second task name',
-        taskProgress: 'initial',
+        taskType: 'meeting',
+        taskName: 'review task name',
+        taskProgress: 'review',
         // initiatedAt,
         // initiatedByUserId,
         // selectedAt,
