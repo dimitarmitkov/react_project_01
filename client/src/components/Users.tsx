@@ -7,6 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import UsersCard from './UsersCard';
+import About from './About';
 import "primereact/resources/themes/lara-light-indigo/theme.css";  //theme
 import "primereact/resources/primereact.min.css";                  //core css
 import "primeicons/primeicons.css";                                //icons
@@ -63,7 +64,7 @@ class ShowUsersList extends React.Component<any, any> {
                         </div>
 
                         <div className="col-md-12">
-                            <Link to="/create-user" className="btn btn-outline-warning float-right">
+                            <Link to="./About" className="btn btn-outline-warning float-right">
                                 + Add New User
                             </Link>
                             <br />

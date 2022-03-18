@@ -9,7 +9,6 @@ import "primeicons/primeicons.css";                                //icons
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button } from 'primereact/button';
 import ButtonBS from 'react-bootstrap/Button';
-import axios from 'axios';
 import Users from './components/Users';
 
 function App() {
