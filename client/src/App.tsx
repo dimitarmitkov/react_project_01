@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import logo from './logo.svg';
 import './App.css';
 // import Button from './components/ButtonTest';
@@ -16,17 +16,25 @@ import Sidebar from './components/sidebar/Sidebar';
 import SidebarTwo from './components/sidebar/SidebarTwo';
 import SidebarThree from './components/sidebar/SidebarThree';
 import { Container, Row, Col } from 'react-bootstrap';
+import Hello from './components/test_components/HelloWorld';
+import HelloClass from './components/test_components/HelloClass';
 
 
 function App() {
   return (
+
     <Router>
 
       <Container fluid>
         <Row>
           <Col>
             <NavbarData />
+            <Routes>
 
+              < Route path="/helloMitko" element={<Hello name="Dimitar" />} />
+            </Routes>
+
+            <HelloClass name="Mitko" />
           </Col>
 
         </Row>
@@ -55,6 +63,7 @@ function App() {
 
 
     </Router>
+
   );
 }
 

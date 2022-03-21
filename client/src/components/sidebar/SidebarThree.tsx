@@ -4,8 +4,13 @@ import { Nav, NavItem, Button } from 'react-bootstrap';
 import React, { Component } from 'react';
 
 import SidebarMenu from 'react-bootstrap-sidebar-menu';
+import './sidebar-style.css';
 
 const SidebarThreeMenu: React.FunctionComponent = () => {
+
+    let symbol: string = ">";
+    let clickedSymbol: string = "<";
+    
     return (
         <>
 
@@ -18,12 +23,12 @@ const SidebarThreeMenu: React.FunctionComponent = () => {
                       <SidebarMenu.Nav.Link href="#">Header</SidebarMenu.Nav.Link>
                       </SidebarMenu.Nav> */}
                     </SidebarMenu.Header>
-                    <SidebarMenu.Nav>
-                        <SidebarMenu.Nav.Link href="#">Link 1</SidebarMenu.Nav.Link>
+                    <SidebarMenu.Nav bsPrefix="sidebar-menu-nav-blue">
+                        <SidebarMenu.Nav.Link href="/helloMitko">Hello Dimitar</SidebarMenu.Nav.Link>
                     </SidebarMenu.Nav>
 
                     <SidebarMenu.Nav>
-                        <SidebarMenu.Nav.Link href="#">Link 2</SidebarMenu.Nav.Link>
+                        <SidebarMenu.Nav.Link href="/">Home</SidebarMenu.Nav.Link>
                     </SidebarMenu.Nav>
 
                     <SidebarMenu.Nav>
@@ -40,7 +45,7 @@ const SidebarThreeMenu: React.FunctionComponent = () => {
                     <SidebarMenu.Nav.Item>Item</SidebarMenu.Nav.Item>
 
 
-                    <SidebarMenu.Toggle as='h5'> Items: </SidebarMenu.Toggle>
+                    <SidebarMenu.Toggle as='button' bsPrefix="sidebar-menu-toggle-select"> Items {symbol} </SidebarMenu.Toggle>
                     <SidebarMenu.Collapse getScrollValue='10'>
                         Some text here
                     </SidebarMenu.Collapse>

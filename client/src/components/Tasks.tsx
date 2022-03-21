@@ -38,145 +38,64 @@ class ShowTasksList extends React.Component<any, any> {
             })
     };
 
-
     render() {
         const tasks = this.state.tasks;
-        console.log("PrintTask: " + tasks);
-        let tasksList;
-        let tasksListInitial;
-        let tasksListSelected;
-        let tasksListProgress;
-        let tasksListReview;
-        let tasksListDone;
 
-        if (!tasks) {
-            tasksList = "there is no task record!";
-        } else {
+        // state array declaration
+        let progressArray: string[] = ["initial", "selected", "progress", "review", "done"];
 
-
-            tasksListInitial = tasks.filter(function (obj: any) {
-                return obj.taskProgress === 'initial';
-            }).map((task: any, k: number) =>
-                <TasksCard task={task} key={k} />
-            );
-
-            tasksListSelected = tasks.filter(function (obj: any) {
-                return obj.taskProgress === 'selected';
-            }).map((task: any, k: number) =>
-                <TasksCard task={task} key={k} />
-            );
-
-            tasksListProgress = tasks.filter(function (obj: any) {
-                return obj.taskProgress === 'progress';
-            }).map((task: any, k: number) =>
-                <TasksCard task={task} key={k} />
-            );
-
-            tasksListReview = tasks.filter(function (obj: any) {
-                return obj.taskProgress === 'review';
-            }).map((task: any, k: number) =>
-                <TasksCard task={task} key={k} />
-            );
-
-            tasksListDone = tasks.filter(function (obj: any) {
-                return obj.taskProgress === 'done';
+        // this function is responsible to loop through progress array and create task cards 
+        function tasksFunction(value: string) {
+            return tasks.filter(function (obj: any) {
+                return obj.taskProgress === value;
             }).map((task: any, k: number) =>
                 <TasksCard task={task} key={k} />
             );
         }
 
+        // this function below sets first letter of word as capital
+        function capitalizeFirstLetter(word: string) {
+            if (typeof word !== 'string') return '';
+            return word.charAt(0).toUpperCase() + word.slice(1);
+        }
+
+        // create array of elements 
+        let elementArray: any = [];
+
+        // this statement returns text if no task and array of elements (progressArray) if task have legit value
+        if (!tasks) {
+            return "there is no task record!";
+        } else {
+
+            progressArray.forEach(function (element: any, elKey: number) {
+
+                elementArray.push(
+
+                    <Col sm={2} className="padding-0" key={element + elKey + 1}>
+                        <Card
+                            bg={''}
+                            key={element + elKey + 2}
+                            text={'dark'}
+                            style={{ height: '100%' }}
+                            className="padding-0"
+                        >
+                            <Card.Header key={element + elKey + 3}>{capitalizeFirstLetter(element)}</Card.Header>
+                            <Card.Body key={element + elKey + 4}>
+                                {tasksFunction(element)}
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                );
+            });
+        }
+
         return (
-            <div>
+            // <div>
+            <Row>
+                {elementArray}
+            </Row>
 
-                <Row>
-                    
-                    <Col sm={2} className="padding-0">
-                        <Card
-                            bg={''}
-                            key={1}
-                            text={'dark'}
-                            style={{ height: '100%' }}
-                            className="padding-0"
-                        >
-                            <Card.Header>Selected</Card.Header>
-                            <Card.Body>
-                                <Card.Text>
-                                    {tasksListSelected}
-                                </Card.Text>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-
-                    <Col sm={2} className="padding-0">
-                        <Card
-                            bg={''}
-                            key={1}
-                            text={'dark'}
-                            style={{ height: '100%' }}
-                            className="padding-0"
-                        >
-                            <Card.Header>Initial</Card.Header>
-                            <Card.Body>
-                                <Card.Text>
-                                    {tasksListInitial}
-                                </Card.Text>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-
-                    <Col sm={2}>
-                        <Card
-                            bg={''}
-                            key={1}
-                            text={'dark'}
-                            style={{ height: '100%' }}
-                            className=""
-                        >
-                            <Card.Header>Progress</Card.Header>
-                            <Card.Body>
-                                <Card.Text>
-                                    {tasksListProgress}
-                                </Card.Text>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-
-                    <Col sm={2}>
-                        <Card
-                            bg={''}
-                            key={1}
-                            text={'dark'}
-                            style={{ height: '100%' }}
-                            className=""
-                        >
-                            <Card.Header>Review</Card.Header>
-                            <Card.Body>
-                                <Card.Text>
-                                    {tasksListReview}
-                                </Card.Text>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-
-                    <Col sm={2}>
-                        <Card
-                            bg={''}
-                            key={1}
-                            text={'dark'}
-                            style={{ height: '100%' }}
-                            className=""
-                        >
-                            <Card.Header>Done</Card.Header>
-                            <Card.Body>
-                                <Card.Text>
-                                    {tasksListDone}
-                                </Card.Text>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                </Row>
-
-            </div>
+            // </div>
         );
     }
 }

@@ -17,7 +17,7 @@ const TasksCard = (props: any) => {
                     <Card.Text>
                         {task.taskProgress}
                     </Card.Text>
-                    <Card.Link href="#">Task Link</Card.Link>
+                    <Card.Link href="#">{task.id}</Card.Link>
                     <Card.Link href="#">Another Task</Card.Link>
                 </Card.Body>
             </Card>

@@ -43,7 +43,7 @@ class ShowUsersList extends React.Component<any, any> {
 
     render() {
         const users = this.state.users;
-        console.log("PrintUser: " + users);
+        // console.log("PrintUser: " + users);
         let usersList;
 
         if (!users) {
