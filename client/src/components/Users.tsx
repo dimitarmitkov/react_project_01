@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
 import UsersCard from './UsersCard';
 import { JsxElement } from 'typescript';
 import AxiosRequester from './functions/axiosRequester';

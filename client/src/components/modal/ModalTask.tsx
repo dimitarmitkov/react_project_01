@@ -1,18 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import { Button, DropdownButton, Dropdown } from 'react-bootstrap';
-// import { Dropdown } from 'primereact/dropdown';
-
-// class ModalTasks extends React.Component<any, any> {
-//     constructor(props: any) {
-//         super(props);
-//         this.state = {
-//             tasks: []
-//         };
-//     }
-
-// render() {
-// const taskData = this.props.tasks;
 
 function MyVerticallyCenteredModal(props: any) {
 

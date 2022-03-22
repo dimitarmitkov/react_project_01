@@ -13,7 +13,7 @@ const AxiosRequester = (getImportedValue: never[], setImportedValue: React.Dispa
     }
 
     return useEffect(() => {
-axiosFunction()
+        axiosFunction()
     }, []);
 
 }

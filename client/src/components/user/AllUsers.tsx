@@ -1,41 +1,27 @@
-import React, { Component } from 'react';
-import axios from 'axios';
-import { Button } from 'primereact/button';
+import React, { useState } from 'react';
 import UsersCard from '../UsersCard';
+import AxiosRequester from '../functions/axiosRequester';
+import { JsxElement } from 'typescript';
 
+const AllUsers = () => {
 
-export default class AllUsers extends React.Component<any, any> {
-    constructor(props: any) {
-        super(props);
-        this.state = {
-            users: []
-        };
+    const [users, setUsers] = useState([]);
+
+    AxiosRequester(users, setUsers, "http://localhost:62000/api/v1/users");
+
+    let usersList = () => {
+        if (!users) {
+            return "there is no user record!";
+        }
+        return users.map((user: JsxElement, k: number) =>
+            <UsersCard user={user} key={k} />);
     }
 
-    componentDidMount() {
-        axios
-            .get('http://localhost:62000/api/v1/users')
-            .then(response => {
-                this.setState({
-                    users: response.data
-                })
-            })
-            .catch(err => {
-                console.log('Error from ShowTasksList');
-            })
-    };
-
-
-
-    render() {
-
-        let UsersArray: any[];
-        const usersArrayFromDatabase = this.props.users;
-
-        UsersArray = usersArrayFromDatabase.map((user: any, k: number) =>
-            <UsersCard user={user} key={k} />
-        );
-
-        return <div>{UsersArray}</div>
-    }
+    return (
+        <div >
+                {usersList()}
+        </div>
+    );
 }
+
+export default AllUsers;
