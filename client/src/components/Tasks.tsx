@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import '../App.css';
 import "primereact/resources/themes/lara-light-indigo/theme.css";  //theme
 import "primereact/resources/primereact.min.css";                  //core css
@@ -17,29 +17,22 @@ import { Container, Row, Col, Card } from 'react-bootstrap';
 
 
 
-class ShowTasksList extends React.Component<any, any> {
-    constructor(props: any) {
-        super(props);
-        this.state = {
-            tasks: []
-        };
-    }
+// class ShowTasksList extends React.Component<any, any> {
+    const ShowTasksList = () => {
 
-    componentDidMount() {
-        axios
-            .get('http://localhost:62000/api/v1/tasks')
-            .then(response => {
-                this.setState({
-                    tasks: response.data
-                })
-            })
+    const [tasks, setTasks] = useState([])
+
+    function getEvents() {
+        axios.get("http://localhost:62000/api/v1/tasks")
+            .then(response => setTasks(response.data))
             .catch(err => {
                 console.log('Error from ShowTasksList');
-            })
-    };
+            });
+    }
 
-    render() {
-        const tasks = this.state.tasks;
+    useEffect(()=>{
+        getEvents()
+    }, [])
 
         // state array declaration
         let progressArray: string[] = ["initial", "selected", "progress", "review", "done"];
@@ -89,7 +82,6 @@ class ShowTasksList extends React.Component<any, any> {
                 {elementArray()}
             </Row >
         );
-    }
 }
 
 export default ShowTasksList;
