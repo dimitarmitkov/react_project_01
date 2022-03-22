@@ -25,7 +25,7 @@ function MyVerticallyCenteredModal(props: any) {
             <Modal.Body>
                 <h4>{props.data.taskProgress}</h4>
                 <p>
-                    {props.data.taskType} {typeof props}
+                    {props.data.taskType}
                 </p>
 
                 <DropdownButton id="dropdown-item-button" title="Select status">
