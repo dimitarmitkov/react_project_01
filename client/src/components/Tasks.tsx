@@ -1,23 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import '../App.css';
-import "primereact/resources/themes/lara-light-indigo/theme.css";  //theme
-import "primereact/resources/primereact.min.css";                  //core css
-import "primeicons/primeicons.css";                                //icons
-import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
 import TasksCard from './TasksCard';
-import About from './About';
 import "primereact/resources/themes/lara-light-indigo/theme.css";  //theme
 import "primereact/resources/primereact.min.css";                  //core css
 import "primeicons/primeicons.css";                                //icons
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Button } from 'primereact/button';
-import { Container, Row, Col, Card } from 'react-bootstrap';
+import { Row, Col, Card } from 'react-bootstrap';
+import { JsxElement } from 'typescript';
 
 
 
-// class ShowTasksList extends React.Component<any, any> {
     const ShowTasksList = () => {
 
     const [tasks, setTasks] = useState([])
@@ -32,7 +24,7 @@ import { Container, Row, Col, Card } from 'react-bootstrap';
 
     useEffect(()=>{
         getEvents()
-    }, [])
+    }, []);
 
         // state array declaration
         let progressArray: string[] = ["initial", "selected", "progress", "review", "done"];
@@ -41,7 +33,7 @@ import { Container, Row, Col, Card } from 'react-bootstrap';
         function tasksFunction(value: string) {
             return tasks.filter(function (obj: any) {
                 return obj.taskProgress === value;
-            }).map((task: any, k: number) =>
+            }).map((task: JsxElement, k: number) =>
                 <TasksCard task={task} key={k} />
             );
         }
@@ -59,7 +51,7 @@ import { Container, Row, Col, Card } from 'react-bootstrap';
                 return "there is no task record!";
             }
 
-            return progressArray.map((element: any, elKey: number) =>
+            return progressArray.map((element: string, elKey: number) =>
                 <Col sm={2} className="padding-0" key={element + elKey + 1}>
                     <Card
                         bg={''}
