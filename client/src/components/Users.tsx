@@ -2,24 +2,14 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import UsersCard from './UsersCard';
 import { JsxElement } from 'typescript';
-
+import AxiosRequester from './functions/axiosRequester';
 
 
 const ShowUsersList = () => {
 
-    const [users, setUsers] = useState([])
+    const [users, setUsers] = useState([]);
 
-    function getEvents() {
-        axios.get("http://localhost:62000/api/v1/users")
-            .then(response => setUsers(response.data))
-            .catch(err => {
-                console.log('Error from ShowTasksList');
-            });
-    }
-
-    useEffect(() => {
-        getEvents()
-    }, []);
+    AxiosRequester(users, setUsers, "http://localhost:62000/api/v1/users");
 
     let usersList = () => {
         if (!users) {

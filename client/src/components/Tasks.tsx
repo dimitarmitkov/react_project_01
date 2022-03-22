@@ -7,6 +7,7 @@ import "primeicons/primeicons.css";                                //icons
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Row, Col, Card } from 'react-bootstrap';
 import { JsxElement } from 'typescript';
+import AxiosRequester from './functions/axiosRequester';
 
 
 
@@ -14,17 +15,8 @@ import { JsxElement } from 'typescript';
 
     const [tasks, setTasks] = useState([])
 
-    function getEvents() {
-        axios.get("http://localhost:62000/api/v1/tasks")
-            .then(response => setTasks(response.data))
-            .catch(err => {
-                console.log('Error from ShowTasksList');
-            });
-    }
-
-    useEffect(()=>{
-        getEvents()
-    }, []);
+    
+        AxiosRequester(tasks, setTasks, "http://localhost:62000/api/v1/tasks");
 
         // state array declaration
         let progressArray: string[] = ["initial", "selected", "progress", "review", "done"];

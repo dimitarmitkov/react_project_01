@@ -16,6 +16,7 @@ import { Container, Row, Col, Card } from 'react-bootstrap';
 // dnd
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { v4 as uuid } from 'uuid';
+import capitalizeFirstLetter from '../functions/capitalizeFirstLetter';
 
 
 class ShowTasksList extends React.Component<any, any> {
@@ -58,12 +59,6 @@ class ShowTasksList extends React.Component<any, any> {
                 </DragDropContext>
             }
             );
-        }
-
-        // this function below sets first letter of word as capital
-        function capitalizeFirstLetter(word: string) {
-            if (typeof word !== 'string') return '';
-            return word.charAt(0).toUpperCase() + word.slice(1);
         }
 
         // create array of elements 
