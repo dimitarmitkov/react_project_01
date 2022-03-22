@@ -19,13 +19,13 @@ function App() {
 
   return (
     <Container fluid>
-      <Row>
-        <Col>
-          <NavbarData />
-          <HelloClass name="Mitko" />
-        </Col>
-      </Row>
       <Router>
+        <Row>
+          <Col>
+            <NavbarData />
+            <HelloClass name="Mitko" />
+          </Col>
+        </Row>
         <Row>
           <Col sm={2}>
             <SidebarFive />
