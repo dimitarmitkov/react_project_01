@@ -16,7 +16,8 @@ const UsersCard = (props: any) => {
                 </h2>
                 {/* <h3>{user.firstName}</h3> */}
                 <h5>{user.email}</h5>
-                <span>{user.role}</span>
+                <span>{user.role}_</span>
+                <span>{user.id}</span>
             </div>
         </div>
     )

@@ -1,17 +1,14 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { Button } from 'primereact/button';
 
-import * as FaIcons from 'react-icons/fa';
 import Navbar from 'react-bootstrap/Navbar';
 import Container from 'react-bootstrap/Container';
-import Offcanvas from 'react-bootstrap/Offcanvas';
-import ButtonBs from 'react-bootstrap/Button';
 
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import Form from 'react-bootstrap/Form';
-import FormControl from 'react-bootstrap/FormControl';
+
+import LoggedUser from '../user/LoggedUser';
+
 
 const NavbarMenu: React.FunctionComponent = () => {
     return (
@@ -24,8 +21,8 @@ const NavbarMenu: React.FunctionComponent = () => {
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="me-auto">
-                            <Nav.Link href="#features">Users</Nav.Link>
-                            <Nav.Link href="#pricing">Tasks</Nav.Link>
+                            <Nav.Link href="/users">Users</Nav.Link>
+                            <Nav.Link href="/tasks">Tasks</Nav.Link>
                             <NavDropdown title="Select Action" id="collasible-nav-dropdown">
                                 <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
                                 <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
@@ -39,7 +36,7 @@ const NavbarMenu: React.FunctionComponent = () => {
                             <Nav.Link eventKey={2} href="#memes">
                                 Dank memes
                             </Nav.Link>
-                            <Button icon="pi pi-user" className="p-button-rounded p-button-info" />
+                            <LoggedUser/>
 
                         </Nav>
                     </Navbar.Collapse>

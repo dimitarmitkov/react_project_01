@@ -1,0 +1,13 @@
+.sidebar-container {
+    outline: none;
+    height: fit-content;
+    background-color: rgb(220, 228, 231);
+    border-radius: calc(.25rem - 1px) calc(.25rem - 1px) 0 0;
+    height: 100%;
+}
+
+.sidebar-column {
+    /* white-space: nowrap;
+    overflow: hidden; */
+    /* text-overflow: ellipsis; */
+}

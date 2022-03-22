@@ -1,7 +1,4 @@
-import { Nav, NavItem, Button } from 'react-bootstrap';
-
-
-import React, { Component } from 'react';
+import React from 'react';
 
 import SidebarMenu from 'react-bootstrap-sidebar-menu';
 import './sidebar-style.css';
@@ -9,7 +6,7 @@ import './sidebar-style.css';
 const SidebarThreeMenu: React.FunctionComponent = () => {
 
     let symbol: string = ">";
-    let clickedSymbol: string = "<";
+    // let clickedSymbol: string = "<";
     
     return (
         <>
@@ -32,11 +29,11 @@ const SidebarThreeMenu: React.FunctionComponent = () => {
                     </SidebarMenu.Nav>
 
                     <SidebarMenu.Nav>
-                        <SidebarMenu.Nav.Link href="#">Link 3</SidebarMenu.Nav.Link>
+                        <SidebarMenu.Nav.Link href="/users">Users</SidebarMenu.Nav.Link>
                     </SidebarMenu.Nav>
 
                     <SidebarMenu.Nav>
-                        <SidebarMenu.Nav.Link href="/">Link 4</SidebarMenu.Nav.Link>
+                        <SidebarMenu.Nav.Link href="/tasks">Tasks</SidebarMenu.Nav.Link>
                     </SidebarMenu.Nav>
 
                     <SidebarMenu.Nav.Item>Item</SidebarMenu.Nav.Item>

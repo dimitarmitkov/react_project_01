@@ -60,42 +60,34 @@ class ShowTasksList extends React.Component<any, any> {
         }
 
         // create array of elements 
-        let elementArray: any = [];
+        function elementArray () {
 
-        // this statement returns text if no task and array of elements (progressArray) if task have legit value
-        if (!tasks) {
-            return "there is no task record!";
-        } else {
+            if (!tasks) {
+                return "there is no task record!";
+            }
 
-            progressArray.forEach(function (element: any, elKey: number) {
-
-                elementArray.push(
-
-                    <Col sm={2} className="padding-0" key={element + elKey + 1}>
-                        <Card
-                            bg={''}
-                            key={element + elKey + 2}
-                            text={'dark'}
-                            style={{ height: '100%' }}
-                            className="padding-0"
-                        >
-                            <Card.Header key={element + elKey + 3}>{capitalizeFirstLetter(element)}</Card.Header>
-                            <Card.Body key={element + elKey + 4}>
-                                {tasksFunction(element)}
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                );
-            });
+            return progressArray.map((element: any, elKey: number) =>
+                <Col sm={2} className="padding-0" key={element + elKey + 1}>
+                    <Card
+                        bg={''}
+                        key={element + elKey + 2}
+                        text={'dark'}
+                        style={{ height: '100%' }}
+                        className="padding-0"
+                    >
+                        <Card.Header key={element + elKey + 3}>{capitalizeFirstLetter(element)}</Card.Header>
+                        <Card.Body key={element + elKey + 4}>
+                            {tasksFunction(element)}
+                        </Card.Body>
+                    </Card>
+                </Col>
+            );
         }
 
         return (
-            // <div>
             <Row>
-                {elementArray}
-            </Row>
-
-            // </div>
+                {elementArray()}
+            </Row >
         );
     }
 }

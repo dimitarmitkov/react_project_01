@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import '../App.css';
 import { Card } from 'react-bootstrap';
+import ModalApp from './modal/ModalTask';
 
 
 const TasksCard = (props: any) => {
@@ -18,7 +19,8 @@ const TasksCard = (props: any) => {
                         {task.taskProgress}
                     </Card.Text>
                     <Card.Link href="#">{task.id}</Card.Link>
-                    <Card.Link href="#">Another Task</Card.Link>
+                    <Card.Link href="#"></Card.Link>
+                    <ModalApp {...task}/>
                 </Card.Body>
             </Card>
         </div>
