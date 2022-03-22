@@ -7,7 +7,6 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import LoggedUser from '../user/LoggedUser';
 import './navbarData.css'
 
-
 const NavbarMenu: React.FunctionComponent = () => {
     return (
         <>
@@ -26,8 +25,6 @@ const NavbarMenu: React.FunctionComponent = () => {
                                         <Link to={`/tasks`} className="active-task-link">Tasks Link</Link>
                                         <Link to={`/users`} className="active-task-link">Users Link</Link>
 
-                                    {/* <Nav.Link href="/users">Users</Nav.Link> */}
-                                    {/* <Nav.Link href="/tasks">Tasks</Nav.Link> */}
                                     <NavDropdown title="Select Action" id="collasible-nav-dropdown">
                                         <NavDropdown.Item href="#">Action</NavDropdown.Item>
                                         <NavDropdown.Item href="#">Another action</NavDropdown.Item>
