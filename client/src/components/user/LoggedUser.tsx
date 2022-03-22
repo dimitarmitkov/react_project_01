@@ -18,9 +18,6 @@ const ShowUsersList = () => {
         getEvents()
     }, []);
 
-    console.log(user);
-    
-
         if (user.deletedAt) {
             return <Button icon="pi pi-user" className="p-button-rounded p-button-info" disabled />
         } else {
