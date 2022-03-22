@@ -1,27 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 import { Button, DropdownButton, Dropdown } from 'react-bootstrap';
 
 function MyVerticallyCenteredModal(props: any) {
 
     const progressArray: string[] = ["initial", "selected", "progress", "review", "done"];
-    const cities = [
-        { label: 'New York', value: 'NY' },
-        { label: 'Rome', value: 'RM' },
-        { label: 'London', value: 'LDN' },
-        { label: 'Istanbul', value: 'IST' },
-        { label: 'Paris', value: 'PRS' }
-    ];
 
-    const [selectedCity1, setSelectedCity1] = useState<any>(null);
-    const onCityChange = (e: { value: any }) => {
-        setSelectedCity1(e.value);
-    }
-
-    let dropdownButtonsArray: any = [];
-
-    progressArray.forEach(function (element: any, k: number) {
-        dropdownButtonsArray.push(<Dropdown.Item as="button" key={'bbd' + k}>{element}</Dropdown.Item>);
+    let dropdownButtonsArray = progressArray.map((element: string, k: number) => {
+        return <Dropdown.Item as="button" key={'bbd' + k}>{element}</Dropdown.Item>
     });
 
     return (
@@ -39,10 +25,8 @@ function MyVerticallyCenteredModal(props: any) {
             <Modal.Body>
                 <h4>{props.data.taskProgress}</h4>
                 <p>
-                    {props.data.taskType}
+                    {props.data.taskType} {typeof props}
                 </p>
-
-
 
                 <DropdownButton id="dropdown-item-button" title="Select status">
                     {dropdownButtonsArray}
@@ -73,9 +57,3 @@ export default function ModalApp(props: any[]) {
         </>
     );
 }
-    // }
-// }
-
-// export default ModalTasks;
-
-//   render(<App />);
