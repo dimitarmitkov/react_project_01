@@ -34,6 +34,9 @@ const LoginGroup = () => {
             })
             .then(res => {
                 console.log(res);
+                if(res.status === 201){
+                    window.location.href = '/';
+                }
             })
             .catch(err => {
                 console.log(err);

@@ -126,7 +126,9 @@ module.exports.createSingleUser = function(req, res, next) {
         role,
         picture
     }).then(customer => {
-        console.log(customer.dataValues);
+        // console.log(customer.dataValues);
+        res.status(201).send('user created');
+
     }).catch(next => {
         res.status(400).send('already exists')
     });

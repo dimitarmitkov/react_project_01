@@ -63,6 +63,12 @@ const InputGroupDemo = () => {
                 headers: {
                     'Content-Type': 'application/json'
                 }
+              }).then(res=>{
+               console.log(res);
+               if(res.status === 200){
+                window.location.href = '/helloMitko';
+            }
+               
               })
             .catch(err => {
                 console.log(err);

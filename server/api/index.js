@@ -30,8 +30,8 @@ module.exports.connect = function(path, app) {
         .get(authMiddleware.auth, tasksController.deleteOneTask);
 
     router.route("/createUser")
-        .get(authMiddleware.auth, tasksController.createSingleUser)
-        .post(authMiddleware.auth, tasksController.createSingleUser);
+        .get(tasksController.createSingleUser)
+        .post(tasksController.createSingleUser);
 
     router.route("/createTask")
         .get(authMiddleware.auth, tasksController.createSingleTask);
