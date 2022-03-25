@@ -12,6 +12,7 @@ type FormValues = {
     password: string;
     email: string;
     role: string;
+    picture: string;
 };
 
 const LoginGroup = () => {
@@ -24,11 +25,12 @@ const LoginGroup = () => {
 
         axios.post("http://localhost:62000/api/v1/createUser",
             {
-                insertEmail: data.email,
-                insertPassword: data.password,
-                insertFirstName: data.firstName,
-                insertLastName: data.lastName,
-                insertRole: data.role,
+                email: data.email,
+                password: data.password,
+                firstName: data.firstName,
+                lastName: data.lastName,
+                role: data.role ? data.role : "user",
+                picture: data.picture ? data.picture : ""
             })
             .then(res => {
                 console.log(res);

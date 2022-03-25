@@ -36,7 +36,6 @@ const NavbarMenu: React.FunctionComponent = () => {
 
                                 <Nav>
                                     <Link to={`/login`}  className="button active-task-link">Login</Link>
-                                    <Link to={`/input`}  className="button active-task-link">Input</Link>
                                     <Nav.Link href="#">More deets</Nav.Link>
                                     <Nav.Link eventKey={2} href="#">
                                         Dank memes

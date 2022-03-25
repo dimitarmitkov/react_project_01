@@ -92,8 +92,7 @@ module.exports.authorization = function(req, res, next) {
 
 module.exports.createSingleUser = function(req, res, next) {
 
-
-
+    // console.log(req);
     // const {
     //         firstName,
     //         lastName,
@@ -110,14 +109,7 @@ module.exports.createSingleUser = function(req, res, next) {
         email,
         role,
         picture
-    } = {
-        firstName: 'connect',
-        lastName: 'user',
-        insertPassword: '123456',
-        email: 'connect@con.com',
-        role: 'admin',
-        picture: 'jklshjklsdfhjksdhfjksd'
-    }
+    } = req.body;
 
 
     const password = bcrypt.hashSync(`${insertPassword}`, 10);

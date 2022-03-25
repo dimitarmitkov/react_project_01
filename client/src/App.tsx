@@ -13,7 +13,6 @@ import Hello from './components/test_components/HelloWorld';
 import HelloClass from './components/test_components/HelloClass';
 import SidebarFive from './components/sidebar/SidebarFive';
 import LoginForm from './components/login/LoginForm';
-import InputForm from './components/login/InputForm';
 import SignUpForm from './components/signup/SignUpForm';
 
 
@@ -39,7 +38,6 @@ function App() {
               < Route path="/users" element={<Users />} />
               < Route path="/tasks" element={<Tasks />} />
               < Route path="/login" element={<LoginForm />} />
-              < Route path="/input" element={<InputForm />} />
               < Route path="/signup" element={<SignUpForm />} />
 
             </Routes>
