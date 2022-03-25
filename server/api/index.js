@@ -2,44 +2,51 @@ const { Router } = require('express');
 const tasksController = require('./controllers/tasks');
 const authMiddleware = require('../api/middlewares/authenticate');
 
-module.exports.connect = function (path, app) {
-  const router = Router();
+module.exports.connect = function(path, app) {
+    const router = Router();
 
-  router.route("/tasks")
-    .get(tasksController.getAllTasks);
+    router.route("/tasks")
+        .get(authMiddleware.auth, authMiddleware.isAdmin, tasksController.getAllTasks);
 
-  router.route("/users")
-    .get(authMiddleware.auth, tasksController.getAllUsers);
+    router.route("/users")
+        .get(authMiddleware.auth, tasksController.getAllUsers);
 
-  router.route("/usersPage")
-    .get(authMiddleware.auth, tasksController.getAllUsersPaginate);
+    router.route("/usersPage")
+        .get(authMiddleware.auth, tasksController.getAllUsersPaginate);
 
-  router.route("/usersPage/:osData,:limData")
-    .get(authMiddleware.auth, tasksController.getAllUsersPagesLimit);
+    router.route("/usersPage/:osData,:limData")
+        .get(authMiddleware.auth, tasksController.getAllUsersPagesLimit);
 
-  router.route("/users/:id")
-    .get(authMiddleware.auth, tasksController.getOneUser);
+    router.route("/users/:id")
+        .get(authMiddleware.auth, tasksController.getOneUser);
 
-  router.route("/usersDelete/:id")
-    .get(authMiddleware.token, authMiddleware.auth, authMiddleware.isAdmin, tasksController.deleteOneUser);
+    router.route("/usersDelete/:id")
+        .get(authMiddleware.auth, authMiddleware.isAdmin, tasksController.deleteOneUser);
 
-  router.route("/tasks/:id")
-    .get(authMiddleware.auth, tasksController.getOneTask);
+    router.route("/tasks/:id")
+        .get(authMiddleware.auth, tasksController.getOneTask);
 
-  router.route("/tasksDelete/:id")
-    .get(authMiddleware.auth, tasksController.deleteOneTask);
+    router.route("/tasksDelete/:id")
+        .get(authMiddleware.auth, tasksController.deleteOneTask);
 
-  router.route("/createUser")
-    .get(authMiddleware.auth, tasksController.createSingleUser);
+    router.route("/createUser")
+        .get(authMiddleware.auth, tasksController.createSingleUser)
+        .post(authMiddleware.auth, tasksController.createSingleUser);
 
-  router.route("/createTask")
-    .get(authMiddleware.auth, tasksController.createSingleTask);
+    router.route("/createTask")
+        .get(authMiddleware.auth, tasksController.createSingleTask);
 
-  router.route("/usersEdit/:id")
-    .get(authMiddleware.auth, tasksController.editOneUser);
+    router.route("/usersEdit/:id")
+        .get(authMiddleware.auth, tasksController.editOneUser);
 
     router.route("/userLog/:insertEmail,:insertPassword")
-    .get(authMiddleware.auth, tasksController.userLogin);
+        .get(authMiddleware.auth, tasksController.userLogin);
 
-  app.use(path, router);
+    router.route("/authorization")
+        .get(tasksController.authorization);
+
+    router.route("/userLogin")
+        .post(tasksController.userLogin);
+
+    app.use(path, router);
 };

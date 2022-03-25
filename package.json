@@ -1,5 +1,8 @@
 {
   "dependencies": {
-    "nodemon": "^2.0.15"
+    "express-jwt": "^6.1.1",
+    "express-session": "^1.17.2",
+    "nodemon": "^2.0.15",
+    "passport": "^0.5.2"
   }
 }

@@ -3,7 +3,7 @@
         "port": 62000,
         "cors": {
             "urls": [
-                "http://localhost:3000", "http://localhost:62000"
+                "http://localhost:3000"
             ],
             "credentials": true,
             "exposedHeaders": []

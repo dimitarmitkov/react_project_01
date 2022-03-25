@@ -35,57 +35,64 @@ const userTasksTable = serviceFactory(sequelize.define('userTasksModel', { delet
 
 
 
-module.exports.getAllUsers = function (req, res, next) {
+module.exports.getAllUsers = function(req, res, next) {
 
     usersTable.getAll(req, res, next, ['id', 'firstName', 'email', 'role', 'picture', 'deletedAt']);
 }
 
-module.exports.getAllTasks = function (req, res, next) {
+module.exports.getAllTasks = function(req, res, next) {
 
     tasksTable.getAll(req, res, next, ['id', 'taskType', 'taskName', 'taskProgress', 'deletedAt']);
 }
 
-module.exports.getOneUser = function (req, res, next) {
+module.exports.getOneUser = function(req, res, next) {
 
     usersTable.getSingle(req, res, next, ['id', 'firstName', 'email', 'role', 'deletedAt']);
 }
 
-module.exports.getOneTask = function (req, res, next) {
+module.exports.getOneTask = function(req, res, next) {
 
     tasksTable.getSingle(req, res, next, ['id', 'taskType', 'taskName', 'deletedAt']);
 }
 
-module.exports.getAllUsersPaginate = function (req, res, next) {
+module.exports.getAllUsersPaginate = function(req, res, next) {
 
     usersTable.getAllPagination(req, res, next, ['id', 'firstName', 'email', 'role', 'deletedAt'], 1, 2);
 }
 
-module.exports.getAllUsersPagesLimit = function (req, res, next) {
+module.exports.getAllUsersPagesLimit = function(req, res, next) {
 
     usersTable.getAllPagination(req, res, next, ['id', 'firstName', 'email', 'role', 'deletedAt']);
 }
 
-module.exports.deleteOneUser = function (req, res, next) {
+module.exports.deleteOneUser = function(req, res, next) {
 
     usersTable.deleteSingle(req, res, next, ['id', 'firstName', 'email', 'role', 'deletedAt'], 'user');
 }
 
-module.exports.deleteOneTask = function (req, res, next) {
+module.exports.deleteOneTask = function(req, res, next) {
 
     tasksTable.deleteSingle(req, res, next, ['id', 'taskType', 'taskName', 'deletedAt'], 'task');
 }
 
-module.exports.editOneUser = function (req, res, next) {
+module.exports.editOneUser = function(req, res, next) {
 
     usersTable.editSingle(req, res, next, ['id', 'firstName', 'email', 'role', 'deletedAt'], 'user');
 }
 
-module.exports.userLogin = function (req, res, next) {
+module.exports.userLogin = function(req, res, next) {
 
     usersTable.userLogin(req, res, next, ['id', 'firstName', 'email', 'role', 'deletedAt'], 'user');
 }
 
-module.exports.createSingleUser = function (req, res, next) {
+module.exports.authorization = function(req, res, next) {
+
+    usersTable.authorization(req, res, next, ['id', 'firstName', 'email', 'role', 'deletedAt'], 'user');
+}
+
+module.exports.createSingleUser = function(req, res, next) {
+
+
 
     // const {
     //         firstName,
@@ -103,8 +110,7 @@ module.exports.createSingleUser = function (req, res, next) {
         email,
         role,
         picture
-    } =
-    {
+    } = {
         firstName: 'connect',
         lastName: 'user',
         insertPassword: '123456',
@@ -135,7 +141,7 @@ module.exports.createSingleUser = function (req, res, next) {
 }
 
 
-module.exports.createSingleTask = function (req, res, next) {
+module.exports.createSingleTask = function(req, res, next) {
 
     var minutesToAdd = 1;
     var currentDate = new Date();
@@ -167,8 +173,7 @@ module.exports.createSingleTask = function (req, res, next) {
         reviewByUserId,
         doneAt,
         doneByUserId
-    } =
-    {
+    } = {
         taskType: 'meeting',
         taskName: 'review task name',
         taskProgress: 'review',
@@ -191,8 +196,7 @@ module.exports.createSingleTask = function (req, res, next) {
 
     const taskCreatable = sequelize.define('tasksModel',
         // { taskType, taskName, taskProgress, initiatedAt, initiatedByUserId, selectedAt, selectedByUserId, progressAt, progressByUserId, reviewAt, reviewByUserId, doneAt, doneByUserId },
-        { taskType, taskName, taskProgress }, 
-        { tableName: "Tasks" });
+        { taskType, taskName, taskProgress }, { tableName: "Tasks" });
 
     taskCreatable.create({
         taskType,

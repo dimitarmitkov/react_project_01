@@ -2,8 +2,11 @@ const { Sequelize } = require('sequelize');
 const cs = require("../connection/connectionData");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const cookieParser = require('cookie-parser');
 const myKey = require("../connection/myKey");
 const authMiddleware = {};
+const session = require('express-session');
+const { Cookie } = require('express-session');
 
 const sequelize = new Sequelize(cs.database, cs.username, cs.password, {
     host: cs.host,
@@ -35,86 +38,92 @@ const users = sequelize.define('usersModel', {}, { tableName: "Users" });
 
 module.exports = {
 
-    token: function (req, res, next) {
+    // token: function(req, res, next) {
 
-        // console.log('VALUES: ', req.params);
+    //     // console.log('VALUES: ', req.params);
 
-        let idData = req.params.id;
+    //     let idData = req.params.id;
 
-        users.findOne({
-            where: { id: idData },
-            attributes: ['id', 'firstName', 'email', 'role', 'picture', 'deletedAt']
-        })
-            .then(result => {
+    //     users.findOne({
+    //             where: { id: idData },
+    //             attributes: ['id', 'firstName', 'email', 'role', 'picture', 'deletedAt']
+    //         })
+    //         .then(result => {
 
-                jwt.sign(
-                    {
-                        username: result.dataValues.firstName,
-                        id: result.dataValues.id,
-                        role: result.dataValues.role,
-                        email: result.dataValues.email,
-                        deleted: result.dataValues.deletedAt,
-                        picture: result.dataValues.picture,
-                    },
-                    `${myKey}`,
-                    { expiresIn: '3000s' });
+    //             jwt.sign({
+    //                     username: result.dataValues.firstName,
+    //                     id: result.dataValues.id,
+    //                     role: result.dataValues.role,
+    //                     email: result.dataValues.email,
+    //                     deleted: result.dataValues.deletedAt,
+    //                     picture: result.dataValues.picture,
+    //                 },
+    //                 `${myKey}`, { expiresIn: '300s' });
 
 
 
-                // let token = req.headers["x-access-token"];
 
-                // if (!token) {
-                //     return res.status(403).send({
-                //         message: "No token provided!"
-                //     });
-                // }
+    //             const token = req.cookies.access_token;
 
-                const token = req.cookies.access_token;
+    //             console.log(token);
 
-                console.log(token);
+    //             jwt.verify(token, `${myKey}`, (err, decoded) => {
+    //                 if (err) {
+    //                     return res.status(401).send({
+    //                         message: "Unauthorized!"
+    //                     });
+    //                 }
+    //                 // req.userId = decoded.id;
+    //                 console.log('decoded and verified');
+    //                 next();
+    //             });
 
-                jwt.verify(token, `${myKey}`, (err, decoded) => {
-                    if (err) {
-                        return res.status(401).send({
-                            message: "Unauthorized!"
-                        });
-                    }
-                    // req.userId = decoded.id;
-                    console.log('decoded and verified');
-                    next();
-                });
+    //         })
+    //         .catch(err => res.send(err));
 
-            })
-            .catch(err => res.send(err));
+
+    // },
+
+    isAdmin: function(req, res, next) {
+
+        const token = req.cookies.access_token;
+
+        if (!token) {
+            return res.sendStatus(403);
+        }
+
+        try {
+            const data = jwt.verify(token, `${myKey}`);
+            // res.send(data);
+
+            if (data.role === "admin") {
+                return next();
+            } else {
+                res.sendStatus(403);
+            }
+        } catch {
+            return res.sendStatus(403);
+        }
 
 
     },
 
-    isAdmin: function (req, res, next) {
+    auth: function(req, res, next) {
+        // console.log(session);
+        const token = req.cookies.access_token;
+        // console.log(token);
 
+        if (!token) {
+            return res.sendStatus(403);
+        }
+        try {
+            const data = jwt.verify(token, `${myKey}`);
+            req.userId = data.id;
+            req.type = data.type;
+            return next();
 
-
-        let idData = req.params.id;
-
-        users.findOne({
-            where: { id: idData },
-            attributes: ['id', 'firstName', 'email', 'role', 'picture', 'deletedAt']
-        })
-            .then(result => {
-                // console.log(result.dataValues)
-                if (result.dataValues.role === 'admin') {
-                    next();
-
-                } else {
-                    res.send('not admin');
-                }
-            })
-            .catch(err => res.send(err));
-        // next();
-    },
-
-    auth: function (req, res, next) {
-        console.log('ok auth');
-        next();
+        } catch {
+            return res.sendStatus(403);
+        }
     }
 };

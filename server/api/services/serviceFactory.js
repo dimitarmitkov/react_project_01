@@ -29,8 +29,7 @@ module.exports = function serviceFactory(model) {
 
     function getAll(req, res, next, attributesArray) {
 
-        model.findAll(
-            {
+        model.findAll({
                 attributes: attributesArray,
                 where: {
                     deletedAt: null
@@ -47,9 +46,9 @@ module.exports = function serviceFactory(model) {
         let idData = req.params.id;
 
         model.findOne({
-            where: { id: idData },
-            attributes: attributesArray
-        })
+                where: { id: idData },
+                attributes: attributesArray
+            })
             .then(result => {
                 res.send(result);
             })
@@ -61,8 +60,7 @@ module.exports = function serviceFactory(model) {
         let offsetData = os ? os : req.params.osData;
         let limitData = lim ? lim : req.params.limData;
 
-        model.findAndCountAll(
-            {
+        model.findAndCountAll({
                 attributes: attributesArray,
                 where: {
                     deletedAt: null
@@ -83,18 +81,14 @@ module.exports = function serviceFactory(model) {
 
         let whereObj = deletedObject === 'user' ? { userId: idData } : { taskId: idData };
 
-        model.update(
-            { deletedAt: t },
-            {
+        model.update({ deletedAt: t }, {
                 where: { id: idData },
             })
             .then(result => {
 
-                userTasksTable.update(
-                    {
+                userTasksTable.update({
                         deletedAt: t,
-                    },
-                    {
+                    }, {
                         where: whereObj,
                         attributes: attributesArray
                     })
@@ -110,12 +104,10 @@ module.exports = function serviceFactory(model) {
 
         const idData = parseInt(req.params.id);
 
-        model.update(
-            {
+        model.update({
                 firstName: 'changed FN',
                 lastName: 'DDDDDDDDDDDDD'
-            },
-            {
+            }, {
                 where: { id: idData },
             })
             .then(result => {
@@ -126,57 +118,75 @@ module.exports = function serviceFactory(model) {
     }
 
     function userLogin(req, res, next, attributesArray, editObject) {
-        const { insertEmail, insertPassword } = req.params;
+        // if axios query, if fetch - body
+        // const { insertEmail, insertPassword } = req.query;
+        const { insertEmail, insertPassword } = req.body;
         console.log(insertEmail);
         console.log(insertPassword);
 
-        // const userTable = sequelize.define("usersModel", {},
-        //     { tableName: "sers" });
         try {
-            model.findOne(
-                {
-                    attributes: ['id', 'firstName', 'email', 'password', 'role', 'deletedAt'],
-                    where: { email: insertEmail }
-                }).then(user => {
-                    if (user) {
+            model.findOne({
+                attributes: ['id', 'firstName', 'email', 'password', 'role', 'deletedAt'],
+                where: { email: insertEmail }
+            }).then(user => {
+                if (user) {
 
-                        let checkPass = user.dataValues.password;
-                        const password_valid = bcrypt.compareSync(`${insertPassword}`, `${checkPass}`);
+                    let checkPass = user.dataValues.password;
+                    const password_valid = bcrypt.compareSync(`${insertPassword}`, `${checkPass}`);
 
-                        if (password_valid) {
-                            let userId = user.dataValues.id;
+                    if (password_valid) {
+                        let userId = user.dataValues.id;
 
-                                    let token = jwt.sign(
-                                        {
-                                            username: user.dataValues.firstName,
-                                            id: user.dataValues.id,
-                                            role: user.dataValues.role,
-                                            email: user.dataValues.email,
-                                            deletedAt: user.dataValues.deletedAt,
-                                        },
-                                        `${myKey}`,
-                                        { expiresIn: '3000s' });
+                        let token = jwt.sign({
+                                username: user.dataValues.firstName,
+                                id: user.dataValues.id,
+                                role: user.dataValues.role,
+                                email: user.dataValues.email,
+                                deletedAt: user.dataValues.deletedAt,
+                            },
+                            `${myKey}`, { expiresIn: '3000s' });
 
-                                    res.cookie("access_token", token, {
-                                        httpOnly: true,
-                                        secure: process.env.NODE_ENV === "production"
-                                    })
-                                        .status(200)
-                                        .json({ message: "Successfully logged" });
+                        // console.log(token, ' this is token');
 
-                        } else {
-                            res.status(400).json({ error: "Password Incorrect" });
-                        }
+                        res.cookie("access_token", token, {
+                                httpOnly: true,
+                                secure: process.env.NODE_ENV === "production"
+                            })
+                            .status(200)
+                            .json({ message: "Successfully logged", token: `${token}` });
 
                     } else {
-                        res.status(404).json({ error: "User does not exist" });
+                        res.status(400).json({ error: "Password Incorrect" });
                     }
 
-                }).catch(err => console.log(err));
+                } else {
+                    res.status(404).json({ error: "User does not exist" });
+                }
+
+            }).catch(err => console.log(err, ' thissss errrorrr'));
         } catch (err) {
             res.send("incorrect user or password.")
         }
     }
 
-    return { getAll, getSingle, getAllPagination, deleteSingle, editSingle, userLogin };
+    function authorization(req, res, next, attributesArray, editObject) {
+        // console.log(session);
+        const token = req.cookies.access_token;
+        console.log("token");
+
+        // if (!token) {
+        //     return res.sendStatus(403);
+        // }
+        // try {
+        //     const data = jwt.verify(token, `${myKey}`);
+        //     req.userId = data.id;
+        //     req.type = data.type;
+        //     res.send(data);
+        //     // return next();
+        // } catch {
+        //     return res.sendStatus(403);
+        // }
+    }
+
+    return { getAll, getSingle, getAllPagination, deleteSingle, editSingle, userLogin, authorization };
 }
