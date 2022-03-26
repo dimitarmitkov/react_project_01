@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react';
 import axios from 'axios';
-import capitalizeFirstLetter from './capitalizeFirstLetter';
-import { urlToHttpOptions } from 'url';
 
 const AxiosRequester = (getImportedValue: never[], setImportedValue: React.Dispatch<React.SetStateAction<never[]>>, url: string) => {
     function axiosFunction() {

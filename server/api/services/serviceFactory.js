@@ -153,7 +153,7 @@ module.exports = function serviceFactory(model) {
                                 secure: process.env.NODE_ENV === "production"
                             })
                             .status(200)
-                            .json({ message: "Successfully logged", token: `${token}` });
+                            .json({ message: "Successfully logged", token: `${token}`, userLogged: `${user.dataValues.firstName}` });
 
                     } else {
                         res.status(400).json({ error: "Password Incorrect" });
@@ -169,24 +169,26 @@ module.exports = function serviceFactory(model) {
         }
     }
 
-    function authorization(req, res, next, attributesArray, editObject) {
-        // console.log(session);
-        const token = req.cookies.access_token;
-        console.log("token");
+    function currentLoggedUser(req, res, next, attributesArray, editObject) {
 
-        // if (!token) {
-        //     return res.sendStatus(403);
-        // }
-        // try {
-        //     const data = jwt.verify(token, `${myKey}`);
-        //     req.userId = data.id;
-        //     req.type = data.type;
-        //     res.send(data);
-        //     // return next();
-        // } catch {
-        //     return res.sendStatus(403);
-        // }
+        const token = req.cookies.access_token;
+
+        if (!token) {
+            return res.sendStatus(403);
+        }
+        try {
+            const data = jwt.verify(token, `${myKey}`);
+            req.userId = data.id;
+            // return data;
+            // res.send([data.id, data.username]);
+            res.send({
+                id: data.id,
+                userName: data.username
+            });
+        } catch {
+            return res.sendStatus(403);
+        }
     }
 
-    return { getAll, getSingle, getAllPagination, deleteSingle, editSingle, userLogin, authorization };
+    return { getAll, getSingle, getAllPagination, deleteSingle, editSingle, userLogin, currentLoggedUser };
 }

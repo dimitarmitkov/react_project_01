@@ -90,17 +90,12 @@ module.exports.authorization = function(req, res, next) {
     usersTable.authorization(req, res, next, ['id', 'firstName', 'email', 'role', 'deletedAt'], 'user');
 }
 
-module.exports.createSingleUser = function(req, res, next) {
+module.exports.currentLoggedUser = function(req, res, next) {
 
-    // console.log(req);
-    // const {
-    //         firstName,
-    //         lastName,
-    //         insertPassword,
-    //         email,
-    //         role,
-    //         picture
-    //     } = req.body;
+    usersTable.currentLoggedUser(req, res, next, ['id', 'firstName', 'email', 'role', 'deletedAt'], 'user');
+}
+
+module.exports.createSingleUser = function(req, res, next) {
 
     const {
         firstName,

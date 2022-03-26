@@ -72,6 +72,17 @@ const InputGroupDemo = () => {
                 console.log(err);
 
             });
+
+        // axios.get("http://localhost:62000/api/v1/authorization")
+        // .then(res => {
+        //     console.log(res);
+        // })
+        // .catch(err => {
+        //     console.log(err);
+
+        // });
+
+
     };
 
 

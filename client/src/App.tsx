@@ -34,7 +34,7 @@ function App() {
           <Col sm={10}>
             <Routes>
 
-              < Route path="/helloMitko" element={<Hello name="Dimitar" />} />
+              < Route path="/helloMitko" element={<Hello />} />
               < Route path="/users" element={<Users />} />
               < Route path="/tasks" element={<Tasks />} />
               < Route path="/login" element={<LoginForm />} />
