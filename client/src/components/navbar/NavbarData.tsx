@@ -40,7 +40,7 @@ const NavbarMenu: React.FunctionComponent = () => {
                                     <Nav.Link eventKey={2} href="#">
                                         Dank memes
                                     </Nav.Link>
-                                    {/* <LoggedUser /> */}
+                                    <LoggedUser />
 
                                 </Nav>
                             </Navbar.Collapse>

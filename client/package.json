@@ -29,6 +29,7 @@
     "react-hook-form": "^7.28.1",
     "react-icons": "^4.3.1",
     "react-minimal-side-navigation": "^1.9.2",
+    "react-paginate": "^8.1.2",
     "react-pro-sidebar": "^0.7.1",
     "react-router-dom": "^6.2.2",
     "react-scripts": "5.0.0",

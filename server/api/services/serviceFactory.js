@@ -183,7 +183,8 @@ module.exports = function serviceFactory(model) {
             // res.send([data.id, data.username]);
             res.send({
                 id: data.id,
-                userName: data.username
+                userName: data.username,
+                deletedAt: data.deletedAt
             });
         } catch {
             return res.sendStatus(403);
