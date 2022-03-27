@@ -8,6 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Row, Col, Card } from 'react-bootstrap';
 import { JsxElement } from 'typescript';
 import AxiosRequester from './functions/axiosRequester';
+import { addAbortSignal } from 'stream';
 
 
 
@@ -43,7 +44,7 @@ import AxiosRequester from './functions/axiosRequester';
                 return "there is no task record!";
             }
 
-            return progressArray.map((element: string, elKey: number) =>
+            const aaa= progressArray.map((element: string, elKey: number) =>
                 <Col sm={2} className="padding-0" key={element + elKey + 1}>
                     <Card
                         bg={''}
@@ -59,6 +60,8 @@ import AxiosRequester from './functions/axiosRequester';
                     </Card>
                 </Col>
             );
+
+            return aaa;
         }
 
         return (

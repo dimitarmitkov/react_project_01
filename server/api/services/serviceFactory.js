@@ -66,7 +66,7 @@ module.exports = function serviceFactory(model) {
                 where: {
                     deletedAt: null
                 },
-                offset: offsetData ? offsetData : 0,
+                offset: offsetData ? offsetData : 1,
                 limit: limitData ? limitData : 5
             })
             .then(result => {
@@ -83,14 +83,11 @@ module.exports = function serviceFactory(model) {
 
         const { QueryTypes } = require('sequelize');
         sequelize.query(
-                `SELECT * FROM(SELECT ROW_NUMBER() OVER(PARTITION BY "taskProgress") AS r, t.* FROM "Tasks" t) T WHERE T.r >= 1 and T.r <= 5;`, {
-                    replacements: [{
-                            start: `${limitData}`
-                        },
-                        {
-                            end: `${offsetData}`
-                        }
-                    ],
+                `SELECT * FROM(SELECT ROW_NUMBER() OVER(PARTITION BY "taskProgress") AS r, t.* FROM "Tasks" t) T WHERE T.r >= :start and T.r <= :end;`, {
+                    replacements: {
+                        start: `${offsetData}`,
+                        end: `${limitData}`
+                    },
                     type: QueryTypes.SELECT
                 }
             )
@@ -181,11 +178,7 @@ module.exports = function serviceFactory(model) {
                                 secure: process.env.NODE_ENV === "production"
                             })
                             .status(200)
-                            .json({ message: "Successfully logged", token: `
-                    ${ token }
-                    `, userLogged: `
-                    ${ user.dataValues.firstName }
-                    ` });
+                            .json({ message: "Successfully logged", token: `$ { token }`, userLogged: `$ { user.dataValues.firstName }` });
 
                     } else {
                         res.status(400).json({ error: "Password Incorrect" });
