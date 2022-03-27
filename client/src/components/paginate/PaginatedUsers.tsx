@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react'
-import axios from 'axios'
-import ReactPaginate from 'react-paginate';
-import UsersCard from '../UsersCard';
+import axios from 'axios';
 import { Col, Row } from 'react-bootstrap';
 import { Dropdown } from 'primereact/dropdown';
+import ReactPaginate from 'react-paginate';
+import { useState, useEffect } from 'react'
+import UsersCard from '../UsersCard';
 import './paginate.css';
 import '../buttons/DropdownButton.css';
 
@@ -17,9 +17,6 @@ function PaginatedUsers() {
     const [rowsNumber, setRowsNumber] = useState(0);
 
     const valuesArray2 = ['5', '10', 'All'];
-
-
-
 
     const getData = async (offset: number, perPage: number) => {
         const res = await axios.post("http://localhost:62000/api/v1/usersPage",
@@ -43,7 +40,6 @@ function PaginatedUsers() {
         setData(postData)
         setPageCount(Math.ceil(data.count / perPage))
     }
-
 
     const handlePageClick = (e: any) => {
         const selectedPage = e.selected;
@@ -87,7 +83,6 @@ function PaginatedUsers() {
                         containerClassName={"pagination"}
                         activeClassName={"active"} />
                 </Col>
-
             </Row>
         </div>
     );
