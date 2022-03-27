@@ -65,7 +65,7 @@ function PaginatedUsers() {
         <div className="App">
             <Row className='selector' key={"selectorTop1"}>
                 <div className="dropdown-demo" key={'paginateDropDown'}>
-                    <Dropdown id={'dropDownButton'} value={selectValues} options={valuesArray2} onChange={onCityChange2} placeholder="Numbers per page" editable />
+                    <Dropdown id={'dropDownButton'} value={selectValues} options={valuesArray2} onChange={onCityChange2} placeholder="5" editable />
                 </div>
             </Row>
             <Row key={"selectorTop2"}>
