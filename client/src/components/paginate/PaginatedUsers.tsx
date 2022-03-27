@@ -44,10 +44,9 @@ function PaginatedUsers() {
     const handlePageClick = (e: any) => {
         const selectedPage = e.selected;
         setOffset(selectedPage + 1)
-        console.log(selectedPage);
     };
 
-    const onCityChange2 = (e: any) => {
+    const onPageNumbersChange = (e: any) => {
         setSelectValues(e.value);
         const incomingValue = e.value === 'All' ? rowsNumber : parseInt(e.value);
         setPerPage(incomingValue);
@@ -61,7 +60,7 @@ function PaginatedUsers() {
         <div className="App">
             <Row className='selector' key={"selectorTop1"}>
                 <div className="dropdown-demo" key={'paginateDropDown'}>
-                    <Dropdown id={'dropDownButton'} value={selectValues} options={valuesArray2} onChange={onCityChange2} placeholder="5" editable />
+                    <Dropdown id={'dropDownButton'} value={selectValues} options={valuesArray2} onChange={onPageNumbersChange} placeholder="5" editable />
                 </div>
             </Row>
             <Row key={"selectorTop2"}>
