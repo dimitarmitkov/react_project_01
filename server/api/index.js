@@ -16,8 +16,8 @@ module.exports.connect = function(path, app) {
         .post(authMiddleware.auth, tasksController.getAllUsersPagesLimit);
 
     router.route("/tasksPage")
-        .get(authMiddleware.auth, tasksController.getAllUsersPaginate)
-        .post(authMiddleware.auth, tasksController.getAllUsersPagesLimit);
+        .get(authMiddleware.auth, tasksController.getAllTasksPaginate)
+        .post(tasksController.getAllPaginationRawQuery);
 
     router.route("/users/:id")
         .get(authMiddleware.auth, tasksController.getOneUser);

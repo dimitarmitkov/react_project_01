@@ -75,6 +75,33 @@ module.exports = function serviceFactory(model) {
             .catch(err => res.send(err));
     }
 
+    function getAllPaginationRawQuery(req, res, next, attributesArray) {
+
+
+        const { limitData, offsetData } = req.body;
+
+
+        const { QueryTypes } = require('sequelize');
+        sequelize.query(
+                `SELECT * FROM(SELECT ROW_NUMBER() OVER(PARTITION BY "taskProgress") AS r, t.* FROM "Tasks" t) T WHERE T.r >= 1 and T.r <= 5;`, {
+                    replacements: [{
+                            start: `${limitData}`
+                        },
+                        {
+                            end: `${offsetData}`
+                        }
+                    ],
+                    type: QueryTypes.SELECT
+                }
+            )
+            .then(result => {
+                // console.log(result);
+                // res.send(JSON.stringify(result, null, 2));
+                res.send(result);
+            })
+            .catch(err => res.send(err));
+    }
+
     function deleteSingle(req, res, next, attributesArray, deletedObject) {
 
         const idData = parseInt(req.params.id);
@@ -133,7 +160,7 @@ module.exports = function serviceFactory(model) {
                 if (user) {
 
                     let checkPass = user.dataValues.password;
-                    const password_valid = bcrypt.compareSync(`${insertPassword}`, `${checkPass}`);
+                    const password_valid = bcrypt.compareSync(`${ insertPassword }`, `${ checkPass }`);
 
                     if (password_valid) {
                         let userId = user.dataValues.id;
@@ -145,7 +172,7 @@ module.exports = function serviceFactory(model) {
                                 email: user.dataValues.email,
                                 deletedAt: user.dataValues.deletedAt,
                             },
-                            `${myKey}`, { expiresIn: '3000s' });
+                            `${ myKey }`, { expiresIn: '3000s' });
 
                         // console.log(token, ' this is token');
 
@@ -154,7 +181,11 @@ module.exports = function serviceFactory(model) {
                                 secure: process.env.NODE_ENV === "production"
                             })
                             .status(200)
-                            .json({ message: "Successfully logged", token: `${token}`, userLogged: `${user.dataValues.firstName}` });
+                            .json({ message: "Successfully logged", token: `
+                    ${ token }
+                    `, userLogged: `
+                    ${ user.dataValues.firstName }
+                    ` });
 
                     } else {
                         res.status(400).json({ error: "Password Incorrect" });
@@ -178,7 +209,7 @@ module.exports = function serviceFactory(model) {
             return res.sendStatus(403);
         }
         try {
-            const data = jwt.verify(token, `${myKey}`);
+            const data = jwt.verify(token, `${ myKey }`);
             req.userId = data.id;
             // return data;
             // res.send([data.id, data.username]);
@@ -192,5 +223,5 @@ module.exports = function serviceFactory(model) {
         }
     }
 
-    return { getAll, getSingle, getAllPagination, deleteSingle, editSingle, userLogin, currentLoggedUser };
+    return { getAll, getSingle, getAllPagination, deleteSingle, editSingle, userLogin, currentLoggedUser, getAllPaginationRawQuery };
 }
