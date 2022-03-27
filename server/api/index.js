@@ -12,10 +12,12 @@ module.exports.connect = function(path, app) {
         .get(authMiddleware.auth, tasksController.getAllUsers);
 
     router.route("/usersPage")
-        .get(authMiddleware.auth, tasksController.getAllUsersPaginate);
+        .get(authMiddleware.auth, tasksController.getAllUsersPaginate)
+        .post(authMiddleware.auth, tasksController.getAllUsersPagesLimit);
 
-    router.route("/usersPage/:osData,:limData")
-        .get(authMiddleware.auth, tasksController.getAllUsersPagesLimit);
+    router.route("/tasksPage")
+        .get(authMiddleware.auth, tasksController.getAllUsersPaginate)
+        .post(authMiddleware.auth, tasksController.getAllUsersPagesLimit);
 
     router.route("/users/:id")
         .get(authMiddleware.auth, tasksController.getOneUser);

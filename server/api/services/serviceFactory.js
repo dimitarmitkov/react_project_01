@@ -55,18 +55,19 @@ module.exports = function serviceFactory(model) {
             .catch(err => res.send(err));
     }
 
-    function getAllPagination(req, res, next, attributesArray, os, lim) {
+    function getAllPagination(req, res, next, attributesArray) {
 
-        let offsetData = os ? os : req.params.osData;
-        let limitData = lim ? lim : req.params.limData;
+
+        const { limitData, offsetData } = req.body;
+
 
         model.findAndCountAll({
                 attributes: attributesArray,
                 where: {
                     deletedAt: null
                 },
-                offset: offsetData,
-                limit: limitData
+                offset: offsetData ? offsetData : 0,
+                limit: limitData ? limitData : 5
             })
             .then(result => {
                 res.send(result);

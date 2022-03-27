@@ -57,12 +57,22 @@ module.exports.getOneTask = function(req, res, next) {
 
 module.exports.getAllUsersPaginate = function(req, res, next) {
 
-    usersTable.getAllPagination(req, res, next, ['id', 'firstName', 'email', 'role', 'deletedAt'], 1, 2);
+    usersTable.getAllPagination(req, res, next, ['id', 'firstName', 'email', 'role', 'deletedAt'], "user");
 }
 
 module.exports.getAllUsersPagesLimit = function(req, res, next) {
 
-    usersTable.getAllPagination(req, res, next, ['id', 'firstName', 'email', 'role', 'deletedAt']);
+    usersTable.getAllPagination(req, res, next, ['id', 'firstName', 'email', 'role', 'deletedAt'], "user");
+}
+
+module.exports.getAllTasksPaginate = function(req, res, next) {
+
+    tasksTable.getAll(req, res, next, ['id', 'taskType', 'taskName', 'taskProgress', 'deletedAt'], 'task');
+}
+
+module.exports.getAllTasksPagesLimit = function(req, res, next) {
+
+    tasksTable.getAll(req, res, next, ['id', 'taskType', 'taskName', 'taskProgress', 'deletedAt'], 'task');
 }
 
 module.exports.deleteOneUser = function(req, res, next) {

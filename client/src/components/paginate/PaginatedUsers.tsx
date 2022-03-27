@@ -1,87 +1,72 @@
 import React, { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
 import ReactPaginate from 'react-paginate';
-import './paginate.css';
 import UsersCard from '../UsersCard';
-import { Card, Col, Row } from 'react-bootstrap';
-import DropDownSelector from '../buttons/DrpoDownSelector';
+import { Col, Row } from 'react-bootstrap';
 import { Dropdown } from 'primereact/dropdown';
+import './paginate.css';
 import '../buttons/DropdownButton.css';
 
-function App() {
+function PaginatedUsers() {
 
-    const [lazyItems, setLazyItems] = useState([]);
-    const [selectedCity2, setSelectedCity2] = useState(null);
     const [offset, setOffset] = useState(0);
     const [data, setData] = useState([]);
-    const [perPage, setPerPage] = useState(1);
-    const [pageCount, setPageCount] = useState(0)
+    const [perPage, setPerPage] = useState(5);
+    const [pageCount, setPageCount] = useState(0);
+    const [selectValues, setSelectValues] = useState(null);
+    const [rowsNumber, setRowsNumber] = useState(0);
+
+    const valuesArray2 = ['5', '10', 'All'];
 
 
-    const valuesArray = [{ name: '5' }, { name: '10' }, { name: 'All' }];
-
-    const onCityChange2 = (e: any) => {
-        setSelectedCity2(e.value);
-        setPerPage(parseInt(e.value.name))
-        
-
-    }
-    // let parsedData = selectedCity2 ? parseInt(selectedCity2.name): 0;
-
-    // const [offset, setOffset] = useState(0);
-    // const [data, setData] = useState([]);
-    // const [perPage] = useState(parsedData || 5);
-    // const [pageCount, setPageCount] = useState(0)
-
-    
-
-    useEffect(() => {
-        setLazyItems([]);
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-    
-    
 
 
-    const getData = async () => {
-        const res = await axios.get("http://localhost:62000/api/v1/users")
+    const getData = async (offset: number, perPage: number) => {
+        const res = await axios.post("http://localhost:62000/api/v1/usersPage",
+            {
+                offsetData: offset,
+                limitData: perPage
+            }
+        );
         const data = res.data;
+        const slice = data.rows;
+        setRowsNumber(data.count);
 
-        const slice = data.slice(offset, offset + perPage);
         const postData = slice.map((pd: any, pdk: number) => {
 
-            return <div className="ShowUsersList">
+            return <div className="ShowUsersList" key={pdk + 101 + 'pdKey'}>
                 <UsersCard user={pd} key={pdk + 100 + 'pdKey'} />
             </div>
 
         })
 
-
         setData(postData)
-        setPageCount(Math.ceil(data.length / perPage))
-
-
-
+        setPageCount(Math.ceil(data.count / perPage))
     }
+
+
     const handlePageClick = (e: any) => {
         const selectedPage = e.selected;
         setOffset(selectedPage + 1)
         console.log(selectedPage);
-
     };
 
+    const onCityChange2 = (e: any) => {
+        setSelectValues(e.value);
+        const incomingValue = e.value === 'All' ? rowsNumber : parseInt(e.value);
+        setPerPage(incomingValue);
+    }
+
     useEffect(() => {
-        getData()
-    }, [offset])
+        getData(offset, perPage)
+    }, [offset, perPage])
 
     return (
         <div className="App">
             <Row className='selector' key={"selectorTop1"}>
-                <Col key={"selectorTopCol1"}>
-                    <div className="dropdown-demo" key={'paginateDropDown'}>
-                        <Dropdown id={'dropDownButton'} value={selectedCity2} options={valuesArray} onChange={onCityChange2} optionLabel="name" placeholder="Numbers per page" editable />
-                    </div>
-                </Col>
+                <div className="dropdown-demo" key={'paginateDropDown'}>
+                    <Dropdown id={'dropDownButton'} value={selectValues} options={valuesArray2} onChange={onCityChange2} placeholder="Numbers per page" editable />
+                </div>
             </Row>
             <Row key={"selectorTop2"}>
                 <Col key={"selectorTopCol2"}>
@@ -100,7 +85,6 @@ function App() {
                         pageRangeDisplayed={5}
                         onPageChange={handlePageClick}
                         containerClassName={"pagination"}
-                        // subContainerClassName={"pages pagination"}
                         activeClassName={"active"} />
                 </Col>
 
@@ -109,4 +93,4 @@ function App() {
     );
 }
 
-export default App;
+export default PaginatedUsers;

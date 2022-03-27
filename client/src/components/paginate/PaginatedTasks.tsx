@@ -1,96 +1,96 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
 import ReactPaginate from 'react-paginate';
+import UsersCard from '../UsersCard';
+import { Col, Row } from 'react-bootstrap';
+import { Dropdown } from 'primereact/dropdown';
 import './paginate.css';
-import TasksCard from '../TasksCard';
-import { Card, Col } from 'react-bootstrap';
+import '../buttons/DropdownButton.css';
+
+function PaginatedTasks() {
+
+    const [offset, setOffset] = useState(0);
+    const [data, setData] = useState([]);
+    const [perPage, setPerPage] = useState(5);
+    const [pageCount, setPageCount] = useState(0);
+    const [selectValues, setSelectValues] = useState(null);
+    const [rowsNumber, setRowsNumber] = useState(0);
+
+    const valuesArray2 = ['5', '10', 'All'];
 
 
-function App() {
-  const [offset, setOffset] = useState(0);
-  const [data, setData] = useState([]);
-  const [perPage] = useState(5);
-  const [pageCount, setPageCount] = useState(5)
 
 
-  const getData = async() => {
-    //   const res = await axios.get("http://localhost:62000/api/v1/tasks")
-    //   const data = res.data;
-      console.log(data);
+    const getData = async (offset: number, perPage: number) => {
+        const res = await axios.post("http://localhost:62000/api/v1/usersPage",
+            {
+                offsetData: offset,
+                limitData: perPage
+            }
+        );
+        const data = res.data;
+        const slice = data.rows;
+        setRowsNumber(data.count);
 
-      let progressArray: string[] = ["initial", "selected", "progress", "review", "done"];
+        const postData = slice.map((pd: any, pdk: number) => {
 
-        // this function is responsible to loop through progress array and create task cards 
-        // function tasksFunction(value: string) {
-        //     return data.filter(function (obj: any) {
-        //         return obj.taskProgress === value;
-        //     }).map((task: any, k: number) =>
-        //         <TasksCard task={task} key={k} />
-        //     );
-        // }
+            return <div className="ShowUsersList" key={pdk + 101 + 'pdKey'}>
+                <UsersCard user={pd} key={pdk + 100 + 'pdKey'} />
+            </div>
 
-        // this function below sets first letter of word as capital
-        // function capitalizeFirstLetter(word: string) {
-        //     if (typeof word !== 'string') return '';
-        //     return word.charAt(0).toUpperCase() + word.slice(1);
-        // }
+        })
 
-        // progressArray.map((element: string, elKey: number) =>{
-        //     const slice = data.slice(offset, offset + perPage);
-        //         const postData = slice.map((pd: any, pdk: number) =>{
-        //             return <Col sm={2} className="padding-0" key={element + elKey + 1}>
-        //             <Card
-        //                 bg={''}
-        //                 key={element + elKey + 2}
-        //                 text={'dark'}
-        //                 style={{ height: '100%' }}
-        //                 className="padding-0"
-        //             >
-        //                 <Card.Header key={element + elKey + 3}>{capitalizeFirstLetter(element)}</Card.Header>
-        //                 <Card.Body key={element + elKey + 4}>
-        //                     {tasksFunction(element)}
-        //                 </Card.Body>
-        //             </Card>
-        //         </Col>
-                
-        //         }) 
-                
-                
-        //         setData(postData)
-        //         setPageCount(Math.ceil(data.length / perPage))
+        setData(postData)
+        setPageCount(Math.ceil(data.count / perPage))
+    }
 
-        // })
-      
-                
-  }
-  const handlePageClick = (e: any) => {
-    const selectedPage = e.selected;
-    setOffset(selectedPage + 1)
-    console.log(selectedPage);
-    
-};
 
- useEffect(() => {
-   getData()
- }, [offset])
+    const handlePageClick = (e: any) => {
+        const selectedPage = e.selected;
+        setOffset(selectedPage + 1)
+        console.log(selectedPage);
+    };
 
-  return (
-    <div className="App">
-      {data}
-       <ReactPaginate
-                    previousLabel={"prev"}
-                    nextLabel={"next"}
-                    breakLabel={"..."}
-                    breakClassName={"break-me"}
-                    pageCount={pageCount}
-                    marginPagesDisplayed={2}
-                    pageRangeDisplayed={5}
-                    onPageChange={handlePageClick}
-                    containerClassName={"pagination"}
-                    // subContainerClassName={"pages pagination"}
-                    activeClassName={"active"}/>
-    </div>
-  );
+    const onCityChange2 = (e: any) => {
+        setSelectValues(e.value);
+        const incomingValue = e.value === 'All' ? rowsNumber : parseInt(e.value);
+        setPerPage(incomingValue);
+    }
+
+    useEffect(() => {
+        getData(offset, perPage)
+    }, [offset, perPage])
+
+    return (
+        <div className="App">
+            <Row className='selector' key={"selectorTop1"}>
+                <div className="dropdown-demo" key={'paginateDropDown'}>
+                    <Dropdown id={'dropDownButton'} value={selectValues} options={valuesArray2} onChange={onCityChange2} placeholder="Numbers per page" editable />
+                </div>
+            </Row>
+            <Row key={"selectorTop2"}>
+                <Col key={"selectorTopCol2"}>
+                    <div key={"selectorTopColDiv2"}>
+                        {data}
+                    </div>
+
+                    <ReactPaginate
+                        key={"reactPaginateKey1"}
+                        previousLabel={"prev"}
+                        nextLabel={"next"}
+                        breakLabel={"..."}
+                        breakClassName={"break-me"}
+                        pageCount={pageCount}
+                        marginPagesDisplayed={2}
+                        pageRangeDisplayed={5}
+                        onPageChange={handlePageClick}
+                        containerClassName={"pagination"}
+                        activeClassName={"active"} />
+                </Col>
+
+            </Row>
+        </div>
+    );
 }
 
-export default App;
+export default PaginatedTasks;
