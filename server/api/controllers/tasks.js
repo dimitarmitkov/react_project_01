@@ -173,8 +173,8 @@ module.exports.createSingleTask = function(req, res, next) {
         doneAt,
         doneByUserId
     } = {
-        taskType: 'meeting',
-        taskName: 'review task name',
+        taskType: 'project',
+        taskName: 'review task name 5',
         taskProgress: 'review',
         // initiatedAt,
         // initiatedByUserId,

@@ -61,6 +61,7 @@ module.exports = function serviceFactory(model) {
         const { limitData, offsetData } = req.body;
 
 
+
         model.findAndCountAll({
                 attributes: attributesArray,
                 where: {
@@ -77,26 +78,38 @@ module.exports = function serviceFactory(model) {
 
     function getAllPaginationRawQuery(req, res, next, attributesArray) {
 
-
         const { limitData, offsetData } = req.body;
 
-
-        const { QueryTypes } = require('sequelize');
-        sequelize.query(
-                `SELECT * FROM(SELECT ROW_NUMBER() OVER(PARTITION BY "taskProgress") AS r, t.* FROM "Tasks" t) T WHERE T.r >= :start and T.r <= :end;`, {
-                    replacements: {
-                        start: `${offsetData}`,
-                        end: `${limitData}`
-                    },
-                    type: QueryTypes.SELECT
+        model.findAll({
+                attributes: attributesArray,
+                where: {
+                    deletedAt: null
                 }
-            )
-            .then(result => {
-                // console.log(result);
-                // res.send(JSON.stringify(result, null, 2));
-                res.send(result);
+            })
+            .then(firsResult => {
+
+
+                let usableOffsetData = offsetData === 0 ? 1 : offsetData;
+                let usableLimitData = limitData === 0 ? firsResult.length : limitData;
+
+                const { QueryTypes } = require('sequelize');
+                sequelize.query(
+                        `SELECT * FROM(SELECT ROW_NUMBER() OVER(PARTITION BY "taskProgress") AS r, t.* FROM "Tasks" t) T WHERE T.r >= :start and T.r <= :end;`, {
+                            replacements: {
+                                start: `${usableOffsetData}`,
+                                end: `${usableLimitData}`
+                            },
+                            type: QueryTypes.SELECT
+                        }
+                    )
+                    .then(result => {
+                        res.send(result);
+                    })
+                    .catch(err => res.send(err));
             })
             .catch(err => res.send(err));
+
+
     }
 
     function deleteSingle(req, res, next, attributesArray, deletedObject) {
@@ -146,8 +159,6 @@ module.exports = function serviceFactory(model) {
         // if axios query, if fetch - body
         // const { insertEmail, insertPassword } = req.query;
         const { insertEmail, insertPassword } = req.body;
-        console.log(insertEmail);
-        console.log(insertPassword);
 
         try {
             model.findOne({
@@ -170,9 +181,6 @@ module.exports = function serviceFactory(model) {
                                 deletedAt: user.dataValues.deletedAt,
                             },
                             `${ myKey }`, { expiresIn: '3000s' });
-
-                        // console.log(token, ' this is token');
-
                         res.cookie("access_token", token, {
                                 httpOnly: true,
                                 secure: process.env.NODE_ENV === "production"

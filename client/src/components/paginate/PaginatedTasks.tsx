@@ -15,27 +15,34 @@ function PaginatedTasks() {
         type: JSX.Element[];
       }
 
-    const [offset, setOffset] = useState(0);
+    let [offset, setOffset] = useState(0);
     const [data, setData] = useState<Provider[]>([]);
-    const [perPage, setPerPage] = useState(5);
+    const [perPage, setPerPage] = useState(10);
     const [pageCount, setPageCount] = useState(0);
     const [selectValues, setSelectValues] = useState(null);
-    const [rowsNumber, setRowsNumber] = useState(0);
+    let [rowsNumber, setRowsNumber] = useState(0);
+    let [endValue, setEndValue] = useState(10);
+    
 
-    const valuesArray2 = ['2', '5', 'All'];
+    const valuesArray = ['2', '5', '7', 'All'];
     const progressArray: string[] = ["initial", "selected", "progress", "review", "done"];
 
     const getData = async (offset: number, perPage: number) => {
         const res = await axios.post("http://localhost:62000/api/v1/tasksPage",
             {
                 offsetData: offset,
-                limitData: perPage
+                limitData: endValue
             }
         );
         const data = res.data;
         const slice = res.data;
 
-        setRowsNumber(data.count);
+        data.forEach((d:any)=>{
+
+            if(d.r > rowsNumber){
+                setRowsNumber(rowsNumber = d.r);
+            }
+        })
 
         function tasksFunction(value: string) {
             return slice.filter(function (obj: any) {
@@ -63,30 +70,31 @@ function PaginatedTasks() {
     )
 
         setData(postData);
-        setPageCount(Math.ceil(data.length / perPage));
+        setPageCount(Math.ceil(rowsNumber / perPage));
     }
 
 
     const handlePageClick = (e: any) => {
         const selectedPage = e.selected;
-        setOffset(selectedPage + 1)
-        console.log(selectedPage);
+        setOffset(offset = (1 + selectedPage*perPage));
+        setEndValue(endValue=(perPage+selectedPage*perPage))
     };
 
-    const onCityChange2 = (e: any) => {
+    const onValuesChange = (e: any) => {
         setSelectValues(e.value);
         const incomingValue = e.value === 'All' ? rowsNumber : parseInt(e.value);
         setPerPage(incomingValue);
+        setEndValue(incomingValue);
     }
 
     useEffect(() => {
         getData(offset, perPage)
-    }, [offset, perPage]);
+    }, [offset, endValue]);
 
     const nextElement = <div className="App">
         <Row className='selector' key={"selectorTop1"}>
             <div className="dropdown-demo" key={'paginateDropDown'}>
-                <Dropdown id={'dropDownButton'} value={selectValues} options={valuesArray2} onChange={onCityChange2} placeholder="Numbers per page" editable />
+                <Dropdown id={'dropDownButton'} value={selectValues} options={valuesArray} onChange={onValuesChange} placeholder="All" editable />
             </div>
         </Row>
         <Row key={"selectorTop2"}>
