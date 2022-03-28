@@ -16,6 +16,7 @@ import LoginForm from './components/login/LoginForm';
 import SignUpForm from './components/signup/SignUpForm';
 import PaginatedTasks from './components/paginate/PaginatedTasks';
 import PaginatedUsers from './components/paginate/PaginatedUsers';
+import CreateTask from './components/createTask/CreateTask';
 
 
 function App() {
@@ -41,6 +42,7 @@ function App() {
               < Route path="/tasks" element={<PaginatedTasks />} />
               < Route path="/login" element={<LoginForm />} />
               < Route path="/signup" element={<SignUpForm />} />
+              < Route path="/createTask" element={<CreateTask />} />
 
             </Routes>
           </Col>

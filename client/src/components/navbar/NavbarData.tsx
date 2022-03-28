@@ -26,11 +26,11 @@ const NavbarMenu: React.FunctionComponent = () => {
                                         <Link to={`/users`} className="active-task-link">Users Link</Link>
 
                                     <NavDropdown title="Select Action" id="collasible-nav-dropdown">
-                                        <NavDropdown.Item href="#">Action</NavDropdown.Item>
+                                        <NavDropdown.Item href="/users"><Link to={`/createTask`} className="active-task-link">Tasks Link</Link></NavDropdown.Item>
                                         <NavDropdown.Item href="#">Another action</NavDropdown.Item>
                                         <NavDropdown.Item href="#">Something</NavDropdown.Item>
                                         <NavDropdown.Divider />
-                                        <NavDropdown.Item href="#">Separated link</NavDropdown.Item>
+                                        <NavDropdown.Item href="#"><Link to={`/users`} className="active-task-link">Users Link</Link></NavDropdown.Item>
                                     </NavDropdown>
                                 </Nav>
 
