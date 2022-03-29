@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
@@ -6,11 +5,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import Hello from '../test_components/HelloWorld';
 import './loginForm.css';
-import { Row, Col, Card, Container } from 'react-bootstrap';
-
-
-
-
+import { Row, Col, Container } from 'react-bootstrap';
 
 type FormValues = {
     firstName: string;
@@ -23,11 +18,11 @@ type FormValues = {
 const InputGroupDemo = () => {
 
     const { register, watch, formState: { errors }, handleSubmit } = useForm<FormValues>();
-    const [filled, setFilled] = useState(false);
 
     const onSubmit: SubmitHandler<FormValues> = data => {
 
-        const user = { insertEmail: 'connect@con.com', insertPassword: '123456' };
+        // TODO just for information delete it later on
+        // const user = { insertEmail: 'connect@con.com', insertPassword: '123456' };
 
         axios.post("http://localhost:62000/api/v1/userLogin",
             {
@@ -52,13 +47,6 @@ const InputGroupDemo = () => {
 
             });
     };
-
-    // const onStateChange = () => {
-    //     setFilled(true);
-    //     console.log(register);
-
-    // }
-
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -97,53 +85,6 @@ const InputGroupDemo = () => {
                     </Col>
                 </Row>
             </Container>
-
-            {/* <div>
-                <div className="grid">
-
-                    <div className="row mb-3">
-                        <div className="col-3"></div>
-                        <div className="col-3">
-                            <div className="p-inputgroup">
-                                <span className="p-inputgroup-addon">
-                                    <i className="pi pi-envelope"></i>
-                                </span>
-                                <InputText placeholder="Email" {...register("email", {
-                                    required: true, pattern: {
-                                        value: /\S+@\S+\.\S+/,
-                                        message: "Entered value does not match email format"
-                                    }
-                                })} />
-                            </div>
-                            {errors.email && <span className="error-message" role="alert">{errors.email.message}</span>}
-                        </div>
-                    </div>
-                    <div className="row mb-3">
-                        <div className="col-3"></div>
-                        <div className="col-3">
-                            <div className="p-inputgroup">
-                                <span className="p-inputgroup-addon">
-                                    <i className="pi pi-shield"></i>
-                                </span>
-                                <InputText type={'password'} placeholder="Password" {...register("password")} />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-            </div> */}
-            {/* <div className="row mb-3">
-                <div className="col-3"></div>
-                <div className="col-3">
-                    <input className="btn btn-danger" type="submit" />
-
-                    <Button label="Submit" className="p-button-danger" disabled={false} />
-                    <div className="mt-2">If you don't have an account please <Link to={`/signup`} className="active-task-link">SingUp</Link></div>
-
-                </div>
-            </div> */}
-
         </form>
     );
 }
