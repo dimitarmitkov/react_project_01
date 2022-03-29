@@ -1,8 +1,14 @@
 import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
+import { Dropdown } from 'primereact/dropdown';
+import { Password } from 'primereact/password';
+import { Checkbox } from 'primereact/checkbox';
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { Row, Col, Container } from 'react-bootstrap';
+import './signUpForm.css';
 
 
 type FormValues = {
@@ -17,7 +23,17 @@ type FormValues = {
 
 const LoginGroup = () => {
 
-    const { register, handleSubmit } = useForm<FormValues>();
+    const { register, watch, formState: { errors }, handleSubmit } = useForm<FormValues>();
+    const [passwordValue, setPasswordValue] = useState('');
+    const [checked, setChecked] = useState(false);
+    
+    // const [selectValues, setSelectValues] = useState(undefined);
+    // const userTypeArray = [{ name: 'User', value: 'user' }, { name: 'Admin', value: 'admin' }];
+
+    // const onUserSelectorChange = (e: any) => {
+    //     setSelectValues(e.value);
+    // }
+
     const onSubmit: SubmitHandler<FormValues> = data => {
 
         console.log(data.email);
@@ -26,16 +42,16 @@ const LoginGroup = () => {
         axios.post("http://localhost:62000/api/v1/createUser",
             {
                 email: data.email,
-                password: data.password,
+                insertPassword: passwordValue,
                 firstName: data.firstName,
                 lastName: data.lastName,
-                role: data.role ? data.role : "user",
+                role: checked? 'user': 'admin',
                 picture: data.picture ? data.picture : ""
             })
             .then(res => {
                 console.log(res);
-                if(res.status === 201){
-                    window.location.href = '/';
+                if (res.status === 201) {
+                    window.location.href = '/login';
                 }
             })
             .catch(err => {
@@ -47,83 +63,91 @@ const LoginGroup = () => {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <div>
-                <div className="grid">
 
-                    <div className="row mb-3">
-                        <div className="col-3"></div>
-                        <div className="col-3">
-                            <div className="p-inputgroup">
-                                <span className="p-inputgroup-addon">
-                                    <i className="pi pi-envelope"></i>
-                                </span>
-                                <InputText placeholder="First Name" {...register("firstName")} />
+            <Container className="mt-3">
+                <Row className="mt-3 justify-content-md-center">
+                    <Col sm={3}>
+
+
+                        <div className="p-inputgroup">
+                            <span className="p-inputgroup-addon">
+                                <i className="pi pi-user-edit"></i>
+                            </span>
+                            <InputText placeholder="First Name" {...register("firstName", { required: true, minLength: { value: 3, message: "name must contain at least 3 symbols" } })} />
+                        </div>
+                        {errors.firstName && <span className="error-message" role="alert">{errors.firstName.message}</span>}
+                    </Col>
+                </Row>
+
+                <Row className="mt-3 justify-content-md-center">
+                    <Col sm={3}>
+                        <div className="p-inputgroup">
+                            <span className="p-inputgroup-addon">
+                                <i className="pi pi-user-edit"></i>
+                            </span>
+                            <InputText placeholder="Last Name" {...register("lastName", { required: true, minLength: { value: 3, message: "name must contain at least 3 symbols" } })} />
+                        </div>
+                        {errors.lastName && <span className="error-message" role="alert">{errors.lastName.message}</span>}
+                    </Col>
+                </Row>
+                <Row className="mt-3 justify-content-md-center">
+                    <Col sm={3}>
+
+                        <div className="p-inputgroup">
+                            <span className="p-inputgroup-addon">
+                                <i className="pi pi-envelope"></i>
+                            </span>
+                            <InputText placeholder="Email" {...register("email", {
+                                required: true, pattern: {
+                                    value: /\S+@\S+\.\S+/,
+                                    message: "Entered value does not match email format"
+                                }
+                            })} />
+                        </div>
+                        {errors.email && <span className="error-message" role="alert">{errors.email.message}</span>}
+                    </Col>
+                </Row>
+               
+                <Row className="mt-3 justify-content-md-center">
+                    <Col sm={3}>
+
+                        <div className="p-inputgroup">
+                            <span className="p-inputgroup-addon">
+                                <i className="pi pi-shield"></i>
+                            </span>
+                            {/* <InputText type={'password'} placeholder="Password" {...register("password", {required: true, minLength: {value: 6, message: "password must contain at least 6 symbols"}})} /> */}
+                            <Password value={passwordValue} onChange={(e) => setPasswordValue(e.target.value)} toggleMask />
+                        </div>
+                        {errors.password && <span className="error-message" role="alert">{errors.password.message}</span>}
+                    </Col>
+                </Row>
+
+                <Row className="mt-3 justify-content-md-center">
+                    <Col sm={3}>
+
+                        <div className="p-inputgroup">
+                            {/* <span className="p-inputgroup-addon">
+                                <i className="pi pi-list"></i>
+                            </span> */}
+                            {/* <Dropdown id={'dropDownButton'} value={selectValues} options={userTypeArray} onChange={onUserSelectorChange} optionLabel="name" placeholder="Select Type" editable /> */}
+                            <div className="field-checkbox">
+                                <Checkbox inputId="binary" checked={checked} onChange={e => setChecked(e.checked)} disabled={false}/>
+                            </div>
+                            <div className="field-checkbox-label">
+                                <label htmlFor="binary">{checked ? 'User role selected' : 'Please check for User role'}</label>
+
                             </div>
                         </div>
-                    </div>
+                    </Col>
+                </Row>
+                <Row className="mt-3 justify-content-md-center">
+                    <Col sm={3}>
 
-                    <div className="row mb-3">
-                        <div className="col-3"></div>
-                        <div className="col-3">
-                            <div className="p-inputgroup">
-                                <span className="p-inputgroup-addon">
-                                    <i className="pi pi-envelope"></i>
-                                </span>
-                                <InputText placeholder="Last Name" {...register("lastName")} />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="row mb-3">
-                        <div className="col-3"></div>
-                        <div className="col-3">
-                            <div className="p-inputgroup">
-                                <span className="p-inputgroup-addon">
-                                    <i className="pi pi-envelope"></i>
-                                </span>
-                                <InputText placeholder="Email" {...register("email")} />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="row mb-3">
-                        <div className="col-3"></div>
-                        <div className="col-3">
-                            <div className="p-inputgroup">
-                                <span className="p-inputgroup-addon">
-                                    <i className="pi pi-envelope"></i>
-                                </span>
-                                <InputText placeholder="Role" {...register("role")} />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="row mb-3">
-                        <div className="col-3"></div>
-
-                        <div className="col-3">
-                            <div className="p-inputgroup">
-                                <span className="p-inputgroup-addon">
-                                    <i className="pi pi-shield"></i>
-                                </span>
-                                <InputText type={'password'} placeholder="Password" {...register("password")} />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-            </div>
-            <div className="row mb-3">
-
-                <div className="col-3"></div>
-                <div className="col-3">
-                    <input className="btn btn-danger" type="submit" />
-                    <div className="mt-2">If you don't have an account please <Link to={`/input`} className="active-task-link">SignIn</Link></div>
-
-                </div>
-            </div>
-
+                        <Button label="Submit" className="p-button-danger" disabled={false} />
+                        <div className="mt-2">If you don't have an account please <Link to={`/input`} className="active-task-link">SignIn</Link></div>
+                    </Col>
+                </Row>
+            </Container>
         </form>
     );
 }

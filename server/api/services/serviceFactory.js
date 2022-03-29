@@ -165,10 +165,11 @@ module.exports = function serviceFactory(model) {
                 attributes: ['id', 'firstName', 'email', 'password', 'role', 'deletedAt'],
                 where: { email: insertEmail }
             }).then(user => {
+
                 if (user) {
 
                     let checkPass = user.dataValues.password;
-                    const password_valid = bcrypt.compareSync(`${ insertPassword }`, `${ checkPass }`);
+                    const password_valid = bcrypt.compareSync(`${insertPassword}`, `${checkPass}`);
 
                     if (password_valid) {
                         let userId = user.dataValues.id;

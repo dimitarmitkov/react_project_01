@@ -123,20 +123,27 @@ module.exports.createSingleUser = function(req, res, next) {
 
     const usersCreatable = sequelize.define('usersModel', { firstName, lastName, password, email, role, picture }, { tableName: "Users" });
 
-    usersCreatable.create({
-        firstName,
-        lastName,
-        password,
-        email,
-        role,
-        picture
-    }).then(customer => {
-        // console.log(customer.dataValues);
-        res.status(201).send('user created');
+    if (isValidPass) {
+        usersCreatable.create({
+            firstName,
+            lastName,
+            password,
+            email,
+            role,
+            picture
+        }).then(customer => {
+            // console.log(customer.dataValues);
+            res.status(201).send('user created');
 
-    }).catch(next => {
-        res.status(400).send('already exists')
-    });
+        }).catch(next => {
+            res.status(400).send('already exists')
+        });
+
+    } else {
+        res.status(400).send('wrong password')
+    }
+
+
 }
 
 

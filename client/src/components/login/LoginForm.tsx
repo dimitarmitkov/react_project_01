@@ -1,11 +1,13 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
+import { Password } from 'primereact/password';
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Hello from '../test_components/HelloWorld';
 import './loginForm.css';
 import { Row, Col, Container } from 'react-bootstrap';
+import { useState } from "react";
 
 type FormValues = {
     firstName: string;
@@ -18,6 +20,7 @@ type FormValues = {
 const InputGroupDemo = () => {
 
     const { register, watch, formState: { errors }, handleSubmit } = useForm<FormValues>();
+    const [passwordValue, setPasswordValue] = useState('');
 
     const onSubmit: SubmitHandler<FormValues> = data => {
 
@@ -27,7 +30,7 @@ const InputGroupDemo = () => {
         axios.post("http://localhost:62000/api/v1/userLogin",
             {
                 insertEmail: data.email,
-                insertPassword: data.password
+                insertPassword: passwordValue
             },
             {
                 headers: {
@@ -73,7 +76,8 @@ const InputGroupDemo = () => {
                             <span className="p-inputgroup-addon">
                                 <i className="pi pi-shield"></i>
                             </span>
-                            <InputText type={'password'} placeholder="Password" {...register("password", {required: true, minLength: {value: 6, message: "password must contain at least 6 symbols"}})} />
+                            {/* <InputText type={'password'} placeholder="Password" {...register("password", {required: true, minLength: {value: 6, message: "password must contain at least 6 symbols"}})} />*/}
+                            <Password value={passwordValue} onChange={(e) => setPasswordValue(e.target.value)} toggleMask /> 
                         </div>
                         {errors.password && <span className="error-message" role="alert">{errors.password.message}</span>}
                     </Col>
