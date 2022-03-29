@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { InputText } from 'primereact/inputtext';
-import { InputNumber } from 'primereact/inputnumber';
 import { Button } from 'primereact/button';
-import { Checkbox } from 'primereact/checkbox';
-import { RadioButton } from 'primereact/radiobutton';
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Hello from '../test_components/HelloWorld';
+import './loginForm.css';
+import { Row, Col, Card, Container } from 'react-bootstrap';
+
 
 
 
@@ -20,33 +20,12 @@ type FormValues = {
     email: string;
 };
 
-//  const SimpleInputForm = () => {
-//   const { register, handleSubmit } = useForm<FormValues>();
-//   const onSubmit: SubmitHandler<FormValues> = data => console.log(data);
-
-//   return (
-//     <form onSubmit={handleSubmit(onSubmit)}>
-//       <input {...register("firstName")} />
-//       <input {...register("lastName")} />
-//       <input type="email" {...register("email")} />
-
-//       <input type="submit" />
-//     </form>
-//   );
-// }
-
 const InputGroupDemo = () => {
-    // const [checked1, setChecked1] = useState<boolean>(false);
-    // const [checked2, setChecked2] = useState<boolean>(false);
-    // const [radioValue1, setRadioValue1] = useState<string>('');
-    // const [radioValue2, setRadioValue2] = useState<string>('');
 
-    const { register, handleSubmit } = useForm<FormValues>();
+    const { register, watch, formState: { errors }, handleSubmit } = useForm<FormValues>();
+    const [filled, setFilled] = useState(false);
+
     const onSubmit: SubmitHandler<FormValues> = data => {
-
-        console.log(data.email);
-        console.log(data.password);
-
 
         const user = { insertEmail: 'connect@con.com', insertPassword: '123456' };
 
@@ -59,25 +38,66 @@ const InputGroupDemo = () => {
                 headers: {
                     'Content-Type': 'application/json'
                 }
-              }).then(res=>{
-               console.log(res);
-               if(res.status === 200){
-                   console.log(res.data.userLogged);
-                   <Hello />
-                window.location.href = '/helloMitko';
-            }
-               
-              })
+            }).then(res => {
+                console.log(res);
+                if (res.status === 200) {
+                    console.log(res.data.userLogged);
+                    <Hello />
+                    window.location.href = '/helloMitko';
+                }
+
+            })
             .catch(err => {
                 console.log(err);
 
             });
     };
 
+    // const onStateChange = () => {
+    //     setFilled(true);
+    //     console.log(register);
+
+    // }
+
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <div>
+            <Container>
+                <Row className="mt-3 justify-content-md-center">
+                    <Col sm={3}>
+                        <div className="p-inputgroup">
+                            <span className="p-inputgroup-addon">
+                                <i className="pi pi-envelope"></i>
+                            </span>
+                            <InputText placeholder="Email" {...register("email", {
+                                required: true, pattern: {
+                                    value: /\S+@\S+\.\S+/,
+                                    message: "Entered value does not match email format"
+                                }
+                            })} />
+                        </div>
+                        {errors.email && <span className="error-message" role="alert">{errors.email.message}</span>}
+                    </Col>
+                </Row>
+                <Row className="mt-3 justify-content-md-center">
+                    <Col sm={3}>
+                        <div className="p-inputgroup">
+                            <span className="p-inputgroup-addon">
+                                <i className="pi pi-shield"></i>
+                            </span>
+                            <InputText type={'password'} placeholder="Password" {...register("password")} />
+                        </div>
+                    </Col>
+                </Row>
+                <Row className="mt-3 justify-content-md-center">
+                    <Col sm={3}>
+                        <Button label="Submit" className="p-button-danger" disabled={false} />
+                        <div className="mt-2">If you don't have an account please <Link to={`/signup`} className="active-task-link">SingUp</Link></div>
+                    </Col>
+                </Row>
+            </Container>
+
+            {/* <div>
                 <div className="grid">
 
                     <div className="row mb-3">
@@ -87,13 +107,18 @@ const InputGroupDemo = () => {
                                 <span className="p-inputgroup-addon">
                                     <i className="pi pi-envelope"></i>
                                 </span>
-                                <InputText placeholder="Email" {...register("email")} />
+                                <InputText placeholder="Email" {...register("email", {
+                                    required: true, pattern: {
+                                        value: /\S+@\S+\.\S+/,
+                                        message: "Entered value does not match email format"
+                                    }
+                                })} />
                             </div>
+                            {errors.email && <span className="error-message" role="alert">{errors.email.message}</span>}
                         </div>
                     </div>
                     <div className="row mb-3">
                         <div className="col-3"></div>
-
                         <div className="col-3">
                             <div className="p-inputgroup">
                                 <span className="p-inputgroup-addon">
@@ -106,16 +131,17 @@ const InputGroupDemo = () => {
                 </div>
 
 
-            </div>
-            <div className="row mb-3">
-
+            </div> */}
+            {/* <div className="row mb-3">
                 <div className="col-3"></div>
                 <div className="col-3">
                     <input className="btn btn-danger" type="submit" />
+
+                    <Button label="Submit" className="p-button-danger" disabled={false} />
                     <div className="mt-2">If you don't have an account please <Link to={`/signup`} className="active-task-link">SingUp</Link></div>
 
                 </div>
-            </div>
+            </div> */}
 
         </form>
     );
