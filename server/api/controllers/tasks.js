@@ -146,74 +146,22 @@ module.exports.createSingleTask = function(req, res, next) {
     var currentDate = new Date();
     var futureDate = new Date(currentDate.getTime() + minutesToAdd * 60000).toISOString();
 
-
-    // let t = new Date(Date.now()).toISOString();
-
-    // const {
-    //         firstName,
-    //         lastName,
-    //         insertPassword,
-    //         email,
-    //         role,
-    //         picture
-    //     } = req.body;
-
     const {
         taskType,
         taskName,
         taskProgress,
-        initiatedAt,
-        initiatedByUserId,
-        selectedAt,
-        selectedByUserId,
-        progressAt,
-        progressByUserId,
-        reviewAt,
-        reviewByUserId,
-        doneAt,
-        doneByUserId
-    } = {
-        taskType: 'project',
-        taskName: 'review task name 5',
-        taskProgress: 'review',
-        // initiatedAt,
-        // initiatedByUserId,
-        // selectedAt,
-        // selectedByUserId,
-        // progressAt,
-        // progressByUserId,
-        // reviewAt,
-        // reviewByUserId,
-        // doneAt,
-        // doneByUserId
-    }
+    } = req.body;
 
-
-    // const password = bcrypt.hashSync(`${insertPassword}`, 10);
-
-    // const isValidPass = bcrypt.compareSync(`${insertPassword}`, `${password}`);
-
-    const taskCreatable = sequelize.define('tasksModel',
-        // { taskType, taskName, taskProgress, initiatedAt, initiatedByUserId, selectedAt, selectedByUserId, progressAt, progressByUserId, reviewAt, reviewByUserId, doneAt, doneByUserId },
-        { taskType, taskName, taskProgress }, { tableName: "Tasks" });
+    const taskCreatable = sequelize.define('tasksModel', { taskType, taskName, taskProgress }, { tableName: "Tasks" });
 
     taskCreatable.create({
         taskType,
         taskName,
         taskProgress,
-        // initiatedAt,
-        // initiatedByUserId,
-        // selectedAt,
-        // selectedByUserId,
-        // progressAt,
-        // progressByUserId,
-        // reviewAt,
-        // reviewByUserId,
-        // doneAt,
-        // doneByUserId
     }).then(task => {
         console.log(task.dataValues);
+        res.status(201).send('task created');
     }).catch(next => {
-        res.status(400).send('already exists')
+        res.status(400).send('not allowed')
     });
 }

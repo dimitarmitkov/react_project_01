@@ -1,40 +1,41 @@
 import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { InputText } from 'primereact/inputtext';
+import { Dropdown } from 'primereact/dropdown';
 import axios from "axios";
-import { Link } from "react-router-dom";
 
 
 type FormValues = {
-    firstName: string;
-    userName: string;
-    lastName: string;
-    password: string;
-    email: string;
-    role: string;
-    picture: string;
+    taskType: string;
+    taskName: string;
+    taskProgress: string;
 };
 
-const LoginGroup = () => {
+const CreateTaskGroup = () => {
 
     const { register, handleSubmit } = useForm<FormValues>();
+    const [selectValues, setSelectValues] = useState(undefined);
+
+    const taskTypeArray = [{ name: 'Project', value: 'project' }, { name: 'Meeting', value: 'meeting' }];
+
+    const onTypeSelectorChange = (e: any) => {
+        setSelectValues(e.value);
+    }
+
     const onSubmit: SubmitHandler<FormValues> = data => {
 
-        console.log(data.email);
-        console.log(data.password);
+        console.log(selectValues);
+        console.log(data.taskName);
 
-        axios.post("http://localhost:62000/api/v1/createUser",
+        axios.post("http://localhost:62000/api/v1/createTask",
             {
-                email: data.email,
-                password: data.password,
-                firstName: data.firstName,
-                lastName: data.lastName,
-                role: data.role ? data.role : "user",
-                picture: data.picture ? data.picture : ""
+                taskType: selectValues,
+                taskName: data.taskName,
+                taskProgress: 'initial'
             })
             .then(res => {
                 console.log(res);
-                if(res.status === 201){
+                if (res.status === 201) {
                     window.location.href = '/';
                 }
             })
@@ -57,7 +58,7 @@ const LoginGroup = () => {
                                 <span className="p-inputgroup-addon">
                                     <i className="pi pi-envelope"></i>
                                 </span>
-                                <InputText placeholder="First Name" {...register("firstName")} />
+                                <Dropdown id={'dropDownButton'} value={selectValues} options={taskTypeArray} onChange={onTypeSelectorChange} optionLabel="name" placeholder="Select Type" editable />
                             </div>
                         </div>
                     </div>
@@ -69,63 +70,21 @@ const LoginGroup = () => {
                                 <span className="p-inputgroup-addon">
                                     <i className="pi pi-envelope"></i>
                                 </span>
-                                <InputText placeholder="Last Name" {...register("lastName")} />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="row mb-3">
-                        <div className="col-3"></div>
-                        <div className="col-3">
-                            <div className="p-inputgroup">
-                                <span className="p-inputgroup-addon">
-                                    <i className="pi pi-envelope"></i>
-                                </span>
-                                <InputText placeholder="Email" {...register("email")} />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="row mb-3">
-                        <div className="col-3"></div>
-                        <div className="col-3">
-                            <div className="p-inputgroup">
-                                <span className="p-inputgroup-addon">
-                                    <i className="pi pi-envelope"></i>
-                                </span>
-                                <InputText placeholder="Role" {...register("role")} />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="row mb-3">
-                        <div className="col-3"></div>
-
-                        <div className="col-3">
-                            <div className="p-inputgroup">
-                                <span className="p-inputgroup-addon">
-                                    <i className="pi pi-shield"></i>
-                                </span>
-                                <InputText type={'password'} placeholder="Password" {...register("password")} />
+                                <InputText placeholder="Task Name" {...register("taskName")} />
                             </div>
                         </div>
                     </div>
                 </div>
-
-
             </div>
-            <div className="row mb-3">
 
+            <div className="row mb-3">
                 <div className="col-3"></div>
                 <div className="col-3">
-                    <input className="btn btn-danger" type="submit" />
-                    <div className="mt-2">If you don't have an account please <Link to={`/input`} className="active-task-link">SignIn</Link></div>
-
+                    <input className="btn btn-danger" type="submit" value="Create Task" />
                 </div>
             </div>
-
         </form>
     );
 }
 
-export default LoginGroup;
+export default CreateTaskGroup;
