@@ -33,7 +33,10 @@ module.exports = function serviceFactory(model) {
                 attributes: attributesArray,
                 where: {
                     deletedAt: null
-                }
+                },
+                order: [
+                    ['id', 'ASC']
+                ]
             })
             .then(result => {
                 res.send(result);
@@ -67,7 +70,10 @@ module.exports = function serviceFactory(model) {
                 where: {
                     deletedAt: null
                 },
-                offset: offsetData ? offsetData : 1,
+                order: [
+                    ['id', 'ASC']
+                ],
+                offset: offsetData ? offsetData : 0,
                 limit: limitData ? limitData : 5
             })
             .then(result => {
