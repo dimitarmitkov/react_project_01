@@ -43,9 +43,6 @@ function PaginatedUsers() {
 
     const handlePageClick = (e: any) => {
         const selectedPage = e.selected;
-        console.log(selectedPage);
-        console.log(selectedPage*perPage);
-        
         setOffset(selectedPage*perPage)
     };
 

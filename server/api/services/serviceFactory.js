@@ -60,10 +60,7 @@ module.exports = function serviceFactory(model) {
 
     function getAllPagination(req, res, next, attributesArray) {
 
-
         const { limitData, offsetData } = req.body;
-
-
 
         model.findAndCountAll({
                 attributes: attributesArray,
