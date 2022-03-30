@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../../models/users");
 const bcrypt = require("bcrypt");
 const myKey = require("../connection/myKey");
+const { password } = require('../connection/connectionData');
 
 const sequelize = new Sequelize(cs.database, cs.username, cs.password, {
     host: cs.host,
@@ -46,7 +47,7 @@ module.exports = function serviceFactory(model) {
 
     function getSingle(req, res, next, attributesArray, id) {
 
-        let idData = req.params.id;
+        let idData = req.body.id;
 
         model.findOne({
                 where: { id: idData },
@@ -143,16 +144,67 @@ module.exports = function serviceFactory(model) {
 
     function editSingle(req, res, next, attributesArray, editObject) {
 
-        const idData = parseInt(req.params.id);
+        const idData = parseInt(req.body.id);
+        let replacePassword = '';
+        let isValidPass;
+        let queryText = '';
+        let replacementsData = {};
 
-        model.update({
-                firstName: 'changed FN',
-                lastName: 'DDDDDDDDDDDDD'
-            }, {
-                where: { id: idData },
+        const {
+            firstName,
+            lastName,
+            insertPassword,
+            email,
+            role,
+            picture
+        } = req.body;
+
+
+        if (insertPassword) {
+            replacePassword = bcrypt.hashSync(`${insertPassword}`, 10);
+            isValidPass = bcrypt.compareSync(`${insertPassword}`, `${replacePassword}`);
+            queryText = `UPDATE "Users"
+            SET "firstName" = :firstName,
+                "lastName" = :lastName,
+                "password" = :password,
+                "email" = :email,
+                "role" = :role
+            WHERE "id" = :id;`;
+
+            replacementsData = {
+                firstName: `${firstName}`,
+                lastName: `${lastName}`,
+                password: `${replacePassword}`,
+                email: `${email}`,
+                role: `${role}`,
+                picture: `${picture}`,
+                id: `${idData}`
+            }
+        } else {
+            queryText = `UPDATE "Users"
+            SET "firstName" = :firstName,
+            "lastName" = :lastName,
+            "email" = :email,
+            "role" = :role
+        WHERE "id" = :id;`;
+
+            replacementsData = {
+                firstName: `${firstName}`,
+                lastName: `${lastName}`,
+                email: `${email}`,
+                role: `${role}`,
+                picture: `${picture}`,
+                id: `${idData}`
+            }
+
+        }
+
+        const { QueryTypes } = require('sequelize');
+        sequelize.query(queryText, {
+                replacements: replacementsData,
+                type: QueryTypes.SELECT
             })
-            .then(result => {
-
+            .then(res => {
                 res.send('username of user ' + idData + ' is changed');
             })
             .catch(err => res.send(err));

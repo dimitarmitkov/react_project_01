@@ -9,7 +9,9 @@ module.exports.connect = function(path, app) {
         .get(authMiddleware.auth, authMiddleware.isAdmin, tasksController.getAllTasks);
 
     router.route("/users")
-        .get(authMiddleware.auth, tasksController.getAllUsers);
+        .get(authMiddleware.auth, tasksController.getAllUsers)
+        .post(authMiddleware.auth, tasksController.getOneUser);
+
 
     router.route("/usersPage")
         .get(authMiddleware.auth, tasksController.getAllUsersPaginate)
@@ -18,9 +20,6 @@ module.exports.connect = function(path, app) {
     router.route("/tasksPage")
         .get(authMiddleware.auth, tasksController.getAllTasksPaginate)
         .post(tasksController.getAllPaginationRawQuery);
-
-    router.route("/users/:id")
-        .get(authMiddleware.auth, tasksController.getOneUser);
 
     router.route("/usersDelete/:id")
         .get(authMiddleware.auth, authMiddleware.isAdmin, tasksController.deleteOneUser);
@@ -38,8 +37,8 @@ module.exports.connect = function(path, app) {
     router.route("/createTask")
         .post(tasksController.createSingleTask);
 
-    router.route("/usersEdit/:id")
-        .get(authMiddleware.auth, tasksController.editOneUser);
+    router.route("/usersEdit")
+        .post(authMiddleware.auth, tasksController.editOneUser);
 
     router.route("/userLog/:insertEmail,:insertPassword")
         .get(authMiddleware.auth, tasksController.userLogin);

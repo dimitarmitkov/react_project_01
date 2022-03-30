@@ -47,7 +47,7 @@ module.exports.getAllTasks = function(req, res, next) {
 
 module.exports.getOneUser = function(req, res, next) {
 
-    usersTable.getSingle(req, res, next, ['id', 'firstName', 'email', 'role', 'deletedAt']);
+    usersTable.getSingle(req, res, next, ['id', 'firstName', 'lastName', 'email', 'role', 'password', 'deletedAt']);
 }
 
 module.exports.getOneTask = function(req, res, next) {
@@ -87,7 +87,7 @@ module.exports.deleteOneTask = function(req, res, next) {
 
 module.exports.editOneUser = function(req, res, next) {
 
-    usersTable.editSingle(req, res, next, ['id', 'firstName', 'email', 'role', 'deletedAt'], 'user');
+    usersTable.editSingle(req, res, next, ['id', 'firstName', 'lastName', 'password', 'email', 'role', 'picture', 'deletedAt'], 'user');
 }
 
 module.exports.userLogin = function(req, res, next) {

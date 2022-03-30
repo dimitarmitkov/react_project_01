@@ -30,9 +30,6 @@ const NavbarMenu: React.FunctionComponent = () => {
         axiosFunction()
     }, []);
 
-console.log(user);
-
-
     return (
         <>
 
