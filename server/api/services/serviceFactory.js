@@ -97,7 +97,7 @@ module.exports = function serviceFactory(model) {
 
                 const { QueryTypes } = require('sequelize');
                 sequelize.query(
-                        `SELECT * FROM(SELECT ROW_NUMBER() OVER(PARTITION BY "taskProgress") AS r, t.* FROM "Tasks" t) T WHERE T.r >= :start and T.r <= :end;`, {
+                        `SELECT * FROM(SELECT ROW_NUMBER() OVER(PARTITION BY "taskProgress") AS r, t.* FROM "Tasks" t) T WHERE "deletedAt" IS null and T.r >= :start and T.r <= :end;`, {
                             replacements: {
                                 start: `${usableOffsetData}`,
                                 end: `${usableLimitData}`
@@ -206,6 +206,16 @@ module.exports = function serviceFactory(model) {
         }
     }
 
+    function userLogout(req, res, next, attributesArray, editObject) {
+
+        console.log(req.data);
+        return res
+            .clearCookie("access_token")
+            .status(200)
+            .json({ message: "Successfully logged out" });
+    }
+
+
     function currentLoggedUser(req, res, next, attributesArray, editObject) {
 
         const token = req.cookies.access_token;
@@ -228,5 +238,5 @@ module.exports = function serviceFactory(model) {
         }
     }
 
-    return { getAll, getSingle, getAllPagination, deleteSingle, editSingle, userLogin, currentLoggedUser, getAllPaginationRawQuery };
+    return { getAll, getSingle, getAllPagination, deleteSingle, editSingle, userLogin, userLogout, currentLoggedUser, getAllPaginationRawQuery };
 }

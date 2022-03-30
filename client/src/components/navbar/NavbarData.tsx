@@ -1,13 +1,38 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { Button } from 'primereact/button';
 import { Container, Row, Col } from 'react-bootstrap';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import LoggedUser from '../user/LoggedUser';
-import './navbarData.css'
+// import LoggedUser from '../user/LoggedUser';
+import './navbarData.css';
+import axios from 'axios';
+
 
 const NavbarMenu: React.FunctionComponent = () => {
+
+    const [user, setUser] = useState(Object);
+
+
+    const url = "http://localhost:62000/api/v1/currentLoggedUser";
+    
+
+    function axiosFunction() {
+        axios.get(url, {withCredentials: true})
+            .then(response => setUser(response.data))
+            .catch(err => {
+                console.log('Error from Show List: ', err);
+            });
+    }
+
+    useEffect(() => {
+        axiosFunction()
+    }, []);
+
+console.log(user);
+
+
     return (
         <>
 
@@ -35,12 +60,13 @@ const NavbarMenu: React.FunctionComponent = () => {
                                 </Nav>
 
                                 <Nav>
-                                    <Link to={`/login`}  className="button active-task-link">Login</Link>
+                                    <Link to={user.userName ? `/logout` : `/login`}  className="button active-task-link">{user.userName ? 'LogOut' : 'Login'}</Link>
+                                    {/* <Link to={`/logout`}  className="button active-task-link">LogOut</Link> */}
                                     <Nav.Link href="#">More deets</Nav.Link>
                                     <Nav.Link eventKey={2} href="#">
-                                        Dank memes
+                                        {user ? user.userName : ''}
                                     </Nav.Link>
-                                    <LoggedUser />
+                                    <Button icon="pi pi-user" className="p-button-rounded p-button-info" disabled={user.userName ? false : true} />
 
                                 </Nav>
                             </Navbar.Collapse>

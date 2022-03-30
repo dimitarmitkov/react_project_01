@@ -95,6 +95,11 @@ module.exports.userLogin = function(req, res, next) {
     usersTable.userLogin(req, res, next, ['id', 'firstName', 'email', 'role', 'deletedAt'], 'user');
 }
 
+module.exports.userLogout = function(req, res, next) {
+
+    usersTable.userLogout(req, res, next, ['id', 'firstName', 'email', 'role', 'deletedAt'], 'user');
+}
+
 module.exports.authorization = function(req, res, next) {
 
     usersTable.authorization(req, res, next, ['id', 'firstName', 'email', 'role', 'deletedAt'], 'user');

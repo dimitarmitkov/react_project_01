@@ -14,6 +14,7 @@ import HelloClass from './components/test_components/HelloClass';
 import SidebarFive from './components/sidebar/SidebarFive';
 import LoginForm from './components/login/LoginForm';
 import SignUpForm from './components/signup/SignUpForm';
+import Logout from './components/login/Logout';
 import PaginatedTasks from './components/paginate/PaginatedTasks';
 import PaginatedUsers from './components/paginate/PaginatedUsers';
 import CreateTask from './components/createTask/CreateTask';
@@ -41,6 +42,7 @@ function App() {
               < Route path="/users" element={<PaginatedUsers />} />
               < Route path="/tasks" element={<PaginatedTasks />} />
               < Route path="/login" element={<LoginForm />} />
+              < Route path="/logout" element={<Logout />} />
               < Route path="/signup" element={<SignUpForm />} />
               < Route path="/createTask" element={<CreateTask />} />
 

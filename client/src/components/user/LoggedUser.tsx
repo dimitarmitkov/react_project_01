@@ -28,8 +28,11 @@ const ShowUsersList = () => {
             return <Button icon="pi pi-user" className="p-button-rounded p-button-info" disabled />
         } else {
             return (<div>
-                <Button icon="pi pi-user" className="p-button-rounded p-button-info" /> <div>{user.userName}</div>
-                </div>)
+                <Button icon="pi pi-user" className="p-button-rounded p-button-info" /> 
+                <div>{user.userName}</div>
+                </div> 
+                
+                )
         }
 }
 

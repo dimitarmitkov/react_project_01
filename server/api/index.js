@@ -50,6 +50,9 @@ module.exports.connect = function(path, app) {
     router.route("/userLogin")
         .post(tasksController.userLogin);
 
+    router.route("/userLogout")
+        .get(tasksController.userLogout);
+
     router.route("/currentLoggedUser")
         .get(authMiddleware.auth, tasksController.currentLoggedUser);
 

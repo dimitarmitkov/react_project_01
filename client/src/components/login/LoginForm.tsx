@@ -17,7 +17,7 @@ type FormValues = {
     email: string;
 };
 
-const InputGroupDemo = () => {
+const LoginGroup = () => {
 
     const { register, watch, formState: { errors }, handleSubmit } = useForm<FormValues>();
     const [passwordValue, setPasswordValue] = useState('');
@@ -93,4 +93,4 @@ const InputGroupDemo = () => {
     );
 }
 
-export default InputGroupDemo;
+export default LoginGroup;
