@@ -9,6 +9,7 @@ import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import { Row, Col, Container } from 'react-bootstrap';
 import './editUser.css';
+import DeleteUserModal from '../modal/ModalDelete';
 
 
 type FormValues = {
@@ -29,20 +30,20 @@ const DeleteUserGroup = (props: any) => {
 
     const onSubmit = () => {
 
-        axios.post("http://localhost:62000/api/v1/usersDelete",
-            {
-                id: props.data.id
-            })
-            .then(res => {
+        // axios.post("http://localhost:62000/api/v1/usersDelete",
+        //     {
+        //         id: props.data.id
+        //     })
+        //     .then(res => {
 
 
-                if (res.status === 200) {
-                    window.location.reload();
-                }
-            })
-            .catch(err => {
-                console.log(err);
-            });
+        //         if (res.status === 200) {
+        //             window.location.reload();
+        //         }
+        //     })
+        //     .catch(err => {
+        //         console.log(err);
+        //     });
     };
 
 

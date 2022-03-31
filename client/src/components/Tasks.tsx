@@ -44,7 +44,7 @@ import { addAbortSignal } from 'stream';
                 return "there is no task record!";
             }
 
-            const aaa= progressArray.map((element: string, elKey: number) =>
+            const elementArrayMapping= progressArray.map((element: string, elKey: number) =>
                 <Col sm={2} className="padding-0" key={element + elKey + 1}>
                     <Card
                         bg={''}
@@ -61,7 +61,7 @@ import { addAbortSignal } from 'stream';
                 </Col>
             );
 
-            return aaa;
+            return elementArrayMapping;
         }
 
         return (

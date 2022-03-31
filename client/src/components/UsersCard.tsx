@@ -7,6 +7,8 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import EditUserApp from './user/EditUser';
 import DeleteUserApp from './user/DeleteUser';
+import DeleteUserModalApp from './modal/ModalDelete';
+
 
 const UsersCard = (props: any) => {
     const user = props.user;
@@ -58,7 +60,7 @@ const UsersCard = (props: any) => {
                 <Col sm={3}>
                         <EditUserApp {...user} />
                         {/* <Button label="Delete User" className="p-button-warning" onClick={deleteUserRoute} disabled={userLogged.role === 'admin' ? false : true} /> */}
-                        {userLogged.role === 'admin' ? <DeleteUserApp {...user}/> : null}
+                        {userLogged.role === 'admin' ? <DeleteUserModalApp {...user}/> : null}
                 </Col>
                 <Col sm={2}>
                 </Col>
