@@ -2,7 +2,7 @@ import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 import { Button, DropdownButton, Dropdown } from 'react-bootstrap';
 
-function MyVerticallyCenteredModal(props: any) {
+const MyVerticallyCenteredModal = (props: any)=> {
 
     const progressArray: string[] = ["initial", "selected", "progress", "review", "done"];
 
@@ -40,7 +40,7 @@ function MyVerticallyCenteredModal(props: any) {
     );
 }
 
-export default function ModalApp(props: any[]) {
+const ModalApp = (props: any[]) => {
     const [modalShow, setModalShow] = React.useState(false);
 
     return (
@@ -57,3 +57,5 @@ export default function ModalApp(props: any[]) {
         </>
     );
 }
+
+export default ModalApp;

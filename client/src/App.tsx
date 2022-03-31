@@ -18,7 +18,7 @@ import Logout from './components/login/Logout';
 import PaginatedTasks from './components/paginate/PaginatedTasks';
 import PaginatedUsers from './components/paginate/PaginatedUsers';
 import CreateTask from './components/createTask/CreateTask';
-import EditUser from './components/user/EditUser';
+// import EditUserApp from './components/user/EditUser';
 
 
 function App() {
@@ -46,7 +46,7 @@ function App() {
               < Route path="/logout" element={<Logout />} />
               < Route path="/signup" element={<SignUpForm />} />
               < Route path="/createTask" element={<CreateTask />} />
-              < Route path="/edituser/:id" element={<EditUser />} />
+              {/* < Route path="/edituser/:id" element={<EditUserApp, []/>} /> */}
 
             </Routes>
           </Col>

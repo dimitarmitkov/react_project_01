@@ -9,6 +9,7 @@ import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import { Row, Col, Container } from 'react-bootstrap';
 import './editUser.css';
+import { userInfo } from "os";
 
 
 type FormValues = {
@@ -26,96 +27,66 @@ const EditUserGroup = (props: any) => {
     const { register, watch, formState: { errors }, handleSubmit } = useForm<FormValues>();
     const [passwordValue, setPasswordValue] = useState('');
     const [checked, setChecked] = useState(false);
-    let [userFirstName, setUserFirstName] = useState('');
-    let [userLastName, setUserLastName] = useState('');
-    let [userEmail, setUserEmail] = useState('');
-    let [userPassword, setUserPassword] = useState('');
-
-    const { id } = useParams();
-
-    console.log(id);
-
-    axios.post("http://localhost:62000/api/v1/users", 
-    { id: id }
-    )
-    .then(res => {
-        console.log(res);
-        onPostRequest(res.data)
-    })
-    .catch(err => console.log(err));
-
-    const onPostRequest = (data: any) =>{
-        setUserFirstName(data.firstName);
-        setUserLastName(data.lastName);
-        setUserEmail(data.email);
-        setUserPassword(data.password);
-    }
-
 
     const onSubmit: SubmitHandler<FormValues> = data => {
-
-
+        
         axios.post("http://localhost:62000/api/v1/usersEdit",
             {
-                email: data.email? data.email : userEmail,
+                email: data.email? data.email : props.data.email,
                 insertPassword: passwordValue? passwordValue: null,
-                firstName: data.firstName? data.firstName : userFirstName,
-                lastName: data.lastName? data.lastName : userLastName,
+                firstName: data.firstName? data.firstName : props.data.firstName,
+                lastName: data.lastName? data.lastName : props.data.lastName,
                 role: checked ? 'user' : 'admin',
                 picture: data.picture ? data.picture : "",
-                id: id
+                id: props.data.id
             })
             .then(res => {
                 if (res.status === 200) {
-                    window.location.href = '/users';
+                    window.location.reload();
                 }
             })
             .catch(err => {
                 console.log(err);
-
             });
     };
 
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-
-            <h2>Edit User</h2>
+            <h5 className="mt-3">Edit User {props.data.firstName} {props.data.lastName}</h5>
 
             <Container className="mt-3">
                 <Row className="mt-3 justify-content-md-center">
-                    <Col sm={3}>
-
-
+                    <Col>
                         <div className="p-inputgroup">
                             <span className="p-inputgroup-addon">
                                 <i className="pi pi-user-edit"></i>
                             </span>
-                            <InputText placeholder={userFirstName} {...register("firstName", { required: true, minLength: { value: 3, message: "name must contain at least 3 symbols" } })} />
+                            <InputText defaultValue={props.data.firstName} {...register("firstName", { required: true, minLength: { value: 3, message: "name must contain at least 3 symbols" } })} contentEditable/>
                         </div>
                         {errors.firstName && <span className="error-message" role="alert">{errors.firstName.message}</span>}
                     </Col>
                 </Row>
 
                 <Row className="mt-3 justify-content-md-center">
-                    <Col sm={3}>
+                    <Col>
                         <div className="p-inputgroup">
                             <span className="p-inputgroup-addon">
                                 <i className="pi pi-user-edit"></i>
                             </span>
-                            <InputText placeholder={userLastName} {...register("lastName", { required: true, minLength: { value: 3, message: "name must contain at least 3 symbols" } })} />
+                            <InputText defaultValue={props.data.lastName} {...register("lastName", { required: true, minLength: { value: 3, message: "name must contain at least 3 symbols" } })} />
                         </div>
                         {errors.lastName && <span className="error-message" role="alert">{errors.lastName.message}</span>}
                     </Col>
                 </Row>
 
                 <Row className="mt-3 justify-content-md-center">
-                    <Col sm={3}>
+                    <Col>
                         <div className="p-inputgroup">
                             <span className="p-inputgroup-addon">
                                 <i className="pi pi-envelope"></i>
                             </span>
-                            <InputText placeholder={userEmail} {...register("email", {
+                            <InputText defaultValue={props.data.email} {...register("email", {
                                 required: true, pattern: {
                                     value: /\S+@\S+\.\S+/,
                                     message: "Entered value does not match email format"
@@ -127,20 +98,20 @@ const EditUserGroup = (props: any) => {
                 </Row>
 
                 <Row className="mt-3 justify-content-md-center">
-                    <Col sm={3}>
+                    <Col>
 
                         <div className="p-inputgroup">
                             <span className="p-inputgroup-addon">
                                 <i className="pi pi-shield"></i>
                             </span>
-                            <Password value={passwordValue} onChange={(e) => setPasswordValue(e.target.value)} toggleMask />
+                            <Password defaultValue={passwordValue} onChange={(e) => setPasswordValue(e.target.value)} toggleMask />
                         </div>
                         {errors.password && <span className="error-message" role="alert">{errors.password.message}</span>}
                     </Col>
                 </Row>
 
                 <Row className="mt-3 justify-content-md-center">
-                    <Col sm={3}>
+                    <Col>
 
                         <div className="p-inputgroup">
                             <div className="field-checkbox">
@@ -154,7 +125,7 @@ const EditUserGroup = (props: any) => {
                     </Col>
                 </Row>
                 <Row className="mt-3 justify-content-md-center">
-                    <Col sm={3}>
+                    <Col>
                         <Button label="Submit" className="p-button-danger" disabled={false} />
                     </Col>
                 </Row>
@@ -163,4 +134,18 @@ const EditUserGroup = (props: any) => {
     );
 }
 
-export default EditUserGroup;
+const EditUserApp = (props: any) => {
+    const [showElement, setShowElement] = useState(false);
+
+    return (
+        <>
+            <Button className="p-button-danger" onClick={() => setShowElement(prevCheck => !prevCheck)}>
+                Edit User {props.id}
+            </Button>
+            
+            {showElement ? <EditUserGroup data={props} /> : null}
+        </>
+    );
+}
+
+export default EditUserApp;

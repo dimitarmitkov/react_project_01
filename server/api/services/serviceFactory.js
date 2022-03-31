@@ -118,7 +118,7 @@ module.exports = function serviceFactory(model) {
 
     function deleteSingle(req, res, next, attributesArray, deletedObject) {
 
-        const idData = parseInt(req.params.id);
+        const idData = parseInt(req.body.id);
         const t = new Date(Date.now()).toISOString();
 
         let whereObj = deletedObject === 'user' ? { userId: idData } : { taskId: idData };
@@ -149,6 +149,7 @@ module.exports = function serviceFactory(model) {
         let isValidPass;
         let queryText = '';
         let replacementsData = {};
+        const updateDate = new Date(Date.now()).toISOString();
 
         const {
             firstName,
@@ -168,7 +169,8 @@ module.exports = function serviceFactory(model) {
                 "lastName" = :lastName,
                 "password" = :password,
                 "email" = :email,
-                "role" = :role
+                "role" = :role,
+                "updatedAt" = :date
             WHERE "id" = :id;`;
 
             replacementsData = {
@@ -178,14 +180,16 @@ module.exports = function serviceFactory(model) {
                 email: `${email}`,
                 role: `${role}`,
                 picture: `${picture}`,
-                id: `${idData}`
+                id: `${idData}`,
+                date: `${updateDate}`
             }
         } else {
             queryText = `UPDATE "Users"
             SET "firstName" = :firstName,
             "lastName" = :lastName,
             "email" = :email,
-            "role" = :role
+            "role" = :role,
+            "updatedAt" = :date
         WHERE "id" = :id;`;
 
             replacementsData = {
@@ -194,7 +198,8 @@ module.exports = function serviceFactory(model) {
                 email: `${email}`,
                 role: `${role}`,
                 picture: `${picture}`,
-                id: `${idData}`
+                id: `${idData}`,
+                date: `${updateDate}`
             }
 
         }
@@ -283,7 +288,8 @@ module.exports = function serviceFactory(model) {
             res.send({
                 id: data.id,
                 userName: data.username,
-                deletedAt: data.deletedAt
+                deletedAt: data.deletedAt,
+                role: data.role
             });
         } catch {
             return res.sendStatus(403);

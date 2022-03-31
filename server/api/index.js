@@ -21,8 +21,8 @@ module.exports.connect = function(path, app) {
         .get(authMiddleware.auth, tasksController.getAllTasksPaginate)
         .post(tasksController.getAllPaginationRawQuery);
 
-    router.route("/usersDelete/:id")
-        .get(authMiddleware.auth, authMiddleware.isAdmin, tasksController.deleteOneUser);
+    router.route("/usersDelete")
+        .post(authMiddleware.auth, authMiddleware.isAdmin, tasksController.deleteOneUser);
 
     router.route("/tasks/:id")
         .get(authMiddleware.auth, tasksController.getOneTask);

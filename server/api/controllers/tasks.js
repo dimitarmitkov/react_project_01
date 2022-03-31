@@ -37,7 +37,7 @@ const userTasksTable = serviceFactory(sequelize.define('userTasksModel', { delet
 
 module.exports.getAllUsers = function(req, res, next) {
 
-    usersTable.getAll(req, res, next, ['id', 'firstName', 'email', 'role', 'picture', 'deletedAt']);
+    usersTable.getAll(req, res, next, ['id', 'firstName', 'lastName', 'email', 'role', 'password', 'deletedAt']);
 }
 
 module.exports.getAllTasks = function(req, res, next) {
@@ -62,7 +62,7 @@ module.exports.getAllUsersPaginate = function(req, res, next) {
 
 module.exports.getAllUsersPagesLimit = function(req, res, next) {
 
-    usersTable.getAllPagination(req, res, next, ['id', 'firstName', 'email', 'role', 'deletedAt'], "user");
+    usersTable.getAllPagination(req, res, next, ['id', 'firstName', 'lastName', 'email', 'role', 'password', 'deletedAt'], "user");
 }
 
 module.exports.getAllTasksPaginate = function(req, res, next) {

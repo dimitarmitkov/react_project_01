@@ -1,49 +1,73 @@
-import React from 'react';
-import axios from 'axios';
 import { Button } from 'primereact/button';
 import { Link } from 'react-router-dom';
-import '../App.css';
-import EditUserGroup  from './user/EditUser';
-import Hello from './test_components/HelloWorld';
+import './user/userCard.css';
+import { Row, Col, Container } from 'react-bootstrap';
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import EditUserApp from './user/EditUser';
+import DeleteUserApp from './user/DeleteUser';
 
 const UsersCard = (props: any) => {
     const user = props.user;
 
-const navigate = useNavigate(); 
-    const routeChange = () =>{ 
-        let path = `/edituser/${user.id}`; 
+    const navigate = useNavigate();
+    const editUserRoute = () => {
+        let path = `/edituser/${user.id}`;
         navigate(path);
-      }
+    }
+   
+    const deleteUserRoute = () => {
+        let path = `/edituser/${user.id}`;
+        navigate(path);
+    }
 
-    const axiosPost = () => {
+    const [userLogged, setUserLogged] = useState(Object)
 
 
-        axios.get(`http://localhost:62000/api/v1/usersEdit/${user.id}`)
-            .then(res => {
-                console.log(res);
-            })
+    const url = "http://localhost:62000/api/v1/currentLoggedUser";
+
+
+    function axiosFunction() {
+        axios.get(url, { withCredentials: true })
+            .then(response => setUserLogged(response.data))
             .catch(err => {
-                console.log(err);
-
+                console.log('Error from Show List: ', err);
             });
     }
 
+    useEffect(() => {
+        axiosFunction()
+    }, []);
+
     return (
-        <div className="card-container" key={user.id + 5 + 'userId'}>
-            <div className="desc">
-                <h2>
-                    <Link to={`/users/${user.id}`}>
-                        {user.firstName}
-                    </Link>
-                </h2>
-                <h5>{user.email}</h5>
-                <span>{user.role}_</span>
-                <span>{user.id}</span>
-                <Button label="Edit User" className="p-button-danger" onClick={routeChange} />
-                {/* <Link to={`/edituser/${user.id}`} className="p-button-danger">Edit User {user.id}</Link> */}
-            </div>
-        </div>
+        <Container className="card-container" key={user.id + 5 + 'userId'}>
+            <Row className="desc mt-3">
+                <Col sm={3}>
+                    <h2>
+                        <Link to={`/users/${user.id}`}>
+                            {user.firstName}
+                        </Link>
+                    </h2>
+                    <h5>{user.email}</h5>
+                    <span>User role: {user.role}</span>
+                    <span>User Id: {user.id}</span>
+                </Col>
+            </Row>
+            <Row>
+                <Col sm={3}>
+                        <EditUserApp {...user} />
+                        {/* <Button label="Delete User" className="p-button-warning" onClick={deleteUserRoute} disabled={userLogged.role === 'admin' ? false : true} /> */}
+                        {userLogged.role === 'admin' ? <DeleteUserApp {...user}/> : null}
+                </Col>
+                <Col sm={2}>
+                </Col>
+            </Row>
+            <Row className="mt-1">
+                <hr />
+
+            </Row>
+        </Container>
     )
 };
 
