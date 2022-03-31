@@ -1,11 +1,13 @@
 import axios from 'axios';
 import capitalizeFirstLetter from '../functions/capitalizeFirstLetter';
+import { Button } from 'primereact/button';
 import { Card, Col, Row } from 'react-bootstrap';
 import { Dropdown } from 'primereact/dropdown';
 import { JsxElement } from 'typescript';
 import ReactPaginate from 'react-paginate';
 import TasksCard from '../TasksCard';
 import { useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
 import '../buttons/DropdownButton.css';
 import './paginate.css';
 
@@ -22,6 +24,7 @@ function PaginatedTasks() {
     const [selectValues, setSelectValues] = useState(null);
     let [rowsNumber, setRowsNumber] = useState(0);
     let [endValue, setEndValue] = useState(10);
+    let [startValue, setStartValue] = useState(0);
     
 
     const valuesArray = ['2', '5', '7', 'All'];
@@ -30,7 +33,7 @@ function PaginatedTasks() {
     const getData = async (offset: number, perPage: number) => {
         const res = await axios.post("http://localhost:62000/api/v1/tasksPage",
             {
-                offsetData: offset,
+                offsetData: startValue,
                 limitData: endValue
             }
         );
@@ -77,7 +80,11 @@ function PaginatedTasks() {
     const handlePageClick = (e: any) => {
         const selectedPage = e.selected;
         setOffset(offset = (1 + selectedPage*perPage));
-        setEndValue(endValue=(perPage+selectedPage*perPage))
+        setEndValue(endValue=(perPage+selectedPage*perPage));
+        setStartValue(1 + selectedPage*perPage);
+
+        console.log(1 + selectedPage*perPage, perPage+selectedPage*perPage);
+        
     };
 
     const onValuesChange = (e: any) => {
@@ -91,11 +98,19 @@ function PaginatedTasks() {
         getData(offset, perPage)
     }, [offset, endValue]);
 
+    const navigate = useNavigate();
+    const redirectToCreateTask = () =>{
+        navigate('/createTask');
+    }
+
     const nextElement = <div className="App">
         <Row className='selector' key={"selectorTop1"}>
-            <div className="dropdown-demo" key={'paginateDropDown'}>
+            <Col>
+            <Button icon="pi pi-plus" label="Create Task" className="p-button-outlined p-button-secondary" onClick={redirectToCreateTask}/>
+            </Col>
+            <Col className="dropdown-demo" key={'paginateDropDown'}>
                 <Dropdown id={'dropDownButton'} value={selectValues} options={valuesArray} onChange={onValuesChange} placeholder="All" editable />
-            </div>
+            </Col>
         </Row>
         <Row key={"selectorTop2"}>
             {data}

@@ -29,13 +29,13 @@ const EditUserGroup = (props: any) => {
     const [checked, setChecked] = useState(false);
 
     const onSubmit: SubmitHandler<FormValues> = data => {
-        
+
         axios.post("http://localhost:62000/api/v1/usersEdit",
             {
-                email: data.email? data.email : props.data.email,
-                insertPassword: passwordValue? passwordValue: null,
-                firstName: data.firstName? data.firstName : props.data.firstName,
-                lastName: data.lastName? data.lastName : props.data.lastName,
+                email: data.email ? data.email : props.data.email,
+                insertPassword: passwordValue ? passwordValue : null,
+                firstName: data.firstName ? data.firstName : props.data.firstName,
+                lastName: data.lastName ? data.lastName : props.data.lastName,
                 role: checked ? 'user' : 'admin',
                 picture: data.picture ? data.picture : "",
                 id: props.data.id
@@ -51,6 +51,8 @@ const EditUserGroup = (props: any) => {
     };
 
 
+    const [changePasswordSelected, setChangePasswordSelected] = useState(false);
+
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <h5 className="mt-3">Edit User {props.data.firstName} {props.data.lastName}</h5>
@@ -62,7 +64,7 @@ const EditUserGroup = (props: any) => {
                             <span className="p-inputgroup-addon">
                                 <i className="pi pi-user-edit"></i>
                             </span>
-                            <InputText defaultValue={props.data.firstName} {...register("firstName", { required: true, minLength: { value: 3, message: "name must contain at least 3 symbols" } })} contentEditable/>
+                            <InputText defaultValue={props.data.firstName} {...register("firstName", { required: true, minLength: { value: 3, message: "name must contain at least 3 symbols" } })} contentEditable />
                         </div>
                         {errors.firstName && <span className="error-message" role="alert">{errors.firstName.message}</span>}
                     </Col>
@@ -99,39 +101,52 @@ const EditUserGroup = (props: any) => {
 
                 <Row className="mt-3 justify-content-md-center">
                     <Col>
-
-                        <div className="p-inputgroup">
-                            <span className="p-inputgroup-addon">
-                                <i className="pi pi-shield"></i>
-                            </span>
-                            <Password defaultValue={passwordValue} onChange={(e) => setPasswordValue(e.target.value)} toggleMask />
-                        </div>
-                        {errors.password && <span className="error-message" role="alert">{errors.password.message}</span>}
-                    </Col>
-                </Row>
-
-                <Row className="mt-3 justify-content-md-center">
-                    <Col>
-
                         <div className="p-inputgroup">
                             <div className="field-checkbox">
-                                <Checkbox inputId="binary" checked={checked} onChange={e => setChecked(e.checked)} disabled={false} />
-                            </div>
-                            <div className="field-checkbox-label">
-                                <label htmlFor="binary">{checked ? 'User role selected' : 'Please check for User role'}</label>
+                            <Checkbox inputId="passwordChecker" checked={changePasswordSelected} onChange={e => setChangePasswordSelected(e.checked)} />
+                         </div>
+                        <div className="field-checkbox-label">
+                            <label htmlFor="passwordChecker">{changePasswordSelected ? 'Change password selected' : 'Change password?'}</label>
 
-                            </div>
                         </div>
-                    </Col>
-                </Row>
-                <Row className="mt-3 justify-content-md-center">
-                    <Col>
-                        <Button label="Submit" className="p-button-danger" disabled={false} />
-                    </Col>
-                </Row>
-            </Container>
-        </form>
-    );
+                    </div>
+                </Col>
+            </Row>
+            {console.log(changePasswordSelected)}
+            {changePasswordSelected ? <Row className="mt-3 justify-content-md-center" >
+                <Col>
+                    <div className="p-inputgroup">
+                        <span className="p-inputgroup-addon">
+                            <i className="pi pi-shield"></i>
+                        </span>
+                        <Password defaultValue={passwordValue} onChange={(e) => setPasswordValue(e.target.value)} toggleMask />
+                    </div>
+                    {errors.password && <span className="error-message" role="alert">{errors.password.message}</span>}
+                </Col>
+            </Row>
+                : ''}
+            <Row className="mt-3 justify-content-md-center">
+                <Col>
+
+                    <div className="p-inputgroup">
+                        <div className="field-checkbox">
+                            <Checkbox inputId="binary" checked={checked} onChange={e => setChecked(e.checked)} disabled={false} />
+                        </div>
+                        <div className="field-checkbox-label">
+                            <label htmlFor="binary">{checked ? 'User role selected' : 'Please check for User role'}</label>
+
+                        </div>
+                    </div>
+                </Col>
+            </Row>
+            <Row className="mt-3 justify-content-md-center">
+                <Col>
+                    <Button label="Submit" className="p-button-danger" disabled={false} />
+                </Col>
+            </Row>
+        </Container>
+    </form >
+);
 }
 
 const EditUserApp = (props: any) => {
@@ -142,7 +157,7 @@ const EditUserApp = (props: any) => {
             <Button className="p-button-danger" onClick={() => setShowElement(prevCheck => !prevCheck)}>
                 Edit User {props.id}
             </Button>
-            
+
             {showElement ? <EditUserGroup data={props} /> : null}
         </>
     );

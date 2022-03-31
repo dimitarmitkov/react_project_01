@@ -144,7 +144,7 @@ const SignUpGroup = () => {
                     <Col sm={3}>
 
                         <Button label="Submit" className="p-button-danger" disabled={false} />
-                        <div className="mt-2">If you don't have an account please <Link to={`/input`} className="active-task-link">SignIn</Link></div>
+                        <div className="mt-2">If you already have an account please <Link to={`/login`} className="active-task-link">SignIn</Link></div>
                     </Col>
                 </Row>
             </Container>

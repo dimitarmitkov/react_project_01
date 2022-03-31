@@ -98,7 +98,7 @@ module.exports = function serviceFactory(model) {
 
                 const { QueryTypes } = require('sequelize');
                 sequelize.query(
-                        `SELECT * FROM(SELECT ROW_NUMBER() OVER(PARTITION BY "taskProgress") AS r, t.* FROM "Tasks" t) T WHERE "deletedAt" IS null and T.r >= :start and T.r <= :end;`, {
+                        `SELECT * FROM(SELECT ROW_NUMBER() OVER(PARTITION BY "taskProgress") AS r, t.* FROM "Tasks" t WHERE "deletedAt" IS null ORDER BY "id") T WHERE T.r >= :start and T.r <= :end ORDER BY "id" ASC;`, {
                             replacements: {
                                 start: `${usableOffsetData}`,
                                 end: `${usableLimitData}`

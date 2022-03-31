@@ -1,9 +1,12 @@
 import axios from 'axios';
 import { Col, Row } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
 import ReactPaginate from 'react-paginate';
 import { useState, useEffect } from 'react'
 import UsersCard from '../UsersCard';
+import { useNavigate } from "react-router-dom";
 import './paginate.css';
 import '../buttons/DropdownButton.css';
 
@@ -54,14 +57,20 @@ function PaginatedUsers() {
 
     useEffect(() => {
         getData(offset, perPage)
-    }, [offset, perPage])
+    }, [offset, perPage]);
+
+    const navigate = useNavigate();
+    const redirectToCreateUser = () =>{
+        navigate('/signup');
+    }
 
     return (
         <div className="App">
             <Row className='selector' key={"selectorTop1"}>
-                <div className="dropdown-demo" key={'paginateDropDown'}>
+                <Col className="create-user"><Button icon="pi pi-plus" label="Create User" className="p-button-outlined p-button-secondary" onClick={redirectToCreateUser}/></Col>
+                <Col className="dropdown-demo" key={'paginateDropDown'}>
                     <Dropdown id={'dropDownButton'} value={selectValues} options={valuesArray2} onChange={onPageNumbersChange} placeholder="5" editable />
-                </div>
+                </Col>
             </Row>
             <Row key={"selectorTop2"}>
                 <Col key={"selectorTopCol2"}>
