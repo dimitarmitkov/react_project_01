@@ -20,6 +20,11 @@ export default function SidebarFive() {
                 </Row>
                 <Row className='sidebar-row'>
                     <Col className='sidebar-column'>
+                    <Link to={`/usertasks`} className="active">User Tasks</Link>
+                    </Col>
+                </Row>
+                <Row className='sidebar-row'>
+                    <Col className='sidebar-column'>
                         <Link to={`/helloMitko`} className="active">Mitko Link</Link>
                     </Col>
                 </Row>

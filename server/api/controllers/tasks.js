@@ -55,6 +55,11 @@ module.exports.getOneTask = function(req, res, next) {
     tasksTable.getSingle(req, res, next, ['id', 'taskType', 'taskName', 'deletedAt']);
 }
 
+module.exports.getUserTasks = function(req, res, next) {
+
+    tasksTable.getUserTasks(req, res, next, ['id', 'taskType', 'taskName', 'taskProgress', 'deletedAt']);
+}
+
 module.exports.getAllUsersPaginate = function(req, res, next) {
 
     usersTable.getAllPagination(req, res, next, ['id', 'firstName', 'email', 'role', 'deletedAt'], "user");
