@@ -6,6 +6,7 @@ import { Dropdown } from 'primereact/dropdown';
 import { JsxElement } from 'typescript';
 import ReactPaginate from 'react-paginate';
 import TasksCard from '../TasksCard';
+import { Checkbox } from 'primereact/checkbox';
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import '../buttons/DropdownButton.css';
@@ -25,24 +26,44 @@ function PaginatedTasksByUser(props: any) {
     let [rowsNumber, setRowsNumber] = useState(0);
     let [endValue, setEndValue] = useState(10);
     let [startValue, setStartValue] = useState(0);
-    
+    const [checkedProject, setCheckedProject] = useState(false);
+    const [checkedMeeting, setCheckedMeeting] = useState(false);
+
+    let meeting = false;
+    let project = false;
+
+
     const valuesArray = ['2', '5', '7', 'All'];
     const progressArray: string[] = ["initial", "selected", "progress", "review", "done"];
     const navigate = useNavigate();
-    
+
+    // console.log(checkedProject, ' project');
+    // console.log(checkedMeeting, ' meeting');
+
     const getData = (offset: number, perPage: number) => {
 
-            if (!props.data.id) {
-                navigate("/helloMitko");
-            }
+        if (!props.data.id) {
+            navigate("/helloMitko");
+        }
 
-            axios.post("http://localhost:62000/api/v1/usertasks",
-                {
-                    offsetData: startValue,
-                    limitData: endValue,
-                    userId: props.data.id
-                }
-            ).then(res=>{
+        let url = meeting || project ? "http://localhost:62000/api/v1/usertasksmop" :  
+        "http://localhost:62000/api/v1/usertasks";
+
+        let callData = meeting || project ? 
+        {
+            offsetData: startValue,
+            limitData: endValue,
+            userId: props.data.id,
+            whereSelector: project ? "project" : "meeting"
+        }: 
+        {
+            offsetData: startValue,
+            limitData: endValue,
+            userId: props.data.id
+        };
+
+        axios.post(url, callData)
+        .then(res => {
 
             const data = res.data;
             const slice = res.data;
@@ -82,59 +103,87 @@ function PaginatedTasksByUser(props: any) {
             setData(postData);
             setPageCount(Math.ceil(rowsNumber / perPage));
         }).catch();
-        }
+    }
 
-        const handlePageClick = (e: any) => {
-            const selectedPage = e.selected;
-            setOffset(offset = (1 + selectedPage * perPage));
-            setEndValue(endValue = (perPage + selectedPage * perPage));
-            setStartValue(1 + selectedPage * perPage);
-        };
+    const handlePageClick = (e: any) => {
+        const selectedPage = e.selected;
+        setOffset(offset = (1 + selectedPage * perPage));
+        setEndValue(endValue = (perPage + selectedPage * perPage));
+        setStartValue(1 + selectedPage * perPage);
+    };
 
-        const onValuesChange = (e: any) => {
-            setSelectValues(e.value);
-            const incomingValue = e.value === 'All' ? rowsNumber : parseInt(e.value);
-            setPerPage(incomingValue);
-            setEndValue(incomingValue);
-        }
+    const onValuesChange = (e: any) => {
+        setSelectValues(e.value);
+        const incomingValue = e.value === 'All' ? rowsNumber : parseInt(e.value);
+        setPerPage(incomingValue);
+        setEndValue(incomingValue);
+        setCheckedProject(false);
+        setCheckedMeeting(false);
+    }
 
-        useEffect(() => {
-            getData(offset, perPage)
-        }, [offset, endValue]);
+    useEffect(() => {
+        getData(offset, perPage)
+    }, [offset, endValue]);
 
-        const redirectToCreateTask = () => {
-            navigate('/createTask');
-        }
+    const redirectToCreateTask = () => {
+        navigate('/createTask');
+    }
 
-        return <div className="App">
-            <Row className='selector' key={"selectorTop1"}>
-                <Col>
-                    <Button icon="pi pi-plus" label="Create Task" className="p-button-outlined p-button-secondary" onClick={redirectToCreateTask} />
-                </Col>
-                <Col className="dropdown-demo" key={'paginateDropDown'}>
-                    <Dropdown id={'dropDownButton'} value={selectValues} options={valuesArray} onChange={onValuesChange} placeholder="All" editable />
-                </Col>
-            </Row>
-            <Row key={"selectorTop2"}>
-                {data}
-            </Row>
-            <Row>
-                <Col>
-                    <ReactPaginate
-                        key={"reactPaginateKey1"}
-                        previousLabel={"prev"}
-                        nextLabel={"next"}
-                        breakLabel={"..."}
-                        breakClassName={"break-me"}
-                        pageCount={pageCount}
-                        marginPagesDisplayed={2}
-                        pageRangeDisplayed={5}
-                        onPageChange={handlePageClick}
-                        containerClassName={"pagination"}
-                        activeClassName={"active"} />
-                </Col>
-            </Row>
-        </div>
+    return <div className="App">
+        <Row className='selector' key={"selectorTop1"}>
+            <Col sm={2}>
+                <div className="field-checkbox-label">
+                    <label htmlFor="projectsShow">Show projects</label>
+                </div>
+                <div className="field-checkbox">
+                    <Checkbox inputId="projectsShow" checked={checkedProject} onChange={(e) => {
+                        project = e.checked;
+                        setCheckedProject(e.checked);
+                        getData(offset, perPage);
+                    }
+                } disabled={checkedMeeting}/>
+                </div>
+            </Col>
+            <Col sm={2}>
+                <div className="field-checkbox-label">
+                    <label htmlFor="meetingsShow">Show meetings</label>
+                </div>
+                <div className="field-checkbox">
+                    <Checkbox inputId="meetingsShow" checked={checkedMeeting} onChange={(e) =>{ 
+                        meeting = e.checked;
+                        setCheckedMeeting(e.checked);
+                        getData(offset, perPage);
+                        }
+                        } disabled={checkedProject}/>
+                </div>
+            </Col>
+            <Col>
+                <Button icon="pi pi-plus" label="Create Task" className="p-button-outlined p-button-secondary" onClick={redirectToCreateTask} />
+            </Col>
+            <Col className="dropdown-demo" key={'paginateDropDown'}>
+                <Dropdown id={'dropDownButton'} value={selectValues} options={valuesArray} onChange={onValuesChange} placeholder="All" editable />
+            </Col>
+        </Row>
+        <Row key={"selectorTop2"}>
+            {data}
+        </Row>
+        <Row>
+            <Col>
+                <ReactPaginate
+                    key={"reactPaginateKey1"}
+                    previousLabel={"prev"}
+                    nextLabel={"next"}
+                    breakLabel={"..."}
+                    breakClassName={"break-me"}
+                    pageCount={pageCount}
+                    marginPagesDisplayed={2}
+                    pageRangeDisplayed={5}
+                    onPageChange={handlePageClick}
+                    containerClassName={"pagination"}
+                    activeClassName={"active"} />
+            </Col>
+        </Row>
+    </div>
 }
 
 export default PaginatedTasksByUser;

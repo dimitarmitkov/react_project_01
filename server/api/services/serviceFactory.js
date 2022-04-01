@@ -262,6 +262,56 @@ module.exports = function serviceFactory(model) {
             .catch(err => res.send(err));
     }
 
+    function getUserTasksMeetingOrProject(req, res, next, attributesArray, editObject) {
+
+        const { limitData, offsetData, userId, whereSelector } = req.body;
+
+        model.findAll({
+                attributes: attributesArray,
+                where: {
+                    deletedAt: null
+                }
+            })
+            .then(firsResult => {
+
+
+                let usableOffsetData = offsetData === 0 ? 1 : offsetData;
+                let usableLimitData = limitData === 0 ? firsResult.length : limitData;
+
+                const { QueryTypes } = require('sequelize');
+                sequelize.query(
+                        `SELECT
+                        *
+                      FROM (
+                        SELECT
+                          ROW_NUMBER() OVER (PARTITION BY "taskProgress") AS r,
+                          t.*, ut.*, u.*
+                        FROM
+                          "Tasks" t 
+                          left join "UserTasks" ut
+                          on t.id = ut."taskId"
+                          left join "Users" u
+                          on u.id = ut."userId"
+                          WHERE t."deletedAt" is null and ut."deletedAt" is null and u.id = :userId and t."taskType"=:whereSelector) T
+                      WHERE
+                      T.r >= :start and T.r <= :end;`, {
+                            replacements: {
+                                start: `${usableOffsetData}`,
+                                end: `${usableLimitData}`,
+                                userId: `${userId}`,
+                                whereSelector: `${whereSelector}`
+                            },
+                            type: QueryTypes.SELECT
+                        }
+                    )
+                    .then(result => {
+                        res.send(result);
+                    })
+                    .catch(err => res.send(err));
+            })
+            .catch(err => res.send(err));
+    }
+
     function userLogin(req, res, next, attributesArray, editObject) {
         // if axios query, if fetch - body
         // const { insertEmail, insertPassword } = req.query;
@@ -342,5 +392,5 @@ module.exports = function serviceFactory(model) {
         }
     }
 
-    return { getAll, getSingle, getAllPagination, deleteSingle, editSingle, userLogin, userLogout, currentLoggedUser, getAllPaginationRawQuery, getUserTasks };
+    return { getAll, getSingle, getAllPagination, deleteSingle, editSingle, userLogin, userLogout, currentLoggedUser, getAllPaginationRawQuery, getUserTasks, getUserTasksMeetingOrProject };
 }

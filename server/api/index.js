@@ -16,6 +16,10 @@ module.exports.connect = function(path, app) {
         .get(authMiddleware.auth, tasksController.getUserTasks)
         .post(authMiddleware.auth, tasksController.getUserTasks);
 
+    router.route("/usertasksmop")
+        .get(authMiddleware.auth, tasksController.getUserTasksMeetingOrProject)
+        .post(authMiddleware.auth, tasksController.getUserTasksMeetingOrProject);
+
     router.route("/usersPage")
         .get(authMiddleware.auth, tasksController.getAllUsersPaginate)
         .post(authMiddleware.auth, tasksController.getAllUsersPagesLimit);

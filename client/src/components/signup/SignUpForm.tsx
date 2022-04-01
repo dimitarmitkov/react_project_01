@@ -30,10 +30,6 @@ const SignUpGroup = () => {
     // const [selectValues, setSelectValues] = useState(undefined);
     // const userTypeArray = [{ name: 'User', value: 'user' }, { name: 'Admin', value: 'admin' }];
 
-    // const onUserSelectorChange = (e: any) => {
-    //     setSelectValues(e.value);
-    // }
-
     const onSubmit: SubmitHandler<FormValues> = data => {
 
         console.log(data.email);

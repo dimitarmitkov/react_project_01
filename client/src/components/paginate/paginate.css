@@ -48,3 +48,13 @@
 .selector {
     text-align: right;
 }
+
+.field-checkbox,
+.field-checkbox-label {
+    margin-left: 0.5rem;
+}
+
+.p-button-secondary {
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+}
