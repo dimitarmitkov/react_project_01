@@ -7,28 +7,14 @@ import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 // import LoggedUser from '../user/LoggedUser';
 import './navbarData.css';
-import axios from 'axios';
+import CurrentLoggedUser from '../functions/currentLoggedUser';
 
 
 const NavbarMenu: React.FunctionComponent = () => {
 
     const [user, setUser] = useState(Object);
 
-
-    const url = "http://localhost:62000/api/v1/currentLoggedUser";
-    
-
-    function axiosFunction() {
-        axios.get(url, {withCredentials: true})
-            .then(response => setUser(response.data))
-            .catch(err => {
-                console.log('Error from Show List: ', err);
-            });
-    }
-
-    useEffect(() => {
-        axiosFunction()
-    }, []);
+    CurrentLoggedUser(setUser);
 
     return (
         <>

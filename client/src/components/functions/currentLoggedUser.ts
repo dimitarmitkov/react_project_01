@@ -1,9 +1,12 @@
-import React, { useEffect } from 'react';
 import axios from 'axios';
+import { useEffect } from 'react';
 
-const AxiosRequester = (getImportedValue: never[], setImportedValue: React.Dispatch<React.SetStateAction<never[]>>, url: string) => {
+
+const CurrentLoggedUser = (setImportedValue: React.Dispatch<React.SetStateAction<never[]>>) => {
+    
+    const url = "http://localhost:62000/api/v1/currentLoggedUser";
+    
     function axiosFunction() {
-        // debugger;
         axios.get(url, {withCredentials: true})
             .then(response => setImportedValue(response.data))
             .catch(err => {
@@ -14,7 +17,8 @@ const AxiosRequester = (getImportedValue: never[], setImportedValue: React.Dispa
     return useEffect(() => {
         axiosFunction()
     }, []);
-
 }
 
-export default AxiosRequester;
+
+export default CurrentLoggedUser;
+    
