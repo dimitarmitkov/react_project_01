@@ -42,9 +42,9 @@ function PaginatedTasksByUser(props: any) {
 
     const getData = (offset: number, perPage: number) => {
 
-        if (!props.data.id) {
-            navigate("/helloMitko");
-        }
+        // if (!props.data.id) {
+        //     navigate("/helloMitko");
+        // }
 
         let url = meeting || project ? "http://localhost:62000/api/v1/usertasksmop" :  
         "http://localhost:62000/api/v1/usertasks";
@@ -65,11 +65,10 @@ function PaginatedTasksByUser(props: any) {
         axios.post(url, callData)
         .then(res => {
 
-            const data = res.data;
-            const slice = res.data;
+            const data = res.data.name === "SequelizeDatabaseError" ? [] : res.data;
+            const slice = res.data.name === "SequelizeDatabaseError" ? [] : res.data;
 
             data.forEach((d: any) => {
-
                 if (d.r > rowsNumber) {
                     setRowsNumber(rowsNumber = d.r);
                 }
@@ -123,7 +122,7 @@ function PaginatedTasksByUser(props: any) {
 
     useEffect(() => {
         getData(offset, perPage)
-    }, [offset, endValue]);
+    }, [offset, endValue, props.data.id]);
 
     const redirectToCreateTask = () => {
         navigate('/createTask');
