@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Container, Row, Col, Navbar, NavDropdown} from 'react-bootstrap';
+import CurrentLoggedUser from '../functions/currentLoggedUser';
 import { Link } from 'react-router-dom';
 import './sidebarFive.css';
 
 export default function SidebarFive() {
+
+    const [user, setUser] = useState(Object);
+
+    CurrentLoggedUser(setUser);
 
     return (
         <>

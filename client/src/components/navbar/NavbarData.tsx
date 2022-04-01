@@ -5,12 +5,11 @@ import { Container, Row, Col } from 'react-bootstrap';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-// import LoggedUser from '../user/LoggedUser';
 import './navbarData.css';
 import CurrentLoggedUser from '../functions/currentLoggedUser';
 
 
-const NavbarMenu: React.FunctionComponent = () => {
+const NavbarMenu: React.FunctionComponent = (props: any) => {
 
     const [user, setUser] = useState(Object);
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Link, Route, Routes } from 'react-router-dom';
 import './App.css';
 import "primereact/resources/themes/lara-light-indigo/theme.css";  //theme
@@ -19,44 +19,55 @@ import PaginatedTasks from './components/paginate/PaginatedTasks';
 import PaginatedUsers from './components/paginate/PaginatedUsers';
 import PaginatedTasksByUser from './components/paginate/PaginatedTasksByUser';
 import CreateTask from './components/createTask/CreateTask';
+import CurrentLoggedUser from './components/functions/currentLoggedUser';
+
 // import EditUserApp from './components/user/EditUser';
 
 
 function App() {
 
-  return (
-    <Container fluid>
-      <Router>
-        <Row>
-          <Col>
-            <NavbarData />
-            <HelloClass name="Simona" />
-          </Col>
-        </Row>
-        <Row>
-          <Col sm={2}>
-            <SidebarFive />
-          </Col>
-          <Col sm={10}>
-            <Routes>
+  const [user, setUser] = useState(Object);
 
-              < Route path="/helloMitko" element={<Hello />} />
-              < Route path="/users" element={<PaginatedUsers />} />
-              < Route path="/tasks" element={<PaginatedTasks />} />
-              < Route path="/login" element={<LoginForm />} />
-              < Route path="/logout" element={<Logout />} />
-              < Route path="/signup" element={<SignUpForm />} />
-              < Route path="/createTask" element={<CreateTask />} />
-              < Route path="/usertasks" element={<PaginatedTasksByUser />} />
-              {/* < Route path="/edituser/:id" element={<EditUserApp, []/>} /> */}
+  CurrentLoggedUser(setUser);
 
-            </Routes>
-          </Col>
-        </Row>
-      </Router>
+  if(!user){
+    CurrentLoggedUser(setUser);
 
-    </Container>
-  );
+  }
+
+    return (
+      <Container fluid>
+        <Router>
+          <Row>
+            <Col>
+              <NavbarData />
+              <HelloClass name="Simona" />
+            </Col>
+          </Row>
+          <Row>
+            <Col sm={2}>
+              <SidebarFive />
+            </Col>
+            <Col sm={10}>
+              <Routes>
+
+                < Route path="/helloMitko" element={<Hello />} />
+                < Route path="/users" element={<PaginatedUsers />} />
+                < Route path="/tasks" element={<PaginatedTasks />} />
+                < Route path="/login" element={<LoginForm />} />
+                < Route path="/logout" element={<Logout />} />
+                < Route path="/signup" element={<SignUpForm />} />
+                < Route path="/createTask" element={<CreateTask />} />
+                < Route path="/usertasks" element={<PaginatedTasksByUser data={user} />} />
+                {/* < Route path="/edituser/:id" element={<EditUserApp, []/>} /> */}
+
+              </Routes>
+            </Col>
+          </Row>
+        </Router>
+
+      </Container>
+    );
 }
 
 export default App;

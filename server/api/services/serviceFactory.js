@@ -249,7 +249,7 @@ module.exports = function serviceFactory(model) {
                             replacements: {
                                 start: `${usableOffsetData}`,
                                 end: `${usableLimitData}`,
-                                userId: "3"
+                                userId: `${userId}`
                             },
                             type: QueryTypes.SELECT
                         }
@@ -312,7 +312,6 @@ module.exports = function serviceFactory(model) {
 
     function userLogout(req, res, next, attributesArray, editObject) {
 
-        console.log(req.data);
         return res
             .clearCookie("access_token")
             .status(200)
