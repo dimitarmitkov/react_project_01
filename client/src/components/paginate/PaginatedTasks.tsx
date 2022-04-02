@@ -5,11 +5,17 @@ import { Card, Col, Row } from 'react-bootstrap';
 import { Dropdown } from 'primereact/dropdown';
 import { JsxElement } from 'typescript';
 import ReactPaginate from 'react-paginate';
+import { Checkbox } from 'primereact/checkbox';
 import TasksCard from '../TasksCard';
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import '../buttons/DropdownButton.css';
 import './paginate.css';
+
+let meeting = false;
+let project = false;
+let selectedPage = 0;
+let rowsNumber = 0;
 
 function PaginatedTasks() {
 
@@ -22,31 +28,34 @@ function PaginatedTasks() {
     const [perPage, setPerPage] = useState(10);
     const [pageCount, setPageCount] = useState(0);
     const [selectValues, setSelectValues] = useState(null);
-    let [rowsNumber, setRowsNumber] = useState(0);
     let [endValue, setEndValue] = useState(10);
     let [startValue, setStartValue] = useState(0);
-    
+    const [checkedProject, setCheckedProject] = useState(false);
+    const [checkedMeeting, setCheckedMeeting] = useState(false);
 
     const valuesArray = ['2', '5', '7', 'All'];
     const progressArray: string[] = ["initial", "selected", "progress", "review", "done"];
 
     const getData = async (offset: number, perPage: number) => {
-        const res = await axios.post("http://localhost:62000/api/v1/tasksPage",
-            {
-                offsetData: startValue,
-                limitData: endValue
-            }
-        );
-        const data = res.data;
-        const slice = res.data;
 
-        data.forEach((d:any)=>{
 
-            if(d.r > rowsNumber){
-                setRowsNumber(rowsNumber = d.r);
-            }
-        })
+        let res = meeting || project ? 
+        await axios.patch("http://localhost:62000/api/v1/tasksPage",
+        {
+            offsetData: startValue,
+            limitData: endValue,
+            whereSelector: project ? "project" : "meeting"
+        }) 
+        : await axios.post("http://localhost:62000/api/v1/tasksPage",
+        {
+            offsetData: startValue,
+            limitData: endValue
+        });
+       
+        const slice = res.data.responseData;
 
+        rowsNumber = +(res.data.count)[0].max;
+        
         function tasksFunction(value: string) {
             return slice.filter(function (obj: any) {
                 return obj.taskProgress === value;
@@ -76,15 +85,11 @@ function PaginatedTasks() {
         setPageCount(Math.ceil(rowsNumber / perPage));
     }
 
-
     const handlePageClick = (e: any) => {
-        const selectedPage = e.selected;
+        selectedPage = e.selected;
         setOffset(offset = (1 + selectedPage*perPage));
         setEndValue(endValue=(perPage+selectedPage*perPage));
         setStartValue(1 + selectedPage*perPage);
-
-        console.log(1 + selectedPage*perPage, perPage+selectedPage*perPage);
-        
     };
 
     const onValuesChange = (e: any) => {
@@ -96,7 +101,7 @@ function PaginatedTasks() {
 
     useEffect(() => {
         getData(offset, perPage)
-    }, [offset, endValue]);
+    }, [offset, endValue, meeting, project, rowsNumber]);
 
     const navigate = useNavigate();
     const redirectToCreateTask = () =>{
@@ -105,6 +110,32 @@ function PaginatedTasks() {
 
     const nextElement = <div className="App">
         <Row className='selector' key={"selectorTop1"}>
+        <Col sm={2}>
+                <div className="field-checkbox-label">
+                    <label htmlFor="projectsShow">Show projects</label>
+                </div>
+                <div className="field-checkbox">
+                    <Checkbox inputId="projectsShow" checked={checkedProject} onChange={(e) => {
+                        project = e.checked;
+                        setCheckedProject(e.checked);
+                        getData(offset, perPage);
+                    }
+                } disabled={checkedMeeting}/>
+                </div>
+            </Col>
+            <Col sm={2}>
+                <div className="field-checkbox-label">
+                    <label htmlFor="meetingsShow">Show meetings</label>
+                </div>
+                <div className="field-checkbox">
+                    <Checkbox inputId="meetingsShow" checked={checkedMeeting} onChange={(e) =>{ 
+                        meeting = e.checked;
+                        setCheckedMeeting(e.checked);
+                        getData(offset, perPage);
+                        }
+                        } disabled={checkedProject}/>
+                </div>
+            </Col>
             <Col>
             <Button icon="pi pi-plus" label="Create Task" className="p-button-outlined p-button-secondary" onClick={redirectToCreateTask}/>
             </Col>

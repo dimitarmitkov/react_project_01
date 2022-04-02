@@ -26,7 +26,8 @@ module.exports.connect = function(path, app) {
 
     router.route("/tasksPage")
         .get(authMiddleware.auth, tasksController.getAllTasksPaginate)
-        .post(tasksController.getAllPaginationRawQuery);
+        .post(tasksController.getAllPaginationRawQuery)
+        .patch(tasksController.getAllPaginationRawQueryMop);
 
     router.route("/usersDelete")
         .post(authMiddleware.auth, authMiddleware.isAdmin, tasksController.deleteOneUser);

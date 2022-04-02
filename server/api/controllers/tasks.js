@@ -85,6 +85,11 @@ module.exports.getAllPaginationRawQuery = function(req, res, next) {
     tasksTable.getAllPaginationRawQuery(req, res, next, ['id', 'taskType', 'taskName', 'taskProgress', 'deletedAt'], 'task');
 }
 
+module.exports.getAllPaginationRawQueryMop = function(req, res, next) {
+
+    tasksTable.getAllPaginationRawQueryMop(req, res, next, ['id', 'taskType', 'taskName', 'taskProgress', 'deletedAt'], 'task');
+}
+
 module.exports.deleteOneUser = function(req, res, next) {
 
     usersTable.deleteSingle(req, res, next, ['id', 'firstName', 'email', 'role', 'deletedAt'], 'user');

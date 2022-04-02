@@ -12,6 +12,11 @@ import { useNavigate } from "react-router-dom";
 import '../buttons/DropdownButton.css';
 import './paginate.css';
 
+let meeting = false;
+let project = false;
+let selectedPage = 0;
+let rowsNumber = 0;
+
 function PaginatedTasksByUser(props: any) {
 
     interface Provider {
@@ -23,28 +28,18 @@ function PaginatedTasksByUser(props: any) {
     const [perPage, setPerPage] = useState(10);
     const [pageCount, setPageCount] = useState(0);
     const [selectValues, setSelectValues] = useState(null);
-    let [rowsNumber, setRowsNumber] = useState(0);
+    // let [rowsNumber, setRowsNumber] = useState(0);
     let [endValue, setEndValue] = useState(10);
     let [startValue, setStartValue] = useState(0);
     const [checkedProject, setCheckedProject] = useState(false);
     const [checkedMeeting, setCheckedMeeting] = useState(false);
 
-    let meeting = false;
-    let project = false;
-
-
     const valuesArray = ['2', '5', '7', 'All'];
     const progressArray: string[] = ["initial", "selected", "progress", "review", "done"];
     const navigate = useNavigate();
 
-    // console.log(checkedProject, ' project');
-    // console.log(checkedMeeting, ' meeting');
 
     const getData = (offset: number, perPage: number) => {
-
-        // if (!props.data.id) {
-        //     navigate("/helloMitko");
-        // }
 
         let url = meeting || project ? "http://localhost:62000/api/v1/usertasksmop" :  
         "http://localhost:62000/api/v1/usertasks";
@@ -65,14 +60,20 @@ function PaginatedTasksByUser(props: any) {
         axios.post(url, callData)
         .then(res => {
 
-            const data = res.data.name === "SequelizeDatabaseError" ? [] : res.data;
-            const slice = res.data.name === "SequelizeDatabaseError" ? [] : res.data;
+            // const data = res.data.name === "SequelizeDatabaseError" ? [] : res.data;
+            // const slice = res.data.name === "SequelizeDatabaseError" ? [] : res.data;
 
-            data.forEach((d: any) => {
-                if (d.r > rowsNumber) {
-                    setRowsNumber(rowsNumber = d.r);
-                }
-            })
+            const slice = res.data.responseData;
+
+        rowsNumber = +(res.data.count)[0].max;
+
+
+
+            // data.forEach((d: any) => {
+            //     if (d.r > rowsNumber) {
+            //         setRowsNumber(rowsNumber = d.r);
+            //     }
+            // })
 
             function tasksFunction(value: string) {
                 return slice.filter(function (obj: any) {
@@ -105,7 +106,7 @@ function PaginatedTasksByUser(props: any) {
     }
 
     const handlePageClick = (e: any) => {
-        const selectedPage = e.selected;
+        selectedPage = e.selected;
         setOffset(offset = (1 + selectedPage * perPage));
         setEndValue(endValue = (perPage + selectedPage * perPage));
         setStartValue(1 + selectedPage * perPage);
@@ -116,13 +117,13 @@ function PaginatedTasksByUser(props: any) {
         const incomingValue = e.value === 'All' ? rowsNumber : parseInt(e.value);
         setPerPage(incomingValue);
         setEndValue(incomingValue);
-        setCheckedProject(false);
-        setCheckedMeeting(false);
+        // setCheckedProject(false);
+        // setCheckedMeeting(false);
     }
 
     useEffect(() => {
         getData(offset, perPage)
-    }, [offset, endValue, props.data.id]);
+    }, [offset, endValue, props.data.id,meeting, project]);
 
     const redirectToCreateTask = () => {
         navigate('/createTask');
