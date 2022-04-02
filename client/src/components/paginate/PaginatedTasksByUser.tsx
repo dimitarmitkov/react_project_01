@@ -60,21 +60,10 @@ function PaginatedTasksByUser(props: any) {
         axios.post(url, callData)
         .then(res => {
 
-            // const data = res.data.name === "SequelizeDatabaseError" ? [] : res.data;
-            // const slice = res.data.name === "SequelizeDatabaseError" ? [] : res.data;
+            const slice = res.data.responseData ? res.data.responseData : [];
 
-            const slice = res.data.responseData;
-
-        rowsNumber = +(res.data.count)[0].max;
-
-
-
-            // data.forEach((d: any) => {
-            //     if (d.r > rowsNumber) {
-            //         setRowsNumber(rowsNumber = d.r);
-            //     }
-            // })
-
+            rowsNumber = res.data.count ? +(res.data.count)[0].max : 0;
+        
             function tasksFunction(value: string) {
                 return slice.filter(function (obj: any) {
                     return obj.taskProgress === value;
