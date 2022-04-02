@@ -492,6 +492,37 @@ module.exports = function serviceFactory(model) {
         }
     }
 
+    function editTask(req, res, next, attributesArray, editObject) {
+
+
+        const { changeData, idData, taskProgress } = req.body;
+
+        console.log(Object.keys(changeData));
+        console.log(changeData[Object.keys(changeData)[0]]);
+        console.log(changeData[Object.keys(changeData)[1]]);
+
+        const { QueryTypes } = require('sequelize');
+        sequelize.query(
+                `UPDATE "Tasks"
+                SET "${Object.keys(changeData)[0]}" = :datedAt,
+                "${Object.keys(changeData)[1]}" = :byUserId,
+                "taskProgress" = :taskProgress
+                WHERE "id" = :id;`, {
+                    replacements: {
+                        datedAt: `${changeData[Object.keys(changeData)[0]]}`,
+                        byUserId: `${changeData[Object.keys(changeData)[1]]}`,
+                        taskProgress: `${taskProgress}`,
+                        id: `${idData}`
+                    },
+                    type: QueryTypes.SELECT
+                }
+            )
+            .then(result => {
+                res.send(result);
+            })
+            .catch(err => res.send(err));
+    }
+
     return {
         getAll,
         getSingle,
@@ -504,6 +535,7 @@ module.exports = function serviceFactory(model) {
         getAllPaginationRawQuery,
         getUserTasks,
         getUserTasksMeetingOrProject,
-        getAllPaginationRawQueryMop
+        getAllPaginationRawQueryMop,
+        editTask
     };
 }
