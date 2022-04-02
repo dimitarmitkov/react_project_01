@@ -14,7 +14,8 @@ const MyVerticallyCenteredModal = (props: any) => {
         [propName: string]: {}
     }
 
-    const progressArray: string[] = ["initial", "selected", "progress", "review", "done"];
+    const projectArray: string[] = ["initial", "selected", "progress", "review", "done"];
+    const meetingArray: string[] = ["initial", "selected", "progress", "done"];
     const currentDate = new Date(Date.now()).toISOString();
 
     const actionDataObject: MyObj = {
@@ -29,7 +30,7 @@ const MyVerticallyCenteredModal = (props: any) => {
         // e.preventDefault();
         // debugger;
         const checkValue = e.target.innerText;
-        if (progressArray.includes(checkValue)) {
+        if (projectArray.includes(checkValue) || meetingArray.includes(checkValue)) {
             let url = "http://localhost:62000/api/v1/tasks";
 
             axios.post(url, {changeData: actionDataObject[checkValue], idData : props.data.taskId ? props.data.taskId : props.data.id, taskProgress:checkValue})
@@ -43,7 +44,10 @@ const MyVerticallyCenteredModal = (props: any) => {
         }
     }
 
-    let dropdownButtonsArray = progressArray.map((element: string, k: number) => {
+    let dropdownButtonsArray = props.taskType === 'project' ? projectArray.map((element: string, k: number) => {
+        return <Dropdown.Item as="button" key={'bbd' + k}>{element}</Dropdown.Item>
+    }) : 
+    meetingArray.map((element: string, k: number) => {
         return <Dropdown.Item as="button" key={'bbd' + k}>{element}</Dropdown.Item>
     });
 
