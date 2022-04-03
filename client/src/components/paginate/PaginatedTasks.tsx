@@ -100,7 +100,7 @@ function PaginatedTasks() {
     }
 
     useEffect(() => {
-        getData(offset, perPage)
+        getData(offset, perPage);
     }, [offset, endValue, meeting, project, rowsNumber]);
 
     const navigate = useNavigate();

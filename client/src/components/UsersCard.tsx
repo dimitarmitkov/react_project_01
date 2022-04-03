@@ -59,7 +59,6 @@ const UsersCard = (props: any) => {
             <Row>
                 <Col sm={3}>
                         <EditUserApp {...user} />
-                        {/* <Button label="Delete User" className="p-button-warning" onClick={deleteUserRoute} disabled={userLogged.role === 'admin' ? false : true} /> */}
                         {userLogged.role === 'admin' ? <DeleteUserModalApp {...user}/> : null}
                 </Col>
                 <Col sm={2}>

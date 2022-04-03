@@ -3,7 +3,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
 import axios from "axios";
-
+import { useNavigate } from "react-router-dom";
 
 type FormValues = {
     taskType: string;
@@ -15,17 +15,15 @@ const CreateTaskGroup = () => {
 
     const { register, handleSubmit } = useForm<FormValues>();
     const [selectValues, setSelectValues] = useState(undefined);
+    const navigate = useNavigate();
 
     const taskTypeArray = [{ name: 'Project', value: 'project' }, { name: 'Meeting', value: 'meeting' }];
 
     const onTypeSelectorChange = (e: any) => {
         setSelectValues(e.value);
-    }
+    };
 
     const onSubmit: SubmitHandler<FormValues> = data => {
-
-        console.log(selectValues);
-        console.log(data.taskName);
 
         axios.post("http://localhost:62000/api/v1/createTask",
             {
@@ -33,18 +31,15 @@ const CreateTaskGroup = () => {
                 taskName: data.taskName,
                 taskProgress: 'initial'
             })
-            .then(res => {
-                console.log(res);
-                if (res.status === 201) {
-                    window.location.href = '/';
+            .then(result => {
+                if (result.status === 201) {
+                    navigate('/tasks');
                 }
             })
             .catch(err => {
                 console.log(err);
-
             });
     };
-
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>

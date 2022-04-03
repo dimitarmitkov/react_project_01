@@ -172,7 +172,7 @@ module.exports = function serviceFactory(model) {
 
     function deleteSingle(req, res, next, attributesArray, deletedObject) {
 
-        const idData = parseInt(req.body.id);
+        const { idData } = req.body;
         const t = new Date(Date.now()).toISOString();
 
         let whereObj = deletedObject === 'user' ? { userId: idData } : { taskId: idData };
@@ -180,18 +180,30 @@ module.exports = function serviceFactory(model) {
         model.update({ deletedAt: t }, {
                 where: { id: idData },
             })
-            .then(result => {
+            .then(resultFirstLevel => {
 
-                userTasksTable.update({
-                        deletedAt: t,
-                    }, {
-                        where: whereObj,
-                        attributes: attributesArray
+                userTasksTable.findOne({
+                        where: whereObj
                     })
-                    .then(result => {
-                        res.send('delete done');
+                    .then(isExisting => {
+                        console.log(isExisting);
+                        if (isExisting) {
+                            userTasksTable.update({
+                                    deletedAt: t,
+                                }, {
+                                    where: whereObj,
+                                    attributes: attributesArray
+                                })
+                                .then(result => {
+                                    res.send('delete done').status(200);
+                                })
+                                .catch(err => res.send(err));
+                        } else {
+                            res.send('delete done 2').status(200);
+                        }
+
                     })
-                    .catch(err => res.send(err));
+                    .catch(err => console.log(err));
             })
             .catch(err => res.send(err));
     }
@@ -438,7 +450,7 @@ module.exports = function serviceFactory(model) {
                                 email: user.dataValues.email,
                                 deletedAt: user.dataValues.deletedAt,
                             },
-                            `${ myKey }`, { expiresIn: '3000s' });
+                            `${myKey}`, { expiresIn: '3000s' });
                         res.cookie("access_token", token, {
                                 httpOnly: true,
                                 secure: process.env.NODE_ENV === "production"
@@ -477,7 +489,7 @@ module.exports = function serviceFactory(model) {
             return res.sendStatus(403);
         }
         try {
-            const data = jwt.verify(token, `${ myKey }`);
+            const data = jwt.verify(token, `${myKey}`);
             req.userId = data.id;
             // return data;
             // res.send([data.id, data.username]);

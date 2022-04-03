@@ -36,8 +36,9 @@ module.exports.connect = function(path, app) {
     router.route("/tasks/:id")
         .get(authMiddleware.auth, tasksController.getOneTask);
 
-    router.route("/tasksDelete/:id")
-        .get(authMiddleware.auth, tasksController.deleteOneTask);
+    router.route("/tasksDelete")
+        .get(authMiddleware.auth, tasksController.deleteOneTask)
+        .post(authMiddleware.auth, tasksController.deleteOneTask);
 
     router.route("/createUser")
         .get(tasksController.createSingleUser)

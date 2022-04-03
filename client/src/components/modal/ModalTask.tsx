@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
-import { Button, DropdownButton, Dropdown, Form } from 'react-bootstrap';
+import { Button, DropdownButton, Dropdown, Form, Container, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
 import CurrentLoggedUser from '../functions/currentLoggedUser';
+import './modalTask.css';
+import DeleteTaskModalApp from './ModalDeleteTask';
+
 
 const MyVerticallyCenteredModal = (props: any) => {
-
     const [user, setUser] = useState(Object);
+    const [modalShow, setModalShow] = useState(false);
 
     CurrentLoggedUser(setUser);
 
     interface MyObj {
         [propName: string]: {}
-    }
+    };
 
     const projectArray: string[] = ["initial", "selected", "progress", "review", "done"];
     const meetingArray: string[] = ["initial", "selected", "progress", "done"];
@@ -26,7 +29,7 @@ const MyVerticallyCenteredModal = (props: any) => {
         progress: { progressAt: currentDate, progressByUserId: props.data.userId ? props.data.userId : user.id },
         review: { reviewAt: currentDate, reviewByUserId: props.data.userId ? props.data.userId : user.id },
         done: { doneAt: currentDate, doneByUserId: props.data.userId ? props.data.userId : user.id }
-    }
+    };
 
     const changeTaskStatus = (e: any) => {
 
@@ -39,7 +42,7 @@ const MyVerticallyCenteredModal = (props: any) => {
             };
             getData();
         }
-    }
+    };
 
     const getData = () => {
 
@@ -47,12 +50,10 @@ const MyVerticallyCenteredModal = (props: any) => {
             axios.post("http://localhost:62000/api/v1/tasks", queryData)
                 .then(result => {
 
-                    if (result.status === 200) {
-                    }
                 })
                 .catch(err => console.log(err));
         }
-    }
+    };
 
     let dropdownButtonsArray = props.data.taskType === 'project' ? projectArray.map((element: string, k: number) => {
         return <Dropdown.Item as="button" key={'bbd' + k}>{element}</Dropdown.Item>
@@ -72,7 +73,7 @@ const MyVerticallyCenteredModal = (props: any) => {
             aria-labelledby="contained-modal-title-vcenter"
             centered
         >
-            <Modal.Header closeButton>
+            <Modal.Header>
                 <Modal.Title id="contained-modal-title-vcenter">
                     {props.data.taskName}
                 </Modal.Title>
@@ -83,16 +84,25 @@ const MyVerticallyCenteredModal = (props: any) => {
                     {props.data.taskType}
                 </p>
 
-                <Form>
-                    <DropdownButton id="dropdown-item-button" title="Select status" onClick={e => { changeTaskStatus(e); getData() }}>
-                        {dropdownButtonsArray}
-                    </DropdownButton>
-                </Form>
+                <Container>
+                    <Row>
+                        <Col sm={8}>
+                            <Form>
+                                <DropdownButton id="dropdown-item-button" title="Select status" onClick={e => { changeTaskStatus(e); getData() }}>
+                                    {dropdownButtonsArray}
+                                </DropdownButton>
+                            </Form>
+                        </Col>
+                        {user && user.role === 'admin' ? <Col sm={4} className="delete-button-group">
+                            <DeleteTaskModalApp {...props.data} />
+                        </Col> : null}
+                    </Row>
+                </Container>
             </Modal.Body>
             <Modal.Footer>
                 <Button onClick={props.onHide}>Close</Button>
             </Modal.Footer>
-        </Modal>
+        </Modal >
     );
 }
 
@@ -101,13 +111,13 @@ const ModalApp = (props: any[]) => {
 
     return (
         <>
-            <Button variant="danger" onClick={() => setModalShow(true)}>
+            <Button variant="danger" onClick={() => setModalShow(prevCheck => !prevCheck)}>
                 Edit Task
             </Button>
 
             <MyVerticallyCenteredModal
                 show={modalShow}
-                onHide={() => setModalShow(false)}
+                onHide={() => {setModalShow(prevCheck => !prevCheck)}}
                 data={props}
             />
         </>

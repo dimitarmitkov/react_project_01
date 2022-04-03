@@ -1,0 +1,8 @@
+.edit-buttons {
+    overflow: hidden;
+}
+
+.edit-buttons.edit>button,
+.edit-buttons.delete>button {
+    min-width: 7rem;
+}
