@@ -57,7 +57,7 @@ const EditUserGroup = (props: any) => {
         <form onSubmit={handleSubmit(onSubmit)}>
             <h5 className="mt-3">Edit User {props.data.firstName} {props.data.lastName}</h5>
 
-            <Container className="mt-3">
+            <Container className="mt-3 form-container">
                 <Row className="mt-3 justify-content-md-center">
                     <Col>
                         <div className="p-inputgroup">
@@ -112,7 +112,6 @@ const EditUserGroup = (props: any) => {
                     </div>
                 </Col>
             </Row>
-            {console.log(changePasswordSelected)}
             {changePasswordSelected ? <Row className="mt-3 justify-content-md-center" >
                 <Col>
                     <div className="p-inputgroup">
@@ -139,9 +138,9 @@ const EditUserGroup = (props: any) => {
                     </div>
                 </Col>
             </Row>
-            <Row className="mt-3 justify-content-md-center">
+            <Row className="mt-3 mb-3 justify-content-md-center">
                 <Col>
-                    <Button label="Submit" className="p-button-danger" disabled={false} />
+                    <Button label="Submit" className="p-button-primary" disabled={false} />
                 </Col>
             </Row>
         </Container>

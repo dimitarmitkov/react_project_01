@@ -2,3 +2,10 @@
 .field-checkbox-label {
     margin-left: 0.5rem;
 }
+
+.form-container {
+    border-style: solid;
+    border-radius: calc(.5rem - 1px);
+    border-width: .05rem;
+    border-color: rgb(167, 163, 163);
+}
