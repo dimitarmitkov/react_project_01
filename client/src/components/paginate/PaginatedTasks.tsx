@@ -115,7 +115,7 @@ function PaginatedTasks() {
                     <label htmlFor="projectsShow">Show projects</label>
                 </div>
                 <div className="field-checkbox">
-                    <Checkbox inputId="projectsShow" checked={checkedProject} onChange={(e) => {
+                    <Checkbox inputId="projectsShow" checked={project} onChange={(e) => {
                         project = e.checked;
                         setCheckedProject(e.checked);
                         getData(offset, perPage);
@@ -128,7 +128,7 @@ function PaginatedTasks() {
                     <label htmlFor="meetingsShow">Show meetings</label>
                 </div>
                 <div className="field-checkbox">
-                    <Checkbox inputId="meetingsShow" checked={checkedMeeting} onChange={(e) =>{ 
+                    <Checkbox inputId="meetingsShow" checked={meeting} onChange={(e) =>{ 
                         meeting = e.checked;
                         setCheckedMeeting(e.checked);
                         getData(offset, perPage);

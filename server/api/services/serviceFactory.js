@@ -22,8 +22,14 @@ try {
 }
 
 let deletedAt = '';
+let taskId = '';
+let userId = '';
+let firstName = '';
+let lastName = '';
+let role = '';
 
-const userTasksTable = sequelize.define('userTasksModel', { deletedAt }, { tableName: "UserTasks" });
+const userTasksTable = sequelize.define('userTasksModel', { taskId, userId, deletedAt }, { tableName: "UserTasks" });
+// const usersTable = sequelize.define('usersModel', { firstName, lastName, role, deletedAt }, { tableName: "Users" });
 
 
 module.exports = function serviceFactory(model) {
@@ -509,10 +515,6 @@ module.exports = function serviceFactory(model) {
 
         const { changeData, idData, taskProgress } = req.body;
 
-        console.log(Object.keys(changeData));
-        console.log(changeData[Object.keys(changeData)[0]]);
-        console.log(changeData[Object.keys(changeData)[1]]);
-
         const { QueryTypes } = require('sequelize');
         sequelize.query(
                 `UPDATE "Tasks"
@@ -525,6 +527,31 @@ module.exports = function serviceFactory(model) {
                         byUserId: `${changeData[Object.keys(changeData)[1]]}`,
                         taskProgress: `${taskProgress}`,
                         id: `${idData}`
+                    },
+                    type: QueryTypes.SELECT
+                }
+            )
+            .then(result => {
+                res.send(result);
+            })
+            .catch(err => res.send(err));
+    }
+
+    function getAllUsersByTask(req, res, next, attributesArray) {
+
+        const { idData } = req.body;
+
+        const { QueryTypes } = require('sequelize');
+        sequelize.query(
+                `SELECT
+                t.*, u.*
+                FROM
+                "UserTasks" t 
+                left join "Users" u
+                on u.id = t."userId"
+                WHERE t."deletedAt" is null and u."deletedAt" is null and "taskId" = :taskId;`, {
+                    replacements: {
+                        taskId: `${idData}`
                     },
                     type: QueryTypes.SELECT
                 }
@@ -548,6 +575,7 @@ module.exports = function serviceFactory(model) {
         getUserTasks,
         getUserTasksMeetingOrProject,
         getAllPaginationRawQueryMop,
-        editTask
+        editTask,
+        getAllUsersByTask
     };
 }

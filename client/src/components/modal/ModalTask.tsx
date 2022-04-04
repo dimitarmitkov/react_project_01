@@ -5,11 +5,15 @@ import axios from 'axios';
 import CurrentLoggedUser from '../functions/currentLoggedUser';
 import './modalTask.css';
 import DeleteTaskModalApp from './ModalDeleteTask';
+import { Link } from 'react-router-dom';
 
 
+interface Provider {
+    type: JSX.Element;
+}
 const MyVerticallyCenteredModal = (props: any) => {
     const [user, setUser] = useState(Object);
-    const [modalShow, setModalShow] = useState(false);
+    const [showUsers, setShowUsers] = useState<Provider>();
 
     CurrentLoggedUser(setUser);
 
@@ -55,6 +59,33 @@ const MyVerticallyCenteredModal = (props: any) => {
         }
     };
 
+    const getUsers = (props: number) =>{
+        let usersQuery = { idData: props};
+        axios.patch("http://localhost:62000/api/v1/usertasks", usersQuery)
+                .then(result => {
+
+                    const currentData = result.data;
+
+                    const NamesList = () => (
+                        <div>
+                          <ul>{currentData.map((name:any) => <li key={name.firstName}> 
+                          <Link to={`/users/${name.id}`}>{name.firstName} {name.lastName} </Link>
+                          </li>)}</ul>
+                        </div>
+                      );
+
+                    setShowUsers(NamesList);
+                })
+                .catch(err => console.log(err));
+    }
+    
+    const showRelatedUsers = (props: number) => {
+        getUsers(props);
+
+        return showUsers;
+        
+    }
+
     let dropdownButtonsArray = props.data.taskType === 'project' ? projectArray.map((element: string, k: number) => {
         return <Dropdown.Item as="button" key={'bbd' + k}>{element}</Dropdown.Item>
     }) :
@@ -72,6 +103,8 @@ const MyVerticallyCenteredModal = (props: any) => {
             size="lg"
             aria-labelledby="contained-modal-title-vcenter"
             centered
+            onShow={()=> showRelatedUsers(props.data.taskId ? props.data.taskId : props.data.id)}
+            
         >
             <Modal.Header>
                 <Modal.Title id="contained-modal-title-vcenter">
@@ -83,12 +116,16 @@ const MyVerticallyCenteredModal = (props: any) => {
                 <p>
                     {props.data.taskType}
                 </p>
+                <div>
+                    <p>Users related to this {props.data.taskType}</p>
+                    {showUsers}
+                </div>
 
                 <Container>
                     <Row>
                         <Col sm={8}>
                             <Form>
-                                <DropdownButton id="dropdown-item-button" title="Select status" onClick={e => { changeTaskStatus(e); getData() }}>
+                                <DropdownButton id="dropdown-item-button" title="Select status" onClick={e => { changeTaskStatus(e); }}>
                                     {dropdownButtonsArray}
                                 </DropdownButton>
                             </Form>

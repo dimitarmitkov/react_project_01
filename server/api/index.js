@@ -15,7 +15,8 @@ module.exports.connect = function(path, app) {
 
     router.route("/usertasks")
         .get(authMiddleware.auth, tasksController.getUserTasks)
-        .post(authMiddleware.auth, tasksController.getUserTasks);
+        .post(authMiddleware.auth, tasksController.getUserTasks)
+        .patch(authMiddleware.auth, tasksController.getAllUsersByTask);
 
     router.route("/usertasksmop")
         .get(authMiddleware.auth, tasksController.getUserTasksMeetingOrProject)

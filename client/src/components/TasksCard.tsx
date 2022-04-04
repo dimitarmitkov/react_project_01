@@ -14,7 +14,7 @@ const TasksCard = (props: any) => {
                     <Card.Text>
                         {task.taskProgress}
                     </Card.Text>
-                    <Card.Link href="#">{task.id}</Card.Link>
+                    <Card.Link href="#">{task.taskId ? task.taskId : task.id}</Card.Link>
                     <Card.Link href="#"></Card.Link>
                 </Card.Body>
                 <Card.Body className="mt-2 edit-buttons edit">

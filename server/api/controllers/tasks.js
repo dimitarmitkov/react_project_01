@@ -45,6 +45,12 @@ module.exports.getAllTasks = function(req, res, next) {
     tasksTable.getAll(req, res, next, ['id', 'taskType', 'taskName', 'taskProgress', 'deletedAt']);
 }
 
+module.exports.getAllUsersByTask = function(req, res, next) {
+
+    userTasksTable.getAllUsersByTask(req, res, next, ['id', 'userId', 'taskId', 'deletedAt']);
+}
+
+
 module.exports.editTask = function(req, res, next) {
 
     tasksTable.editTask(req, res, next, [
