@@ -20,6 +20,7 @@ import PaginatedUsers from './components/paginate/PaginatedUsers';
 import PaginatedTasksByUser from './components/paginate/PaginatedTasksByUser';
 import CreateTask from './components/createTask/CreateTask';
 import CurrentLoggedUser from './components/functions/currentLoggedUser';
+import UserCardData from './components/user/UserCardData';
 
 // import EditUserApp from './components/user/EditUser';
 
@@ -59,6 +60,8 @@ function App() {
                 < Route path="/signup" element={<SignUpForm />} />
                 < Route path="/createTask" element={<CreateTask />} />
                 < Route path="/usertasks" element={<PaginatedTasksByUser data={user} />} />
+                < Route path="/users/:id" element={<UserCardData />} />
+                {/* < Route path="/currentuser/:id" element={<UserCardData />} /> */}
                 {/* < Route path="/edituser/:id" element={<EditUserApp, []/>} /> */}
 
               </Routes>

@@ -74,7 +74,7 @@ module.exports.editTask = function(req, res, next) {
 
 module.exports.getOneUser = function(req, res, next) {
 
-    usersTable.getSingle(req, res, next, ['id', 'firstName', 'lastName', 'email', 'role', 'password', 'deletedAt']);
+    usersTable.getSingle(req, res, next, ['id', 'firstName', 'lastName', 'email', 'role', 'password', 'picture', 'deletedAt']);
 }
 
 module.exports.getOneTask = function(req, res, next) {

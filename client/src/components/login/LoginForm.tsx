@@ -76,8 +76,7 @@ const LoginGroup = () => {
                             <span className="p-inputgroup-addon">
                                 <i className="pi pi-shield"></i>
                             </span>
-                            {/* <InputText type={'password'} placeholder="Password" {...register("password", {required: true, minLength: {value: 6, message: "password must contain at least 6 symbols"}})} />*/}
-                            <Password value={passwordValue} onChange={(e) => setPasswordValue(e.target.value)} toggleMask /> 
+                            <Password value={passwordValue} onChange={(e) => setPasswordValue(e.target.value)} toggleMask feedback={false} /> 
                         </div>
                         {errors.password && <span className="error-message" role="alert">{errors.password.message}</span>}
                     </Col>
