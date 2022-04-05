@@ -14,6 +14,14 @@ interface MyObj {
     [propName: string]: string;
 };
 
+interface HTMLProps<T> {
+    webkitdirectory?:string;
+}    
+
+interface SelectProtected {
+    readonly inputElement: HTMLInputElement;
+}
+
 type FormValues = {
     firstName: string;
     userName: string;
@@ -128,17 +136,17 @@ const UserCard = () => {
 
                                 <Row>
                                     <Col sm={6}>
-                                        <input
+                                        {/* <input
                                             type="file"
                                             name="myImage"
                                             onChange={(event) => {
-                                                //   console.log(event.target.files[0]);
-                                                //   setSelectedImage(event.target.files[0]);
+                                                  console.log(event.target.files[0]);
+                                                  setSelectedImage(event.target.files[0]);
                                             }}
-                                        />
+                                        /> */}
 
                                         <Form.Group controlId="formFile" className="mb-3">
-                                            <Form.Label>Default file input example</Form.Label>
+                                            <Form.Label>Please select picture file</Form.Label>
                                             {/* <Form.Control type="file" accept="image/png, image/jpeg" onChange={(e: React.ChangeEvent) => {
                                                 const target= e.target as HTMLInputElement;
                                                 let file : any = target.files[0]; 
@@ -146,10 +154,13 @@ const UserCard = () => {
                                                     
                                             }} /> */}
                                             <Form.Control type="file" accept="image/png, image/jpeg" onChange={(e: React.ChangeEvent) => {
-                                                let file: any = e.target.files[0]; 
+                                                const targetEl = e.target as HTMLInputElement;
+                                                let file: any = targetEl.files![0]; 
                                                     console.log(file.name);
+                                                    console.log(file);
                                                     
                                             }} />
+                                            {/* <input type="file" id="filepicker" name="fileList" webkitdirectory multiple /> */}
                                         </Form.Group>
 
                                     </Col>
