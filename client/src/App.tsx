@@ -21,9 +21,7 @@ import PaginatedTasksByUser from './components/paginate/PaginatedTasksByUser';
 import CreateTask from './components/createTask/CreateTask';
 import CurrentLoggedUser from './components/functions/currentLoggedUser';
 import UserCardData from './components/user/UserCardData';
-
-// import EditUserApp from './components/user/EditUser';
-
+import CurrentUserCard from './components/user/CurrentUserDataCard';
 
 function App() {
 
@@ -42,7 +40,6 @@ function App() {
           <Row>
             <Col>
               <NavbarData />
-              <HelloClass name="Simona" />
             </Col>
           </Row>
           <Row>
@@ -61,8 +58,7 @@ function App() {
                 < Route path="/createTask" element={<CreateTask />} />
                 < Route path="/usertasks" element={<PaginatedTasksByUser data={user} />} />
                 < Route path="/users/:id" element={<UserCardData />} />
-                {/* < Route path="/currentuser/:id" element={<UserCardData />} /> */}
-                {/* < Route path="/edituser/:id" element={<EditUserApp, []/>} /> */}
+                < Route path="/currentuser/:id" element={<CurrentUserCard />} />
 
               </Routes>
             </Col>

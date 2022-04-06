@@ -6,12 +6,16 @@ import { useParams } from "react-router-dom";
 import { Row, Col, Container, Image, Form } from 'react-bootstrap';
 import { useEffect, useState } from "react";
 import { Checkbox } from 'primereact/checkbox';
-import CurrentLoggedUser from '../functions/currentLoggedUser';
 import { useNavigate } from "react-router-dom";
+import CurrentLoggedUser from '../functions/currentLoggedUser';
 
 interface MyObj {
     [propName: string]: string;
 };
+
+interface Setter {
+    type: string;
+}
 
 type FormValues = {
     firstName: string;
@@ -23,13 +27,12 @@ type FormValues = {
     picture: string;
 };
 
-
-
-const UserCardData = () => {
+const CurrentUserCardData = () => {
     let { id } = useParams();
     const [user, setUser] = useState({});
 
     const getUser = () => {
+
         axios.post("http://localhost:62000/api/v1/users",
             {
                 id: id
@@ -51,10 +54,7 @@ const UserCardData = () => {
     return user;
 }
 
-
-
-
-const UserCard = () => {
+const CurrentUserCard = () => {
     const [currentUser, setCurrentUser] = useState(Object);
 
     CurrentLoggedUser(setCurrentUser);
@@ -63,29 +63,42 @@ const UserCard = () => {
     const { register, watch, formState: { errors }, handleSubmit } = useForm<FormValues>();
     const [passwordValue, setPasswordValue] = useState('');
     const [currentUserPicture, setCurrentUserPicture] = useState('');
+    // const [srcPicture, setSrcPicture] = useState<Setter>();
+    const [srcPicture, setSrcPicture] = useState<any | null >(null);
     const navigate = useNavigate();
     let { id } = useParams();
-    let user: MyObj = UserCardData();
-
+    let user: MyObj = CurrentUserCardData();
 
     const onImageChange = (props: any) => {
-        setCurrentUserPicture(props);
 
+        let reader = new FileReader();
+        reader.readAsDataURL(props);
+        reader.onload = () => {
+
+            reader ? setSrcPicture(reader.result) : setSrcPicture(user.picture);
+            console.log(reader.result);
+
+        };
+        
+        setCurrentUserPicture(props.name);
     }
 
     const editUserRoute = () => {
-    
+
         let path = `/users`;
         navigate(path);
     }
 
     if (Object.keys(user).length > 0) {
 
+
+
         const allowPasswordChange = id == currentUser.id ? true : false;
         let userPicture = user.picture;
 
         const onSubmit: SubmitHandler<FormValues> = data => {
 
+            // axios.post("http://localhost:62000/api/v1/photos/upload",
             axios.post("http://localhost:62000/api/v1/usersEdit",
                 {
                     email: user.email,
@@ -113,6 +126,8 @@ const UserCard = () => {
                         <Row>
                             <Col sm={2} className="border rounded">
                                 <Image fluid src={require(`../../public/images/${userPicture}`)} alt="pic" />
+                                {/* <Image id='profilePicture' fluid src={srcPicture} alt="pic" /> */}
+                                {/* <Image id='profilePicture' fluid src={currentUserPicture} alt="pic" /> */}
                             </Col>
                             <Col sm={3} className="ml-3">
                                 <Row>
@@ -153,12 +168,31 @@ const UserCard = () => {
                                                     console.log(file.name);
                                                     
                                             }} /> */}
-                                                <Form.Control type="file" accept="image/png, image/jpeg" onChange={(e: React.ChangeEvent) => {
+                                                <Form.Control type="file" name="avatar" accept="image/png, image/jpeg" onChange={(e: React.ChangeEvent) => {
                                                     const targetEl = e.target as HTMLInputElement;
                                                     let file: any = targetEl.files![0];
                                                     console.log(file.name);
-                                                    console.log(file);
-                                                    onImageChange(file.name);
+                                                    // console.log(file);
+                                                    // console.log(file.mozFullPath);
+                                                    onImageChange(file);
+
+                                                    let reader = new FileReader();
+
+
+                                                    reader.readAsDataURL(file);
+                                                    reader.onload = () => {
+                                                        // this.setState({
+                                                        //     imgUpload: reader.result
+                                                        // })
+
+                                                        console.log(reader);
+
+                                                    };
+
+                                                    // reader.addEventListener("load", function () {
+                                                    //     // convert image file to base64 string
+                                                    //     console.log(reader.result);
+                                                    //   }, false);
 
                                                 }} />
                                                 {/* <input type="file" id="filepicker" name="fileList" webkitdirectory multiple /> */}
@@ -206,11 +240,10 @@ const UserCard = () => {
                                 </form >
                                 <Row className="mt-3 mb-3 justify-content-md-center">
                                     <Col>
-                                        <Button label="Back to users" className="p-button-primary" disabled={false} onClick={editUserRoute}/>
+                                        <Button label="Back to users" className="p-button-primary" disabled={false} onClick={editUserRoute} />
                                     </Col>
                                 </Row>
                             </Col>
-
                         </Row>
                     </Row>
                 </Container>
@@ -221,4 +254,4 @@ const UserCard = () => {
     }
 }
 
-export default UserCard;
+export default CurrentUserCard;

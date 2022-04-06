@@ -1,3 +1,6 @@
+global.__basedir = __dirname;
+
+const path = require('path');
 const { Sequelize } = require('sequelize');
 const cs = require("../connection/connectionData");
 const jwt = require("jsonwebtoken");
@@ -5,6 +8,9 @@ const User = require("../../models/users");
 const bcrypt = require("bcrypt");
 const myKey = require("../connection/myKey");
 const { password } = require('../connection/connectionData');
+const multer = require('multer');
+const fs = require('fs');
+const upload = multer({ dest: path.resolve(__dirname, 'public/images') });
 
 const sequelize = new Sequelize(cs.database, cs.username, cs.password, {
     host: cs.host,
@@ -242,6 +248,7 @@ module.exports = function serviceFactory(model) {
                 "password" = :password,
                 "email" = :email,
                 "role" = :role,
+                "picture" = :picture,
                 "updatedAt" = :date
             WHERE "id" = :id;`;
 
@@ -261,6 +268,7 @@ module.exports = function serviceFactory(model) {
             "lastName" = :lastName,
             "email" = :email,
             "role" = :role,
+            "picture" = :picture,
             "updatedAt" = :date
         WHERE "id" = :id;`;
 
@@ -562,6 +570,83 @@ module.exports = function serviceFactory(model) {
             .catch(err => res.send(err));
     }
 
+    function photos(req, res, next, attributesArray) {
+
+        const idData = parseInt(req.body.id);
+        let replacePassword = '';
+        let isValidPass;
+        let queryText = '';
+        let replacementsData = {};
+        const updateDate = new Date(Date.now()).toISOString();
+
+        const {
+            firstName,
+            lastName,
+            insertPassword,
+            email,
+            role,
+            picture
+        } = req.body;
+
+
+        if (insertPassword) {
+            replacePassword = bcrypt.hashSync(`${insertPassword}`, 10);
+            isValidPass = bcrypt.compareSync(`${insertPassword}`, `${replacePassword}`);
+            queryText = `UPDATE "Users"
+            SET "firstName" = :firstName,
+                "lastName" = :lastName,
+                "password" = :password,
+                "email" = :email,
+                "role" = :role,
+                "picture" = :picture,
+                "updatedAt" = :date
+            WHERE "id" = :id;`;
+
+            replacementsData = {
+                firstName: `${firstName}`,
+                lastName: `${lastName}`,
+                password: `${replacePassword}`,
+                email: `${email}`,
+                role: `${role}`,
+                picture: `${picture}`,
+                id: `${idData}`,
+                date: `${updateDate}`
+            }
+        } else {
+            queryText = `UPDATE "Users"
+            SET "firstName" = :firstName,
+            "lastName" = :lastName,
+            "email" = :email,
+            "role" = :role,
+            "picture" = :picture,
+            "updatedAt" = :date
+        WHERE "id" = :id;`;
+
+            replacementsData = {
+                firstName: `${firstName}`,
+                lastName: `${lastName}`,
+                email: `${email}`,
+                role: `${role}`,
+                picture: `${picture}`,
+                id: `${idData}`,
+                date: `${updateDate}`
+            }
+
+        }
+
+        const { QueryTypes } = require('sequelize');
+        sequelize.query(queryText, {
+                replacements: replacementsData,
+                type: QueryTypes.SELECT
+            })
+            .then(res => {
+                res.send('username of user ' + idData + ' is changed');
+            })
+            .catch(err => res.send(err));
+    }
+
+
+
     return {
         getAll,
         getSingle,
@@ -576,6 +661,7 @@ module.exports = function serviceFactory(model) {
         getUserTasksMeetingOrProject,
         getAllPaginationRawQueryMop,
         editTask,
-        getAllUsersByTask
+        getAllUsersByTask,
+        photos
     };
 }

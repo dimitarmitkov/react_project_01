@@ -59,31 +59,32 @@ const MyVerticallyCenteredModal = (props: any) => {
         }
     };
 
-    const getUsers = (props: number) =>{
-        let usersQuery = { idData: props};
+    const getUsers = (props: number) => {
+        let usersQuery = { idData: props };
         axios.patch("http://localhost:62000/api/v1/usertasks", usersQuery)
-                .then(result => {
+            .then(result => {
 
-                    const currentData = result.data;
+                const currentData = result.data;
 
-                    const NamesList = () => (
-                        <div>
-                          <ul>{currentData.map((name:any) => <li key={name.firstName}> 
-                          <Link to={`/users/${name.id}`}>{name.firstName} {name.lastName} </Link>
-                          </li>)}</ul>
-                        </div>
-                      );
+                const NamesList = () => (
+                    <div>
+                        <ul>{currentData.map((name: any) => <li key={name.firstName}>
+                            {user && user.role === 'admin' ? <Link to={`/users/${name.id}`}>{name.firstName} {name.lastName} </Link> :
+                                <div>{name.firstName} {name.lastName} </div>}
+                        </li>)}</ul>
+                    </div>
+                );
 
-                    setShowUsers(NamesList);
-                })
-                .catch(err => console.log(err));
+                setShowUsers(NamesList);
+            })
+            .catch(err => console.log(err));
     }
-    
+
     const showRelatedUsers = (props: number) => {
         getUsers(props);
 
         return showUsers;
-        
+
     }
 
     let dropdownButtonsArray = props.data.taskType === 'project' ? projectArray.map((element: string, k: number) => {
@@ -103,8 +104,7 @@ const MyVerticallyCenteredModal = (props: any) => {
             size="lg"
             aria-labelledby="contained-modal-title-vcenter"
             centered
-            onShow={()=> showRelatedUsers(props.data.taskId ? props.data.taskId : props.data.id)}
-            
+            onShow={() => showRelatedUsers(props.data.taskId ? props.data.taskId : props.data.id)}
         >
             <Modal.Header>
                 <Modal.Title id="contained-modal-title-vcenter">
@@ -123,16 +123,20 @@ const MyVerticallyCenteredModal = (props: any) => {
 
                 <Container>
                     <Row>
-                        <Col sm={8}>
-                            <Form>
-                                <DropdownButton id="dropdown-item-button" title="Select status" onClick={e => { changeTaskStatus(e); }}>
-                                    {dropdownButtonsArray}
-                                </DropdownButton>
-                            </Form>
-                        </Col>
-                        {user && user.role === 'admin' ? <Col sm={4} className="delete-button-group">
-                            <DeleteTaskModalApp {...props.data} />
-                        </Col> : null}
+                        {user && user.role === 'admin' ?
+                            <>
+                                <Col sm={8}>
+                                    <Form>
+                                        <DropdownButton id="dropdown-item-button" title="Select status" onClick={e => { changeTaskStatus(e); }}>
+                                            {dropdownButtonsArray}
+                                        </DropdownButton>
+                                    </Form>
+                                </Col>
+                                <Col sm={4} className="delete-button-group">
+                                    <DeleteTaskModalApp {...props.data} />
+                                </Col>
+                            </>
+                            : null}
                     </Row>
                 </Container>
             </Modal.Body>
@@ -154,7 +158,7 @@ const ModalApp = (props: any[]) => {
 
             <MyVerticallyCenteredModal
                 show={modalShow}
-                onHide={() => {setModalShow(prevCheck => !prevCheck)}}
+                onHide={() => { setModalShow(prevCheck => !prevCheck) }}
                 data={props}
             />
         </>

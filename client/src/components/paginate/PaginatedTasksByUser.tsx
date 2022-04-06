@@ -17,7 +17,7 @@ let project = false;
 let selectedPage = 0;
 let rowsNumber = 0;
 
-function PaginatedTasksByUser(props: any) {
+const PaginatedTasksByUser = (props: any) => {
 
     interface Provider {
         type: JSX.Element[];
@@ -147,7 +147,9 @@ function PaginatedTasksByUser(props: any) {
                 </div>
             </Col>
             <Col>
+            {props.data.role === 'admin' ? 
                 <Button icon="pi pi-plus" label="Create Task" className="p-button-outlined p-button-secondary" onClick={redirectToCreateTask} />
+                : null }
             </Col>
             <Col className="dropdown-demo" key={'paginateDropDown'}>
                 <Dropdown id={'dropDownButton'} value={selectValues} options={valuesArray} onChange={onValuesChange} placeholder="All" editable />

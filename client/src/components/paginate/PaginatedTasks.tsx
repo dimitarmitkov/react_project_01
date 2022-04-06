@@ -17,7 +17,7 @@ let project = false;
 let selectedPage = 0;
 let rowsNumber = 0;
 
-function PaginatedTasks() {
+const PaginatedTasks = () => {
 
     interface Provider {
         type: JSX.Element[];

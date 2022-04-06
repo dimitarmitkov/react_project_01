@@ -10,7 +10,7 @@ module.exports.connect = function(path, app) {
         .post(authMiddleware.auth, authMiddleware.isAdmin, tasksController.editTask);
 
     router.route("/users")
-        .get(authMiddleware.auth, tasksController.getAllUsers)
+        .get(authMiddleware.auth, authMiddleware.isAdmin, tasksController.getAllUsers)
         .post(authMiddleware.auth, tasksController.getOneUser);
 
     router.route("/usertasks")
@@ -38,15 +38,15 @@ module.exports.connect = function(path, app) {
         .get(authMiddleware.auth, tasksController.getOneTask);
 
     router.route("/tasksDelete")
-        .get(authMiddleware.auth, tasksController.deleteOneTask)
-        .post(authMiddleware.auth, tasksController.deleteOneTask);
+        .get(authMiddleware.auth, authMiddleware.isAdmin, tasksController.deleteOneTask)
+        .post(authMiddleware.auth, authMiddleware.isAdmin, tasksController.deleteOneTask);
 
     router.route("/createUser")
-        .get(tasksController.createSingleUser)
-        .post(tasksController.createSingleUser);
+        .get(authMiddleware.auth, authMiddleware.isAdmin, tasksController.createSingleUser)
+        .post(authMiddleware.auth, authMiddleware.isAdmin, tasksController.createSingleUser);
 
     router.route("/createTask")
-        .post(tasksController.createSingleTask);
+        .post(authMiddleware.auth, authMiddleware.isAdmin, tasksController.createSingleTask);
 
     router.route("/usersEdit")
         .post(authMiddleware.auth, tasksController.editOneUser);
@@ -65,6 +65,9 @@ module.exports.connect = function(path, app) {
 
     router.route("/currentLoggedUser")
         .get(authMiddleware.auth, tasksController.currentLoggedUser);
+
+    router.route("/photos/upload")
+        .post(authMiddleware.auth, tasksController.photos);
 
     app.use(path, router);
 };

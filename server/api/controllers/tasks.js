@@ -1,8 +1,15 @@
+global.__basedir = __dirname;
+
+const path = require('path');
 const { Sequelize } = require('sequelize');
 const cs = require("../connection/connectionData");
 const serviceFactory = require("../services/serviceFactory");
 const { QueryTypes } = require('sequelize');
 const bcrypt = require("bcrypt");
+const multer = require('multer');
+const fs = require('fs');
+
+const upload = multer({ dest: path.resolve(__dirname, 'public/images') });
 // const usersModel = require("../../models/users");
 // const tasksModel = require("../../models/tasks");
 // const userTasksModel = require("../../models/usertasks  ");
@@ -150,6 +157,39 @@ module.exports.authorization = function(req, res, next) {
 module.exports.currentLoggedUser = function(req, res, next) {
 
     usersTable.currentLoggedUser(req, res, next, ['id', 'firstName', 'email', 'role', 'deletedAt'], 'user');
+}
+
+module.exports.photos = function(req, res, next) {
+    upload.single('file');
+
+    // function readFile(filePath) {
+    //     try {
+    //         const data = fs.readFile(filePath);
+    //         console.log(data.toString());
+    //     } catch (error) {
+    //         console.error(`Got an error trying to read the file: ${error.message}`);
+    //     }
+    // }
+
+    // readFile(req.body.picture);
+
+    console.log(global);
+    console.log(req._parsedUrl._raw);
+    console.log(req.body.picture);
+    console.log(path.resolve(req.body.picture));
+    const file = global.__basedir + '/public/images/' + req.body.picture;
+
+    fs.rename(req._parsedUrl._raw, file, function(err) {
+        if (err) {
+            console.log(err);
+            res.send(500);
+        } else {
+
+            usersTable.photos(req, res, next, ['id', 'firstName', 'email', 'role', 'deletedAt'], 'user');
+        }
+
+    })
+
 }
 
 module.exports.createSingleUser = function(req, res, next) {
