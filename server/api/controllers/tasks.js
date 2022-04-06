@@ -33,12 +33,16 @@ try {
 let deletedAt = '';
 let firstName = '';
 let lastName = '';
+let userId = '';
+let picture = '';
 
 const usersTable = serviceFactory(sequelize.define('usersModel', { firstName, lastName, deletedAt }, { tableName: "Users" }));
 
 const tasksTable = serviceFactory(sequelize.define('tasksModel', { deletedAt }, { tableName: "Tasks" }));
 
 const userTasksTable = serviceFactory(sequelize.define('userTasksModel', { deletedAt }, { tableName: "UserTasks" }));
+
+const userPicturesTable = serviceFactory(sequelize.define('userPicturesModel', { userId, picture, deletedAt }, { tableName: "UserPictures" }));
 
 
 
@@ -157,6 +161,11 @@ module.exports.authorization = function(req, res, next) {
 module.exports.currentLoggedUser = function(req, res, next) {
 
     usersTable.currentLoggedUser(req, res, next, ['id', 'firstName', 'email', 'role', 'deletedAt'], 'user');
+}
+
+module.exports.pictures = function(req, res, next) {
+
+    userPicturesTable.pictures(req, res, next, ['id', 'userId', 'picture', 'deletedAt'], 'userPicture');
 }
 
 module.exports.photos = function(req, res, next) {

@@ -645,6 +645,21 @@ module.exports = function serviceFactory(model) {
             .catch(err => res.send(err));
     }
 
+    function pictures(req, res, next, attributesArray) {
+
+        const { userId, picture } = req.body;
+
+        model.create({
+            userId,
+            picture,
+        }).then(task => {
+            console.log(task.dataValues);
+            res.status(201).send('task created');
+        }).catch(next => {
+            res.status(400).send('not allowed')
+        });
+    }
+
 
 
     return {
@@ -662,6 +677,7 @@ module.exports = function serviceFactory(model) {
         getAllPaginationRawQueryMop,
         editTask,
         getAllUsersByTask,
-        photos
+        photos,
+        pictures
     };
 }

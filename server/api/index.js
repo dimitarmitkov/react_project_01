@@ -69,5 +69,8 @@ module.exports.connect = function(path, app) {
     router.route("/photos/upload")
         .post(authMiddleware.auth, tasksController.photos);
 
+    router.route("/pictures")
+        .post(authMiddleware.auth, tasksController.pictures);
+
     app.use(path, router);
 };

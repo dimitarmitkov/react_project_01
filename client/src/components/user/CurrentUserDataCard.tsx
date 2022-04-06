@@ -79,6 +79,8 @@ const CurrentUserCard = () => {
             console.log(reader.result);
 
         };
+
+        
         
         setCurrentUserPicture(props.name);
     }
@@ -107,7 +109,7 @@ const CurrentUserCard = () => {
                     lastName: user.lastName,
                     role: user.role,
                     picture: currentUserPicture,
-                    id: user.id
+                    id: user.id,
                 })
                 .then(res => {
                     if (res.status === 200) {
@@ -117,6 +119,23 @@ const CurrentUserCard = () => {
                 .catch(err => {
                     console.log(err);
                 });
+
+                axios.post("http://localhost:62000/api/v1/pictures",
+                {
+                    userId: user.id,
+                    picture: srcPicture
+                })
+                .then(res => {
+                    if (res.status === 200) {
+                        window.location.reload();
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+
+
+
         };
 
         return (
