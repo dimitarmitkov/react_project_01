@@ -101,24 +101,24 @@ const CurrentUserCard = () => {
         const onSubmit: SubmitHandler<FormValues> = data => {
 
             // axios.post("http://localhost:62000/api/v1/photos/upload",
-            axios.post("http://localhost:62000/api/v1/usersEdit",
-                {
-                    email: user.email,
-                    insertPassword: passwordValue ? passwordValue : null,
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    role: user.role,
-                    picture: currentUserPicture,
-                    id: user.id,
-                })
-                .then(res => {
-                    if (res.status === 200) {
-                        window.location.reload();
-                    }
-                })
-                .catch(err => {
-                    console.log(err);
-                });
+            // axios.post("http://localhost:62000/api/v1/usersEdit",
+            //     {
+            //         email: user.email,
+            //         insertPassword: passwordValue ? passwordValue : null,
+            //         firstName: user.firstName,
+            //         lastName: user.lastName,
+            //         role: user.role,
+            //         picture: currentUserPicture,
+            //         id: user.id,
+            //     })
+            //     .then(res => {
+            //         if (res.status === 200) {
+            //             window.location.reload();
+            //         }
+            //     })
+            //     .catch(err => {
+            //         console.log(err);
+            //     });
 
                 axios.post("http://localhost:62000/api/v1/pictures",
                 {
@@ -190,13 +190,12 @@ const CurrentUserCard = () => {
                                                 <Form.Control type="file" name="avatar" accept="image/png, image/jpeg" onChange={(e: React.ChangeEvent) => {
                                                     const targetEl = e.target as HTMLInputElement;
                                                     let file: any = targetEl.files![0];
-                                                    console.log(file.name);
+                                                    // console.log(file.name);
                                                     // console.log(file);
                                                     // console.log(file.mozFullPath);
                                                     onImageChange(file);
 
                                                     let reader = new FileReader();
-
 
                                                     reader.readAsDataURL(file);
                                                     reader.onload = () => {

@@ -570,94 +570,50 @@ module.exports = function serviceFactory(model) {
             .catch(err => res.send(err));
     }
 
-    function photos(req, res, next, attributesArray) {
-
-        const idData = parseInt(req.body.id);
-        let replacePassword = '';
-        let isValidPass;
-        let queryText = '';
-        let replacementsData = {};
-        const updateDate = new Date(Date.now()).toISOString();
-
-        const {
-            firstName,
-            lastName,
-            insertPassword,
-            email,
-            role,
-            picture
-        } = req.body;
-
-
-        if (insertPassword) {
-            replacePassword = bcrypt.hashSync(`${insertPassword}`, 10);
-            isValidPass = bcrypt.compareSync(`${insertPassword}`, `${replacePassword}`);
-            queryText = `UPDATE "Users"
-            SET "firstName" = :firstName,
-                "lastName" = :lastName,
-                "password" = :password,
-                "email" = :email,
-                "role" = :role,
-                "picture" = :picture,
-                "updatedAt" = :date
-            WHERE "id" = :id;`;
-
-            replacementsData = {
-                firstName: `${firstName}`,
-                lastName: `${lastName}`,
-                password: `${replacePassword}`,
-                email: `${email}`,
-                role: `${role}`,
-                picture: `${picture}`,
-                id: `${idData}`,
-                date: `${updateDate}`
-            }
-        } else {
-            queryText = `UPDATE "Users"
-            SET "firstName" = :firstName,
-            "lastName" = :lastName,
-            "email" = :email,
-            "role" = :role,
-            "picture" = :picture,
-            "updatedAt" = :date
-        WHERE "id" = :id;`;
-
-            replacementsData = {
-                firstName: `${firstName}`,
-                lastName: `${lastName}`,
-                email: `${email}`,
-                role: `${role}`,
-                picture: `${picture}`,
-                id: `${idData}`,
-                date: `${updateDate}`
-            }
-
-        }
-
-        const { QueryTypes } = require('sequelize');
-        sequelize.query(queryText, {
-                replacements: replacementsData,
-                type: QueryTypes.SELECT
-            })
-            .then(res => {
-                res.send('username of user ' + idData + ' is changed');
-            })
-            .catch(err => res.send(err));
-    }
 
     function pictures(req, res, next, attributesArray) {
 
         const { userId, picture } = req.body;
 
-        model.create({
-            userId,
-            picture,
-        }).then(task => {
-            console.log(task.dataValues);
-            res.status(201).send('task created');
-        }).catch(next => {
-            res.status(400).send('not allowed')
-        });
+        model.findOne({
+            where: { userId: userId },
+            attributes: attributesArray
+        }).then(result => {
+            if (!result.userId) {
+                model.create({
+                    userId,
+                    picture,
+                }).then(task => {
+                    res.status(201).send('picture created');
+                }).catch(next => {
+                    res.status(400).send('not allowed')
+                });
+            } else {
+                const updateDate = new Date(Date.now()).toISOString();
+                queryText = `UPDATE "UserPictures"
+                            SET "picture" = :picture,
+                            "updatedAt" = :date
+                            WHERE "userId" = :userId;`;
+
+                replacementsData = {
+                    userId: `${userId}`,
+                    picture: `${picture}`,
+                    date: `${updateDate}`
+                }
+
+                const { QueryTypes } = require('sequelize');
+                sequelize.query(queryText, {
+                    replacements: replacementsData,
+                    type: QueryTypes.UPDATE
+                }).then(task => {
+                    res.status(201).send('picture updated');
+                }).catch(next => {
+                    res.status(400).send('not allowed')
+                });
+            }
+
+        }).catch();
+
     }
 
 
@@ -677,7 +633,6 @@ module.exports = function serviceFactory(model) {
         getAllPaginationRawQueryMop,
         editTask,
         getAllUsersByTask,
-        photos,
         pictures
     };
 }

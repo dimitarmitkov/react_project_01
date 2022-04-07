@@ -30,9 +30,9 @@ app.use(cors({
 app.use('/static', express.static('public'));
 
 app.use(cookieParser());
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '10000mb' }));
 
-app.use(bodyParser.urlencoded({ limit: '5000mb', extended: true }));
+app.use(bodyParser.urlencoded({ limit: '10000mb', extended: true }));
 app.use(express.static(path.resolve(__basedir, 'static')));
 // app.use(express.urlencoded({ extended: true }));
 // app.use(
