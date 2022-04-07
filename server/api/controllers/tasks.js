@@ -168,6 +168,11 @@ module.exports.pictures = function(req, res, next) {
     userPicturesTable.pictures(req, res, next, ['id', 'userId', 'picture', 'deletedAt'], 'userPicture');
 }
 
+module.exports.picturesGet = function(req, res, next) {
+
+    userPicturesTable.picturesGet(req, res, next, ['id', 'userId', 'picture', 'deletedAt'], 'userPicture');
+}
+
 module.exports.photos = function(req, res, next) {
     upload.single('file');
 
@@ -183,22 +188,26 @@ module.exports.photos = function(req, res, next) {
     // readFile(req.body.picture);
 
     console.log(global);
+    let currPath = path.resolve(__dirname, 'public/images').replace('api/controllers/', '');
+    console.log('current path: ', currPath);
     console.log(req._parsedUrl._raw);
-    console.log(req.body.picture);
-    console.log(path.resolve(req.body.picture));
     const file = global.__basedir + '/public/images/' + req.body.picture;
+
+    let base64Data = req.body.picture.replace(/^data:[A-Za-z-+\/]+;base64,/, '');
+
+    fs.writeFile(currPath + '/' + "authData4.jpg", base64Data, 'base64',
+        function(err) {
+            console.log(err);
+        });
 
     fs.rename(req._parsedUrl._raw, file, function(err) {
         if (err) {
             console.log(err);
             res.send(500);
         } else {
-
-            usersTable.photos(req, res, next, ['id', 'firstName', 'email', 'role', 'deletedAt'], 'user');
+            // usersTable.photos(req, res, next, ['id', 'firstName', 'email', 'role', 'deletedAt'], 'user');
         }
-
     })
-
 }
 
 module.exports.createSingleUser = function(req, res, next) {

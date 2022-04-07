@@ -8,9 +8,21 @@ import { useEffect, useState } from "react";
 import { Checkbox } from 'primereact/checkbox';
 import { useNavigate } from "react-router-dom";
 import CurrentLoggedUser from '../functions/currentLoggedUser';
+import { readBuilderProgram } from "typescript";
+import { stringify } from "querystring";
 
 interface MyObj {
     [propName: string]: string;
+};
+
+interface MyPic {
+    // [propName: string]: React.ImgHTMLAttributes<HTMLImageElement>.src?: string | undefined;
+    // type: React.ImgHTMLAttributes<HTMLImageElement>;
+    [propName: string]: string
+};
+
+type Props = {
+    src: string;
 };
 
 interface Setter {
@@ -27,9 +39,13 @@ type FormValues = {
     picture: string;
 };
 
+let picName: string;
+let picType: string;
+
 const CurrentUserCardData = () => {
     let { id } = useParams();
     const [user, setUser] = useState({});
+    const [picture, setPicture] = useState({});
 
     const getUser = () => {
 
@@ -47,11 +63,65 @@ const CurrentUserCardData = () => {
             })
             .catch(err => console.log(err));
     }
+
+    const getPicture = () => {
+
+        axios.post("http://localhost:62000/api/v1/picturesgetone",
+            {
+                userId: id
+            }, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(result => {
+                // console.log(result);
+
+                setPicture(result.data.picture);
+            })
+            .catch(err => console.log(err));
+    }
     useEffect(() => {
         getUser();
+        getPicture();
     }, []);
 
+    // return {user,picture};
     return user;
+}
+
+const CurrentUserCardPicture = () => {
+    let { id } = useParams();
+    const [picture, setPicture] = useState({});
+
+    const getPicture = () => {
+
+        axios.post("http://localhost:62000/api/v1/picturesgetone",
+            {
+                userId: id
+            }, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(result => {
+                // console.log(result.data.picture);
+                const resultData = result.data.picture.data;
+                const base64_response = 'data:image/jpeg;base64,' + resultData + 'CYII==';
+
+                // console.log(base64_response);
+
+
+                setPicture(base64_response);
+                // setPicture(resultData);
+            })
+            .catch(err => console.log(err));
+    }
+    useEffect(() => {
+        getPicture();
+    }, []);
+
+    return picture;
 }
 
 const CurrentUserCard = () => {
@@ -64,10 +134,16 @@ const CurrentUserCard = () => {
     const [passwordValue, setPasswordValue] = useState('');
     const [currentUserPicture, setCurrentUserPicture] = useState('');
     // const [srcPicture, setSrcPicture] = useState<Setter>();
-    const [srcPicture, setSrcPicture] = useState<any | null >(null);
+    const [srcPicture, setSrcPicture] = useState<any | null>(null);
     const navigate = useNavigate();
     let { id } = useParams();
     let user: MyObj = CurrentUserCardData();
+    let picture: MyPic = CurrentUserCardPicture();
+    // let picture: MyPic;
+    // console.log(picture);
+
+
+
 
     const onImageChange = (props: any) => {
 
@@ -75,13 +151,22 @@ const CurrentUserCard = () => {
         reader.readAsDataURL(props);
         reader.onload = () => {
 
-            reader ? setSrcPicture(reader.result) : setSrcPicture(user.picture);
+            // reader ? setSrcPicture(reader.result) : null;
+            setSrcPicture(reader.result);
             console.log(reader.result);
+            console.log(reader);
+            console.log(props.type);
+            console.log(props.name);
+
+            picName = props.name;
+            picType = props.type;
+
+
+            // console.log(picture);
+
 
         };
 
-        
-        
         setCurrentUserPicture(props.name);
     }
 
@@ -91,12 +176,16 @@ const CurrentUserCard = () => {
         navigate(path);
     }
 
-    if (Object.keys(user).length > 0) {
+    if (Object.keys(user).length > 0 && typeof picture === 'string') {
 
 
 
         const allowPasswordChange = id == currentUser.id ? true : false;
         let userPicture = user.picture;
+        let currentSrcPicture = picture;
+
+        // console.log(picture);
+
 
         const onSubmit: SubmitHandler<FormValues> = data => {
 
@@ -120,15 +209,17 @@ const CurrentUserCard = () => {
             //         console.log(err);
             //     });
 
-                axios.post("http://localhost:62000/api/v1/pictures",
+            axios.post("http://localhost:62000/api/v1/photos/upload",
                 {
                     userId: user.id,
-                    picture: srcPicture
+                    userName: user.firstName,
+                    picture: srcPicture,
+                    picName: picName,
+                    picType: picType
                 })
-                .then(res => {
-                    if (res.status === 200) {
-                        window.location.reload();
-                    }
+                .then(response => {
+                    console.log(response);
+
                 })
                 .catch(err => {
                     console.log(err);
@@ -144,9 +235,7 @@ const CurrentUserCard = () => {
                     <Row className="mt-3">
                         <Row>
                             <Col sm={2} className="border rounded">
-                                <Image fluid src={require(`../../public/images/${userPicture}`)} alt="pic" />
-                                {/* <Image id='profilePicture' fluid src={srcPicture} alt="pic" /> */}
-                                {/* <Image id='profilePicture' fluid src={currentUserPicture} alt="pic" /> */}
+                                <Image fluid src={`http://localhost:62000/public/images/authData4.jpg`} alt="pic" />
                             </Col>
                             <Col sm={3} className="ml-3">
                                 <Row>
@@ -170,30 +259,14 @@ const CurrentUserCard = () => {
 
                                     <Row>
                                         <Col sm={5}>
-                                            {/* <input
-                                            type="file"
-                                            name="myImage"
-                                            onChange={(event) => {
-                                                  console.log(event.target.files[0]);
-                                                  setSelectedImage(event.target.files[0]);
-                                            }}
-                                        /> */}
-
                                             <Form.Group controlId="formFile" className="mb-3">
                                                 <Form.Label>Please select picture file</Form.Label>
-                                                {/* <Form.Control type="file" accept="image/png, image/jpeg" onChange={(e: React.ChangeEvent) => {
-                                                const target= e.target as HTMLInputElement;
-                                                let file : any = target.files[0]; 
-                                                    console.log(file.name);
-                                                    
-                                            }} /> */}
                                                 <Form.Control type="file" name="avatar" accept="image/png, image/jpeg" onChange={(e: React.ChangeEvent) => {
                                                     const targetEl = e.target as HTMLInputElement;
                                                     let file: any = targetEl.files![0];
                                                     // console.log(file.name);
                                                     // console.log(file);
                                                     // console.log(file.mozFullPath);
-                                                    onImageChange(file);
 
                                                     let reader = new FileReader();
 
@@ -203,17 +276,17 @@ const CurrentUserCard = () => {
                                                         //     imgUpload: reader.result
                                                         // })
 
-                                                        console.log(reader);
+                                                        // console.log(reader.result);
 
                                                     };
 
+                                                    onImageChange(file);
                                                     // reader.addEventListener("load", function () {
                                                     //     // convert image file to base64 string
                                                     //     console.log(reader.result);
                                                     //   }, false);
 
                                                 }} />
-                                                {/* <input type="file" id="filepicker" name="fileList" webkitdirectory multiple /> */}
                                             </Form.Group>
 
                                         </Col>

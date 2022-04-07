@@ -70,7 +70,11 @@ module.exports.connect = function(path, app) {
         .post(authMiddleware.auth, tasksController.photos);
 
     router.route("/pictures")
+        .get(authMiddleware.auth, tasksController.picturesGet)
         .post(authMiddleware.auth, tasksController.pictures);
+
+    router.route("/picturesgetone")
+        .post(authMiddleware.auth, tasksController.picturesGet);
 
     app.use(path, router);
 };

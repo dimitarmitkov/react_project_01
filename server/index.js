@@ -26,51 +26,15 @@ app.use(cors({
     exposedHeaders: corsConfig.exposedHeaders
 }));
 
-// app.use(cors());
-app.use('/static', express.static('public'));
+// original code
+// app.use('/static', express.static('public'));
+app.use('/public', express.static('public'));
 
 app.use(cookieParser());
 app.use(bodyParser.json({ limit: '10000mb' }));
 
 app.use(bodyParser.urlencoded({ limit: '10000mb', extended: true }));
 app.use(express.static(path.resolve(__basedir, 'static')));
-// app.use(express.urlencoded({ extended: true }));
-// app.use(
-//     session({
-//         secret: "this_is_a_secret",
-//         resave: true,
-//         saveUnitialized: true,
-//         rolling: true, // forces resetting of max age
-//         cookie: {
-//             maxAge: 3000,
-//             secure: false // this should be true only when you don't want to show it for security reason
-//         }
-//     })
-// );
-
-// app.use(express.urlencoded({ extended: true }));
-// app.use(
-//     session({
-//         secret: "this_is_a_secret",
-//         // store: pgSessionStorage,
-//         resave: true,
-//         saveUnitialized: true,
-//         rolling: true, // forces resetting of max age
-//         cookie: {
-//             maxAge: 3000,
-//             secure: false // this should be true only when you don't want to show it for security reason
-//         }
-//     })
-// );
-// app.use(passport.initialize());
-// app.use(passport.session());
-
-// app.use(session({
-//     secret: 'keyboard cat',
-//     resave: false,
-//     saveUninitialized: true,
-//     cookie: { secure: true }
-// }))
 
 api.connect('/api/v1', app);
 

@@ -40,6 +40,7 @@ function App() {
           <Row>
             <Col>
               <NavbarData />
+              <HelloClass name={"Orfi"} />
             </Col>
           </Row>
           <Row>

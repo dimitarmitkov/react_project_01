@@ -616,6 +616,20 @@ module.exports = function serviceFactory(model) {
 
     }
 
+    function picturesGet(req, res, next, attributesArray) {
+
+        const { userId } = req.body;
+
+        model.findOne({
+            where: { userId: userId },
+            attributes: attributesArray
+        }).then(result => {
+            res.send(result);
+
+        }).catch();
+
+    }
+
 
 
     return {
@@ -633,6 +647,7 @@ module.exports = function serviceFactory(model) {
         getAllPaginationRawQueryMop,
         editTask,
         getAllUsersByTask,
-        pictures
+        pictures,
+        picturesGet
     };
 }
