@@ -64,65 +64,65 @@ const CurrentUserCardData = () => {
             .catch(err => console.log(err));
     }
 
-    const getPicture = () => {
+    // const getPicture = () => {
 
-        axios.post("http://localhost:62000/api/v1/picturesgetone",
-            {
-                userId: id
-            }, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-            .then(result => {
-                // console.log(result);
+    //     axios.post("http://localhost:62000/api/v1/picturesgetone",
+    //         {
+    //             userId: id
+    //         }, {
+    //         headers: {
+    //             'Content-Type': 'application/json'
+    //         }
+    //     })
+    //         .then(result => {
+    //             // console.log(result);
 
-                setPicture(result.data.picture);
-            })
-            .catch(err => console.log(err));
-    }
+    //             setPicture(result.data.picture);
+    //         })
+    //         .catch(err => console.log(err));
+    // }
     useEffect(() => {
         getUser();
-        getPicture();
+        // getPicture();
     }, []);
 
     // return {user,picture};
     return user;
 }
 
-const CurrentUserCardPicture = () => {
-    let { id } = useParams();
-    const [picture, setPicture] = useState({});
+// const CurrentUserCardPicture = () => {
+//     let { id } = useParams();
+//     const [picture, setPicture] = useState({});
 
-    const getPicture = () => {
+//     const getPicture = () => {
 
-        axios.post("http://localhost:62000/api/v1/picturesgetone",
-            {
-                userId: id
-            }, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-            .then(result => {
-                // console.log(result.data.picture);
-                const resultData = result.data.picture.data;
-                const base64_response = 'data:image/jpeg;base64,' + resultData + 'CYII==';
+//         axios.post("http://localhost:62000/api/v1/picturesgetone",
+//             {
+//                 userId: id
+//             }, {
+//             headers: {
+//                 'Content-Type': 'application/json'
+//             }
+//         })
+//             .then(result => {
+//                 // console.log(result.data.picture);
+//                 const resultData = result.data.picture.data;
+//                 const base64_response = 'data:image/jpeg;base64,' + resultData + 'CYII==';
 
-                // console.log(base64_response);
+//                 // console.log(base64_response);
 
 
-                setPicture(base64_response);
-                // setPicture(resultData);
-            })
-            .catch(err => console.log(err));
-    }
-    useEffect(() => {
-        getPicture();
-    }, []);
+//                 setPicture(base64_response);
+//                 // setPicture(resultData);
+//             })
+//             .catch(err => console.log(err));
+//     }
+//     useEffect(() => {
+//         getPicture();
+//     }, []);
 
-    return picture;
-}
+//     return picture;
+// }
 
 const CurrentUserCard = () => {
     const [currentUser, setCurrentUser] = useState(Object);
@@ -133,12 +133,13 @@ const CurrentUserCard = () => {
     const { register, watch, formState: { errors }, handleSubmit } = useForm<FormValues>();
     const [passwordValue, setPasswordValue] = useState('');
     const [currentUserPicture, setCurrentUserPicture] = useState('');
-    // const [srcPicture, setSrcPicture] = useState<Setter>();
     const [srcPicture, setSrcPicture] = useState<any | null>(null);
+    const [pictureName, setPictureName] = useState<any | null>(null);
+    const [pictureType, setPictureType] = useState<any | null>(null);
     const navigate = useNavigate();
     let { id } = useParams();
     let user: MyObj = CurrentUserCardData();
-    let picture: MyPic = CurrentUserCardPicture();
+    // let picture: MyPic = CurrentUserCardPicture();
     // let picture: MyPic;
     // console.log(picture);
 
@@ -151,20 +152,12 @@ const CurrentUserCard = () => {
         reader.readAsDataURL(props);
         reader.onload = () => {
 
-            // reader ? setSrcPicture(reader.result) : null;
             setSrcPicture(reader.result);
-            console.log(reader.result);
-            console.log(reader);
-            console.log(props.type);
-            console.log(props.name);
-
-            picName = props.name;
-            picType = props.type;
-
-
-            // console.log(picture);
-
-
+            setPictureName(props.name);
+            setPictureType(props.type);
+            // picName = props.name;
+            // picType = props.type;
+            console.log('picture');
         };
 
         setCurrentUserPicture(props.name);
@@ -176,57 +169,59 @@ const CurrentUserCard = () => {
         navigate(path);
     }
 
-    if (Object.keys(user).length > 0 && typeof picture === 'string') {
-
-
+    
+    
+    if (Object.keys(user).length > 0) {
+        console.log(Object.keys(user).length > 0);
 
         const allowPasswordChange = id == currentUser.id ? true : false;
-        let userPicture = user.picture;
-        let currentSrcPicture = picture;
+        // let userPicture = user.picture;
+        // let currentSrcPicture = picture;
 
         // console.log(picture);
 
 
         const onSubmit: SubmitHandler<FormValues> = data => {
 
-            // axios.post("http://localhost:62000/api/v1/photos/upload",
-            // axios.post("http://localhost:62000/api/v1/usersEdit",
-            //     {
-            //         email: user.email,
-            //         insertPassword: passwordValue ? passwordValue : null,
-            //         firstName: user.firstName,
-            //         lastName: user.lastName,
-            //         role: user.role,
-            //         picture: currentUserPicture,
-            //         id: user.id,
-            //     })
-            //     .then(res => {
-            //         if (res.status === 200) {
-            //             window.location.reload();
-            //         }
-            //     })
-            //     .catch(err => {
-            //         console.log(err);
-            //     });
-
-            axios.post("http://localhost:62000/api/v1/photos/upload",
-                {
-                    userId: user.id,
-                    userName: user.firstName,
-                    picture: srcPicture,
-                    picName: picName,
-                    picType: picType
-                })
-                .then(response => {
-                    console.log(response);
-
-                })
-                .catch(err => {
-                    console.log(err);
-                });
+            if (changePasswordSelected) {
+                axios.post("http://localhost:62000/api/v1/usersEdit",
+                    {
+                        email: user.email,
+                        insertPassword: passwordValue ? passwordValue : null,
+                        firstName: user.firstName,
+                        lastName: user.lastName,
+                        role: user.role,
+                        picture: user.picture,
+                        id: user.id,
+                    })
+                    .then(res => {
+                        if (res.status === 200) {
+                            window.location.reload();
+                        }
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
+            }
 
 
-
+            if (currentUserPicture.length > 0) {
+                axios.post("http://localhost:62000/api/v1/photos/upload",
+                    {
+                        userId: user.id,
+                        userName: user.firstName,
+                        picture: srcPicture,
+                        picName: pictureName,
+                        picType: pictureType
+                    })
+                    .then(response => {
+                        console.log(response);
+                         window.location.reload();
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
+            }
         };
 
         return (
@@ -235,7 +230,7 @@ const CurrentUserCard = () => {
                     <Row className="mt-3">
                         <Row>
                             <Col sm={2} className="border rounded">
-                                <Image fluid src={`http://localhost:62000/public/images/authData4.jpg`} alt="pic" />
+                                <Image fluid src={user.picture} alt="pic" />
                             </Col>
                             <Col sm={3} className="ml-3">
                                 <Row>

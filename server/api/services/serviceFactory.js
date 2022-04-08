@@ -10,7 +10,10 @@ const myKey = require("../connection/myKey");
 const { password } = require('../connection/connectionData');
 const multer = require('multer');
 const fs = require('fs');
+const getFileName = require("../functions/getFileName.js");
+
 const upload = multer({ dest: path.resolve(__dirname, 'public/images') });
+
 
 const sequelize = new Sequelize(cs.database, cs.username, cs.password, {
     host: cs.host,
@@ -573,46 +576,31 @@ module.exports = function serviceFactory(model) {
 
     function pictures(req, res, next, attributesArray) {
 
-        const { userId, picture } = req.body;
+        const { userId } = req.body;
 
-        model.findOne({
-            where: { userId: userId },
-            attributes: attributesArray
-        }).then(result => {
-            if (!result.userId) {
-                model.create({
-                    userId,
-                    picture,
-                }).then(task => {
-                    res.status(201).send('picture created');
-                }).catch(next => {
-                    res.status(400).send('not allowed')
-                });
-            } else {
-                const updateDate = new Date(Date.now()).toISOString();
-                queryText = `UPDATE "UserPictures"
-                            SET "picture" = :picture,
-                            "updatedAt" = :date
-                            WHERE "userId" = :userId;`;
+        const fileName = 'http://localhost:62000/public/images/' + getFileName(req);
+        const updateDate = new Date(Date.now()).toISOString();
+        queryText = `UPDATE "Users"
+                    SET "picture" = :picture,
+                    "updatedAt" = :date
+                    WHERE "id" = :userId;`;
 
-                replacementsData = {
-                    userId: `${userId}`,
-                    picture: `${picture}`,
-                    date: `${updateDate}`
-                }
+        replacementsData = {
+            userId: `${userId}`,
+            picture: `${fileName}`,
+            date: `${updateDate}`
+        }
 
-                const { QueryTypes } = require('sequelize');
-                sequelize.query(queryText, {
-                    replacements: replacementsData,
-                    type: QueryTypes.UPDATE
-                }).then(task => {
-                    res.status(201).send('picture updated');
-                }).catch(next => {
-                    res.status(400).send('not allowed')
-                });
-            }
+        const { QueryTypes } = require('sequelize');
+        sequelize.query(queryText, {
+            replacements: replacementsData,
+            type: QueryTypes.UPDATE
+        }).then(task => {
+            res.status(201).send('picture updated');
+        }).catch(next => {
+            res.status(400).send('not allowed')
+        });
 
-        }).catch();
 
     }
 

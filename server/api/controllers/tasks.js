@@ -8,6 +8,7 @@ const { QueryTypes } = require('sequelize');
 const bcrypt = require("bcrypt");
 const multer = require('multer');
 const fs = require('fs');
+const getFileName = require("../functions/getFileName.js");
 
 const upload = multer({ dest: path.resolve(__dirname, 'public/images') });
 // const usersModel = require("../../models/users");
@@ -187,27 +188,52 @@ module.exports.photos = function(req, res, next) {
 
     // readFile(req.body.picture);
 
-    console.log(global);
-    let currPath = path.resolve(__dirname, 'public/images').replace('api/controllers/', '');
-    console.log('current path: ', currPath);
-    console.log(req._parsedUrl._raw);
-    const file = global.__basedir + '/public/images/' + req.body.picture;
+    const mimeTypesArray = ['image/bmp', 'image/gif', 'image/jpeg', 'image/png', 'image/svg+xml', 'image/tiff'];
 
-    let base64Data = req.body.picture.replace(/^data:[A-Za-z-+\/]+;base64,/, '');
 
-    fs.writeFile(currPath + '/' + "authData4.jpg", base64Data, 'base64',
-        function(err) {
-            console.log(err);
-        });
+    if (mimeTypesArray.includes(req.body.picType)) {
 
-    fs.rename(req._parsedUrl._raw, file, function(err) {
-        if (err) {
-            console.log(err);
-            res.send(500);
-        } else {
-            // usersTable.photos(req, res, next, ['id', 'firstName', 'email', 'role', 'deletedAt'], 'user');
-        }
-    })
+        const currPath = path.resolve(__dirname, 'public/images').replace('api/controllers/', '');
+        const base64Data = req.body.picture.replace(/^data:[A-Za-z-+\/]+;base64,/, '');
+
+        // const mimeTypesExtArray = {
+        //     'image/bmp': '.bmp',
+        //     'image/gif': '.gif',
+        //     'image/jpeg': '.jpg',
+        //     'image/png': '.png',
+        //     'image/svg+xml': '.svg',
+        //     'image/tiff': '.tif'
+        // };
+
+        // const fileExt = mimeTypesExtArray[req.body.picType];
+        // const fileName = req.body.userName + '_' + req.body.userId;
+        // console.log(fileExt);
+        // console.log(fileName);
+        const fileName = getFileName(req);
+
+        console.log(fileName);
+
+
+        fs.writeFile(currPath + '/' + fileName, base64Data, 'base64',
+            function(err) {
+                if (err) {
+                    throw err;
+                }
+                usersTable.pictures(req, res, next, ['id', 'firstName', 'email', 'role', 'picture', 'deletedAt'], 'user');
+            });
+    } else {
+        throw "This is not picture";
+    }
+
+
+    // fs.rename(req._parsedUrl._raw, file, function(err) {
+    //     if (err) {
+    //         console.log(err);
+    //         res.send(500);
+    //     } else {
+    //         // usersTable.photos(req, res, next, ['id', 'firstName', 'email', 'role', 'deletedAt'], 'user');
+    //     }
+    // })
 }
 
 module.exports.createSingleUser = function(req, res, next) {
