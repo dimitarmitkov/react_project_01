@@ -19,7 +19,7 @@ const NavbarMenu: React.FunctionComponent = (props: any) => {
             <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
                 <Container>
 
-                    <Navbar.Brand href="#home">Tasks Nav-bar</Navbar.Brand>
+                    <Navbar.Brand >Tasks Nav-bar</Navbar.Brand>
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
 
                     <Navbar.Collapse id="responsive-navbar-nav">
@@ -35,11 +35,11 @@ const NavbarMenu: React.FunctionComponent = (props: any) => {
 
                         <Nav>
                             <Link to={user.userName ? `/logout` : `/login`} className="button active-task-link">{user.userName ? 'LogOut' : 'Login'}</Link>
-                            <Nav.Link eventKey={2} href="#">
-                                {user ? user.userName : ''}
-                            </Nav.Link>
+                            <Nav className='mt-2'>
+                                {user ? <>{user.userName} {user.role}</> : ''}
+                            </Nav>
                             {Object.keys(user).length > 0 ?
-                                <Link to={`/currentuser/${user.id}`}>
+                                <Link to={`/currentuser/${user.id}`} className="ml-3">
                                     <Button icon="pi pi-user" className="p-button-rounded p-button-info" disabled={user.userName ? false : true} />
                                 </Link>
                                 : null}

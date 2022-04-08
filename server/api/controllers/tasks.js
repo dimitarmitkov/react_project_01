@@ -35,16 +35,13 @@ let deletedAt = '';
 let firstName = '';
 let lastName = '';
 let userId = '';
-let picture = '';
+let taskId = '';
 
 const usersTable = serviceFactory(sequelize.define('usersModel', { firstName, lastName, deletedAt }, { tableName: "Users" }));
 
 const tasksTable = serviceFactory(sequelize.define('tasksModel', { deletedAt }, { tableName: "Tasks" }));
 
-const userTasksTable = serviceFactory(sequelize.define('userTasksModel', { deletedAt }, { tableName: "UserTasks" }));
-
-const userPicturesTable = serviceFactory(sequelize.define('userPicturesModel', { userId, picture, deletedAt }, { tableName: "UserPictures" }));
-
+const userTasksTable = serviceFactory(sequelize.define('userTasksModel', { userId, taskId, deletedAt }, { tableName: "UserTasks" }));
 
 
 module.exports.getAllUsers = function(req, res, next) {
@@ -97,6 +94,11 @@ module.exports.getOneTask = function(req, res, next) {
 module.exports.getUserTasks = function(req, res, next) {
 
     tasksTable.getUserTasks(req, res, next, ['id', 'taskType', 'taskName', 'taskProgress', 'deletedAt']);
+}
+
+module.exports.matchUserTasks = function(req, res, next) {
+
+    userTasksTable.matchUserTasks(req, res, next, ['id', 'userId', 'taskId', 'deletedAt']);
 }
 
 module.exports.getUserTasksMeetingOrProject = function(req, res, next) {
@@ -177,42 +179,13 @@ module.exports.picturesGet = function(req, res, next) {
 module.exports.photos = function(req, res, next) {
     upload.single('file');
 
-    // function readFile(filePath) {
-    //     try {
-    //         const data = fs.readFile(filePath);
-    //         console.log(data.toString());
-    //     } catch (error) {
-    //         console.error(`Got an error trying to read the file: ${error.message}`);
-    //     }
-    // }
-
-    // readFile(req.body.picture);
-
     const mimeTypesArray = ['image/bmp', 'image/gif', 'image/jpeg', 'image/png', 'image/svg+xml', 'image/tiff'];
-
 
     if (mimeTypesArray.includes(req.body.picType)) {
 
         const currPath = path.resolve(__dirname, 'public/images').replace('api/controllers/', '');
         const base64Data = req.body.picture.replace(/^data:[A-Za-z-+\/]+;base64,/, '');
-
-        // const mimeTypesExtArray = {
-        //     'image/bmp': '.bmp',
-        //     'image/gif': '.gif',
-        //     'image/jpeg': '.jpg',
-        //     'image/png': '.png',
-        //     'image/svg+xml': '.svg',
-        //     'image/tiff': '.tif'
-        // };
-
-        // const fileExt = mimeTypesExtArray[req.body.picType];
-        // const fileName = req.body.userName + '_' + req.body.userId;
-        // console.log(fileExt);
-        // console.log(fileName);
         const fileName = getFileName(req);
-
-        console.log(fileName);
-
 
         fs.writeFile(currPath + '/' + fileName, base64Data, 'base64',
             function(err) {
@@ -224,16 +197,6 @@ module.exports.photos = function(req, res, next) {
     } else {
         throw "This is not picture";
     }
-
-
-    // fs.rename(req._parsedUrl._raw, file, function(err) {
-    //     if (err) {
-    //         console.log(err);
-    //         res.send(500);
-    //     } else {
-    //         // usersTable.photos(req, res, next, ['id', 'firstName', 'email', 'role', 'deletedAt'], 'user');
-    //     }
-    // })
 }
 
 module.exports.createSingleUser = function(req, res, next) {

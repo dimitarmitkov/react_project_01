@@ -1,6 +1,7 @@
-import { Card, Row, Col } from 'react-bootstrap';
+import { Card, Button, DropdownButton, Dropdown, Form, Container, Row, Col } from 'react-bootstrap';
 import ModalApp from './modal/ModalTask';
 import './tasks/tasks.css';
+
 
 const TasksCard = (props: any) => {
     const task = props.task;
@@ -18,8 +19,9 @@ const TasksCard = (props: any) => {
                     <Card.Link href="#"></Card.Link>
                 </Card.Body>
                 <Card.Body className="mt-2 edit-buttons edit">
-                            <ModalApp {...task} />
+                    <ModalApp {...task} />
                 </Card.Body>
+                
             </Card>
         </div>
     );

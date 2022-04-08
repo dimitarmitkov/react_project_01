@@ -618,6 +618,18 @@ module.exports = function serviceFactory(model) {
 
     }
 
+    function matchUserTasks(req, res, next, attributesArray) {
+
+        const { userIdArray, taskId } = req.body;
+
+        model.bulkCreate(userIdArray)
+            .then(result => {
+                res.send(result);
+            })
+            .catch(err => res.send(err));
+
+
+    }
 
 
     return {
@@ -636,6 +648,7 @@ module.exports = function serviceFactory(model) {
         editTask,
         getAllUsersByTask,
         pictures,
-        picturesGet
+        picturesGet,
+        matchUserTasks
     };
 }

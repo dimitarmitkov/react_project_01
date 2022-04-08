@@ -6,7 +6,7 @@ import CurrentLoggedUser from '../functions/currentLoggedUser';
 import './modalTask.css';
 import DeleteTaskModalApp from './ModalDeleteTask';
 import { Link } from 'react-router-dom';
-
+import MultiSelector from './MultiSelector';
 
 interface Provider {
     type: JSX.Element;
@@ -98,6 +98,8 @@ const MyVerticallyCenteredModal = (props: any) => {
         getData();
     }, [queryData]);
 
+
+
     return (
         <Modal
             {...props}
@@ -137,6 +139,15 @@ const MyVerticallyCenteredModal = (props: any) => {
                                 </Col>
                             </>
                             : null}
+                    </Row>
+                </Container>
+            </Modal.Body>
+            <Modal.Body>
+                <Container>
+                    <Row>
+                        <Col>
+                            <MultiSelector {...props.data}/>
+                        </Col>
                     </Row>
                 </Container>
             </Modal.Body>
