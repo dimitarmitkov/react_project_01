@@ -23,8 +23,6 @@ type FormValues = {
     picture: string;
 };
 
-
-
 const UserCardData = () => {
     let { id } = useParams();
     const [user, setUser] = useState({});
@@ -55,55 +53,86 @@ const UserCardData = () => {
 
 
 const UserCard = () => {
+
     const [currentUser, setCurrentUser] = useState(Object);
-
-    CurrentLoggedUser(setCurrentUser);
-
     const [changePasswordSelected, setChangePasswordSelected] = useState(false);
     const { register, watch, formState: { errors }, handleSubmit } = useForm<FormValues>();
     const [passwordValue, setPasswordValue] = useState('');
     const [currentUserPicture, setCurrentUserPicture] = useState('');
+    const [srcPicture, setSrcPicture] = useState<any | null>(null);
+    const [pictureName, setPictureName] = useState<any | null>(null);
+    const [pictureType, setPictureType] = useState<any | null>(null);
     const navigate = useNavigate();
+    
+    CurrentLoggedUser(setCurrentUser);
+
     let { id } = useParams();
     let user: MyObj = UserCardData();
 
-
     const onImageChange = (props: any) => {
-        setCurrentUserPicture(props);
 
+        let reader = new FileReader();
+        reader.readAsDataURL(props);
+        reader.onload = () => {
+
+            setSrcPicture(reader.result);
+            setPictureName(props.name);
+            setPictureType(props.type);
+        };
+
+        setCurrentUserPicture(props.name);
     }
 
     const editUserRoute = () => {
-    
+
         let path = `/users`;
         navigate(path);
     }
-
+    
     if (Object.keys(user).length > 0) {
 
         const allowPasswordChange = id == currentUser.id ? true : false;
-        let userPicture = user.picture;
 
         const onSubmit: SubmitHandler<FormValues> = data => {
 
-            axios.post("http://localhost:62000/api/v1/usersEdit",
-                {
-                    email: user.email,
-                    insertPassword: passwordValue ? passwordValue : null,
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    role: user.role,
-                    picture: currentUserPicture,
-                    id: user.id
-                })
-                .then(res => {
-                    if (res.status === 200) {
-                        window.location.reload();
-                    }
-                })
-                .catch(err => {
-                    console.log(err);
-                });
+            if (changePasswordSelected) {
+                axios.post("http://localhost:62000/api/v1/usersEdit",
+                    {
+                        email: user.email,
+                        insertPassword: passwordValue ? passwordValue : null,
+                        firstName: user.firstName,
+                        lastName: user.lastName,
+                        role: user.role,
+                        picture: user.picture,
+                        id: user.id,
+                    })
+                    .then(res => {
+                        if (res.status === 200) {
+                            window.location.reload();
+                        }
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
+            }
+
+            if (currentUserPicture.length > 0) {
+                axios.post("http://localhost:62000/api/v1/photos/upload",
+                    {
+                        userId: user.id,
+                        userName: user.firstName,
+                        picture: srcPicture,
+                        picName: pictureName,
+                        picType: pictureType
+                    })
+                    .then(response => {
+                        console.log(response);
+                         window.location.reload();
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
+            }
         };
 
         return (
@@ -112,7 +141,7 @@ const UserCard = () => {
                     <Row className="mt-3">
                         <Row>
                             <Col sm={2} className="border rounded">
-                                <Image fluid src={require(`../../public/images/${userPicture}`)} alt="pic" />
+                                <Image fluid src={user.picture} alt="pic" />
                             </Col>
                             <Col sm={3} className="ml-3">
                                 <Row>
@@ -136,32 +165,13 @@ const UserCard = () => {
 
                                     <Row>
                                         <Col sm={5}>
-                                            {/* <input
-                                            type="file"
-                                            name="myImage"
-                                            onChange={(event) => {
-                                                  console.log(event.target.files[0]);
-                                                  setSelectedImage(event.target.files[0]);
-                                            }}
-                                        /> */}
-
                                             <Form.Group controlId="formFile" className="mb-3">
                                                 <Form.Label>Please select picture file</Form.Label>
-                                                {/* <Form.Control type="file" accept="image/png, image/jpeg" onChange={(e: React.ChangeEvent) => {
-                                                const target= e.target as HTMLInputElement;
-                                                let file : any = target.files[0]; 
-                                                    console.log(file.name);
-                                                    
-                                            }} /> */}
-                                                <Form.Control type="file" accept="image/png, image/jpeg" onChange={(e: React.ChangeEvent) => {
+                                                <Form.Control type="file" name="avatar" accept="image/png, image/jpeg" onChange={(e: React.ChangeEvent) => {
                                                     const targetEl = e.target as HTMLInputElement;
-                                                    let file: any = targetEl.files![0];
-                                                    console.log(file.name);
-                                                    console.log(file);
-                                                    onImageChange(file.name);
-
+                                                    const file: any = targetEl.files![0];
+                                                    onImageChange(file);
                                                 }} />
-                                                {/* <input type="file" id="filepicker" name="fileList" webkitdirectory multiple /> */}
                                             </Form.Group>
 
                                         </Col>
@@ -206,11 +216,10 @@ const UserCard = () => {
                                 </form >
                                 <Row className="mt-3 mb-3 justify-content-md-center">
                                     <Col>
-                                        <Button label="Back to users" className="p-button-primary" disabled={false} onClick={editUserRoute}/>
+                                        <Button label="Back to users" className="p-button-primary" disabled={false} onClick={editUserRoute} />
                                     </Col>
                                 </Row>
                             </Col>
-
                         </Row>
                     </Row>
                 </Container>
