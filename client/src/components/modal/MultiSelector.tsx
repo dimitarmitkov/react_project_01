@@ -84,7 +84,14 @@ const MultiSelector = (props: any) => {
                 taskId: taskIdGlobal
             }
             )
-            .then(result=>{console.log(result);
+            .then(result=>{
+                console.log(result);
+                if(result.status===200){
+                    // window.location.reload();
+                    const modal = document.getElementById("myModalId")?.firstElementChild;
+
+                    
+                }
             })
             .catch(err=>console.log(err));
             

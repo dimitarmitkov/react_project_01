@@ -22,6 +22,7 @@ import CreateTask from './components/createTask/CreateTask';
 import CurrentLoggedUser from './components/functions/currentLoggedUser';
 import UserCardData from './components/user/UserCardData';
 import CurrentUserCard from './components/user/CurrentUserDataCard';
+import WebsocketData from './components/ws/websocket';
 
 function App() {
 
@@ -60,6 +61,7 @@ function App() {
                 < Route path="/usertasks" element={<PaginatedTasksByUser data={user} />} />
                 < Route path="/users/:id" element={<UserCardData />} />
                 < Route path="/currentuser/:id" element={<CurrentUserCard />} />
+                < Route path="/websocket" element={<WebsocketData />} />
 
               </Routes>
             </Col>

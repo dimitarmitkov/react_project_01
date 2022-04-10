@@ -38,8 +38,6 @@ let lastName = '';
 let role = '';
 
 const userTasksTable = sequelize.define('userTasksModel', { taskId, userId, deletedAt }, { tableName: "UserTasks" });
-// const usersTable = sequelize.define('usersModel', { firstName, lastName, role, deletedAt }, { tableName: "Users" });
-
 
 module.exports = function serviceFactory(model) {
 
