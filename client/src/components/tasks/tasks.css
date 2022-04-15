@@ -2,11 +2,6 @@
     overflow: hidden;
 }
 
-.edit-buttons.edit>button,
-.edit-buttons.delete>button {
-    min-width: 7rem;
-}
-
 #multiSelectUser {
     text-overflow: hidden;
     background-color: red;

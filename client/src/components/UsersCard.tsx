@@ -57,7 +57,7 @@ const UsersCard = (props: any) => {
                 </Col>
             </Row>
             <Row>
-                <Col sm={3}>
+                <Col sm={6}>
                         <EditUserApp {...user} />
                         {userLogged.role === 'admin' ? <DeleteUserModalApp {...user}/> : null}
                 </Col>

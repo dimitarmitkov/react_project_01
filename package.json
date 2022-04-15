@@ -1,8 +1,17 @@
 {
-  "dependencies": {
-    "express-jwt": "^6.1.1",
-    "express-session": "^1.17.2",
-    "nodemon": "^2.0.15",
-    "passport": "^0.5.2"
-  }
+    "dependencies": {
+        "express-jwt": "^6.1.1",
+        "express-session": "^1.17.2",
+        "nodemon": "^2.0.15",
+        "passport": "^0.5.2"
+    },
+    "scripts": {
+        "client": "cd client && npm start",
+        "server": "cd server && node index.js",
+        "assets": "cd server/websocket/index.js && ionic serve",
+        "start": "concurrently \"npm run client\" \"npm run server\" \"npm run assets\" "
+    },
+    "devDependencies": {
+        "concurrently": "^7.1.0"
+    }
 }

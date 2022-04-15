@@ -38,7 +38,7 @@ const DeleteUserModal = (props: any) => {
         <Modal.Header closeButton onClick={handleDiscard}>
           <Modal.Title>Delete User {props.data.firstName}</Modal.Title>
         </Modal.Header>
-        <Modal.Body>You're about to delete this User. Are you sure?</Modal.Body>
+        <Modal.Body>You're about to delete user <span>{props.data.firstName} {props.data.lastName}</span>. Are you sure?</Modal.Body>
         <Modal.Footer>
           <ButtonBs variant="secondary" onClick={handleDiscard}>
             Discard

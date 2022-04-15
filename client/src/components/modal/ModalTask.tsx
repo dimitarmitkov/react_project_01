@@ -7,13 +7,19 @@ import './modalTask.css';
 import DeleteTaskModalApp from './ModalDeleteTask';
 import { Link } from 'react-router-dom';
 import MultiSelector from './MultiSelector';
+// import websocket from '../ws/websocket';
+import ChildComponent from '../ws/WsChildComponent';
 
 interface Provider {
     type: JSX.Element;
 }
+
+const ws = new WebSocket('ws://127.0.0.1:8000/ws');
+
 const MyVerticallyCenteredModal = (props: any) => {
     const [user, setUser] = useState(Object);
     const [showUsers, setShowUsers] = useState<Provider>();
+    const [allowedUsers, setAllowedUsers] = useState([]);
 
     CurrentLoggedUser(setUser);
 
@@ -35,24 +41,15 @@ const MyVerticallyCenteredModal = (props: any) => {
         done: { doneAt: currentDate, doneByUserId: props.data.userId ? props.data.userId : user.id }
     };
 
-    const changeTaskStatus = (e: any) => {
-
-        const checkValue = e.target.innerText;
-        if (projectArray.includes(checkValue) || meetingArray.includes(checkValue)) {
-            queryData = {
-                changeData: actionDataObject[checkValue],
-                idData: props.data.taskId ? props.data.taskId : props.data.id,
-                taskProgress: checkValue
-            };
-            getData();
-        }
-    };
-
     const getData = () => {
 
         if (Object.keys(queryData).length > 0) {
             axios.post("http://localhost:62000/api/v1/tasks", queryData)
                 .then(result => {
+
+                    if (result.status === 200) {
+
+                    }
 
                 })
                 .catch(err => console.log(err));
@@ -68,17 +65,38 @@ const MyVerticallyCenteredModal = (props: any) => {
 
                 const NamesList = () => (
                     <div>
-                        <ul>{currentData.map((name: any) => <li key={name.firstName}>
+                        <ul>{currentData.map((name: any) => <li key={name.id}>
                             {user && user.role === 'admin' ? <Link to={`/users/${name.id}`}>{name.firstName} {name.lastName} </Link> :
                                 <div>{name.firstName} {name.lastName} </div>}
                         </li>)}</ul>
                     </div>
                 );
 
+                const allowedUsersList = () => (
+                        currentData.map((name: any) =>name.id)
+                );
+
                 setShowUsers(NamesList);
+                setAllowedUsers(allowedUsersList);
             })
             .catch(err => console.log(err));
     }
+
+    const changeTaskStatus = (e: any) => {
+
+        // e.preventDefault();
+        const checkValue = e.target.innerText;
+        if (projectArray.includes(checkValue) || meetingArray.includes(checkValue)) {
+            
+            queryData = {
+                changeData: actionDataObject[checkValue],
+                idData: props.data.taskId ? props.data.taskId : props.data.id,
+                taskProgress: checkValue
+            };
+            ws.send(JSON.stringify({main: props.data, action: checkValue, allowedList: allowedUsers}));
+            getData();
+        }
+    };
 
     const showRelatedUsers = (props: number) => {
         getUsers(props);
@@ -94,15 +112,13 @@ const MyVerticallyCenteredModal = (props: any) => {
             return <Dropdown.Item as="button" key={'bbd' + k}>{element}</Dropdown.Item>
         });
 
-    useEffect(() => {
-        getData();
-    }, [queryData]);
-
-
+    // useEffect(() => {
+    //     getData();
+    // }, [queryData]);
 
     return (
         <Modal
-        id="myModalId"
+            id="myModalId"
             {...props}
             size="lg"
             aria-labelledby="contained-modal-title-vcenter"
@@ -130,7 +146,7 @@ const MyVerticallyCenteredModal = (props: any) => {
                             <>
                                 <Col sm={8}>
                                     <Form>
-                                        <DropdownButton id="dropdown-item-button" title="Select status" onClick={e => { changeTaskStatus(e); }}>
+                                        <DropdownButton id="dropdown-item-button" title="Select status" onClick={e => { changeTaskStatus(e) }}>
                                             {dropdownButtonsArray}
                                         </DropdownButton>
                                     </Form>
@@ -147,7 +163,7 @@ const MyVerticallyCenteredModal = (props: any) => {
                 <Container>
                     <Row>
                         <Col>
-                            <MultiSelector {...props.data}/>
+                            <MultiSelector {...props.data} />
                         </Col>
                     </Row>
                 </Container>

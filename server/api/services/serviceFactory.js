@@ -22,22 +22,15 @@ const sequelize = new Sequelize(cs.database, cs.username, cs.password, {
 
 try {
     sequelize.authenticate()
-        .then(res => console.log('Connection has been established successfully.',
+        .then(result => console.log('Connection has been established successfully.',
             sequelize.getDatabaseName()))
         .catch(err => console.log(err));
 
 } catch (error) {
-    console.error('Unable to connect to the database:', error);
+    console.log(error);;
 }
 
-let deletedAt = '';
-let taskId = '';
-let userId = '';
-let firstName = '';
-let lastName = '';
-let role = '';
 
-const userTasksTable = sequelize.define('userTasksModel', { taskId, userId, deletedAt }, { tableName: "UserTasks" });
 
 module.exports = function serviceFactory(model) {
 
@@ -108,7 +101,6 @@ module.exports = function serviceFactory(model) {
                 }
             )
             .then(firsResult => {
-
 
                 let usableOffsetData = offsetData === 0 ? 1 : offsetData;
                 let usableLimitData = limitData === 0 ? firsResult.length : limitData;
@@ -183,7 +175,45 @@ module.exports = function serviceFactory(model) {
             .catch(err => res.send(err));
     }
 
+    function createSingleUser(req, res, next, attributesArray, deletedObject) {
+
+        const {
+            firstName,
+            lastName,
+            insertPassword,
+            email,
+            role,
+            picture
+        } = req.body;
+
+        const password = bcrypt.hashSync(`${insertPassword}`, 10);
+        const isValidPass = bcrypt.compareSync(`${insertPassword}`, `${password}`);
+
+        if (isValidPass) {
+            model.create({
+                firstName,
+                lastName,
+                password,
+                email,
+                role,
+                picture
+            }).then(customer => {
+                res.status(201).send('user created');
+            }).catch(next => {
+                res.status(400).send('already exists')
+            });
+        } else {
+            res.status(400).send('wrong password')
+        }
+    }
+
     function deleteSingle(req, res, next, attributesArray, deletedObject) {
+
+        let deletedAt = '';
+        let taskId = '';
+        let userId = '';
+
+        const userTasksTable = sequelize.define('userTasksModel', { taskId, userId, deletedAt }, { tableName: "UserTasks" });
 
         const { idData } = req.body;
         const t = new Date(Date.now()).toISOString();
@@ -199,7 +229,7 @@ module.exports = function serviceFactory(model) {
                         where: whereObj
                     })
                     .then(isExisting => {
-                        console.log(isExisting);
+
                         if (isExisting) {
                             userTasksTable.update({
                                     deletedAt: t,
@@ -214,9 +244,8 @@ module.exports = function serviceFactory(model) {
                         } else {
                             res.send('delete done 2').status(200);
                         }
-
                     })
-                    .catch(err => console.log(err));
+                    .catch(err => res.send('error', err));
             })
             .catch(err => res.send(err));
     }
@@ -440,8 +469,7 @@ module.exports = function serviceFactory(model) {
     }
 
     function userLogin(req, res, next, attributesArray, editObject) {
-        // if axios query, if fetch - body
-        // const { insertEmail, insertPassword } = req.query;
+
         const { insertEmail, insertPassword } = req.body;
 
         try {
@@ -476,12 +504,10 @@ module.exports = function serviceFactory(model) {
                     } else {
                         res.status(400).json({ error: "Password Incorrect" });
                     }
-
                 } else {
                     res.status(404).json({ error: "User does not exist" });
                 }
-
-            }).catch(err => console.log(err, ' thissss errrorrr'));
+            }).catch(err => res.send('error', err));
         } catch (err) {
             res.send("incorrect user or password.")
         }
@@ -506,8 +532,6 @@ module.exports = function serviceFactory(model) {
         try {
             const data = jwt.verify(token, `${myKey}`);
             req.userId = data.id;
-            // return data;
-            // res.send([data.id, data.username]);
             res.send({
                 id: data.id,
                 userName: data.username,
@@ -519,8 +543,27 @@ module.exports = function serviceFactory(model) {
         }
     }
 
-    function editTask(req, res, next, attributesArray, editObject) {
+    function createSingleTask(req, res, next, attributesArray, editObject) {
 
+        const {
+            taskType,
+            taskName,
+            taskProgress,
+        } = req.body;
+
+        model.create({
+            taskType,
+            taskName,
+            taskProgress,
+        }).then(task => {
+            res.status(201).send('task created');
+        }).catch(next => {
+            res.status(400).send('not allowed')
+        });
+
+    }
+
+    function editTask(req, res, next, attributesArray, editObject) {
 
         const { changeData, idData, taskProgress } = req.body;
 
@@ -602,19 +645,18 @@ module.exports = function serviceFactory(model) {
 
     }
 
-    function picturesGet(req, res, next, attributesArray) {
+    // function picturesGet(req, res, next, attributesArray) {
 
-        const { userId } = req.body;
+    //     const { userId } = req.body;
 
-        model.findOne({
-            where: { userId: userId },
-            attributes: attributesArray
-        }).then(result => {
-            res.send(result);
+    //     model.findOne({
+    //         where: { userId: userId },
+    //         attributes: attributesArray
+    //     }).then(result => {
+    //         res.send(result);
+    //     }).catch(err => res.send('error', err));
 
-        }).catch();
-
-    }
+    // }
 
     function matchUserTasks(req, res, next, attributesArray) {
 
@@ -624,9 +666,7 @@ module.exports = function serviceFactory(model) {
             .then(result => {
                 res.send(result);
             })
-            .catch(err => res.send(err));
-
-
+            .catch(err => res.send('error', err));
     }
 
 
@@ -634,6 +674,7 @@ module.exports = function serviceFactory(model) {
         getAll,
         getSingle,
         getAllPagination,
+        createSingleUser,
         deleteSingle,
         editSingle,
         userLogin,
@@ -643,10 +684,10 @@ module.exports = function serviceFactory(model) {
         getUserTasks,
         getUserTasksMeetingOrProject,
         getAllPaginationRawQueryMop,
+        createSingleTask,
         editTask,
         getAllUsersByTask,
         pictures,
-        picturesGet,
         matchUserTasks
     };
 }

@@ -4,16 +4,13 @@ const path = require('path');
 const { Sequelize } = require('sequelize');
 const cs = require("../connection/connectionData");
 const serviceFactory = require("../services/serviceFactory");
-const { QueryTypes } = require('sequelize');
-const bcrypt = require("bcrypt");
-const multer = require('multer');
 const fs = require('fs');
 const getFileName = require("../functions/getFileName.js");
 
-const upload = multer({ dest: path.resolve(__dirname, 'public/images') });
-// const usersModel = require("../../models/users");
-// const tasksModel = require("../../models/tasks");
-// const userTasksModel = require("../../models/usertasks  ");
+// const bcrypt = require("bcrypt");
+// const { QueryTypes } = require('sequelize');
+// const multer = require('multer');
+// const upload = multer({ dest: path.resolve(__dirname, 'public/images') });
 
 
 const sequelize = new Sequelize(cs.database, cs.username, cs.password, {
@@ -34,12 +31,19 @@ try {
 let deletedAt = '';
 let firstName = '';
 let lastName = '';
+let password = '';
+let email = '';
+let role = '';
+let picture = '';
+let taskType = '';
+let taskName = '';
+let taskProgress = '';
 let userId = '';
 let taskId = '';
 
-const usersTable = serviceFactory(sequelize.define('usersModel', { firstName, lastName, deletedAt }, { tableName: "Users" }));
+const usersTable = serviceFactory(sequelize.define('usersModel', { firstName, lastName, password, email, role, picture, deletedAt }, { tableName: "Users" }));
 
-const tasksTable = serviceFactory(sequelize.define('tasksModel', { deletedAt }, { tableName: "Tasks" }));
+const tasksTable = serviceFactory(sequelize.define('tasksModel', { taskType, taskName, taskProgress, deletedAt }, { tableName: "Tasks" }));
 
 const userTasksTable = serviceFactory(sequelize.define('userTasksModel', { userId, taskId, deletedAt }, { tableName: "UserTasks" }));
 
@@ -166,18 +170,17 @@ module.exports.currentLoggedUser = function(req, res, next) {
     usersTable.currentLoggedUser(req, res, next, ['id', 'firstName', 'email', 'role', 'deletedAt'], 'user');
 }
 
-module.exports.pictures = function(req, res, next) {
+// module.exports.pictures = function(req, res, next) {
 
-    userPicturesTable.pictures(req, res, next, ['id', 'userId', 'picture', 'deletedAt'], 'userPicture');
-}
+//     userPicturesTable.pictures(req, res, next, ['id', 'userId', 'picture', 'deletedAt'], 'userPicture');
+// }
 
-module.exports.picturesGet = function(req, res, next) {
+// module.exports.picturesGet = function(req, res, next) {
 
-    userPicturesTable.picturesGet(req, res, next, ['id', 'userId', 'picture', 'deletedAt'], 'userPicture');
-}
+//     userPicturesTable.picturesGet(req, res, next, ['id', 'userId', 'picture', 'deletedAt'], 'userPicture');
+// }
 
 module.exports.photos = function(req, res, next) {
-    upload.single('file');
 
     const mimeTypesArray = ['image/bmp', 'image/gif', 'image/jpeg', 'image/png', 'image/svg+xml', 'image/tiff'];
 
@@ -201,68 +204,11 @@ module.exports.photos = function(req, res, next) {
 
 module.exports.createSingleUser = function(req, res, next) {
 
-    const {
-        firstName,
-        lastName,
-        insertPassword,
-        email,
-        role,
-        picture
-    } = req.body;
-
-
-    const password = bcrypt.hashSync(`${insertPassword}`, 10);
-
-    const isValidPass = bcrypt.compareSync(`${insertPassword}`, `${password}`);
-
-    const usersCreatable = sequelize.define('usersModel', { firstName, lastName, password, email, role, picture }, { tableName: "Users" });
-
-    if (isValidPass) {
-        usersCreatable.create({
-            firstName,
-            lastName,
-            password,
-            email,
-            role,
-            picture
-        }).then(customer => {
-            // console.log(customer.dataValues);
-            res.status(201).send('user created');
-
-        }).catch(next => {
-            res.status(400).send('already exists')
-        });
-
-    } else {
-        res.status(400).send('wrong password')
-    }
-
-
+    usersTable.createSingleUser(req, res, next, ['id', 'firstName', 'lastName', 'password', 'email', 'role', 'picture', 'deletedAt'], 'user');
 }
 
 
 module.exports.createSingleTask = function(req, res, next) {
 
-    var minutesToAdd = 1;
-    var currentDate = new Date();
-    var futureDate = new Date(currentDate.getTime() + minutesToAdd * 60000).toISOString();
-
-    const {
-        taskType,
-        taskName,
-        taskProgress,
-    } = req.body;
-
-    const taskCreatable = sequelize.define('tasksModel', { taskType, taskName, taskProgress }, { tableName: "Tasks" });
-
-    taskCreatable.create({
-        taskType,
-        taskName,
-        taskProgress,
-    }).then(task => {
-        console.log(task.dataValues);
-        res.status(201).send('task created');
-    }).catch(next => {
-        res.status(400).send('not allowed')
-    });
+    tasksTable.createSingleTask(req, res, next, ['id', 'taskType', 'taskName', 'taskProgress', 'deletedAt'], 'task');
 }

@@ -106,13 +106,11 @@ const PaginatedTasksByUser = (props: any) => {
         const incomingValue = e.value === 'All' ? rowsNumber : parseInt(e.value);
         setPerPage(incomingValue);
         setEndValue(incomingValue);
-        // setCheckedProject(false);
-        // setCheckedMeeting(false);
     }
 
     useEffect(() => {
         getData(offset, perPage)
-    }, [offset, endValue, props.data.id,meeting, project]);
+    }, [offset, endValue, props.data.id, meeting, project]);
 
     const redirectToCreateTask = () => {
         navigate('/createTask');

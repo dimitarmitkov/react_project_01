@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, Row, Col, Navbar, NavDropdown } from 'react-bootstrap';
 import CurrentLoggedUser from '../functions/currentLoggedUser';
 import { Link } from 'react-router-dom';
 import './sidebarFive.css';
+import WebsocketData from '../ws/websocket';
 
 export default function SidebarFive() {
 
@@ -37,6 +38,17 @@ export default function SidebarFive() {
                         <Link to={`/helloMitko`} className="active">Mitko Link</Link>
                     </Col>
                 </Row>
+                <Row className='sidebar-row'>
+                    <Col className='sidebar-column'>
+                        <Link to={`/websocket`} className="active">Websocket Link</Link>
+                    </Col>
+                </Row>
+                <Row className='sidebar-row'>
+                    <Col className='sidebar-column'>
+                        < WebsocketData />
+                    </Col>
+                </Row>
+                
             </Container>
         </>
     )

@@ -43,18 +43,13 @@ const MultiSelector = (props: any) => {
     let taskIdGlobal = props.taskId ? props.taskId : props.id;
 
     const [users, setUsers] = useState<never[]>([]);
-    // const [taskId, setTaskId] = useState(null);
 
-    // setTaskId(props.taskId);
     const getUsers = () => {
 
         axios.get("http://localhost:62000/api/v1/users")
             .then(result => {
 
-                console.log(result.data);
                 setUsers(result.data.map((el: any) => ({ value: el.id, label: el.firstName + ' ' + el.lastName })));
-
-                // setUsersA(result.data);
             })
             .catch(err => console.log(err));
     }
@@ -87,15 +82,10 @@ const MultiSelector = (props: any) => {
             .then(result=>{
                 console.log(result);
                 if(result.status===200){
-                    // window.location.reload();
-                    const modal = document.getElementById("myModalId")?.firstElementChild;
-
-                    
+                    window.location.reload();
                 }
             })
             .catch(err=>console.log(err));
-            
-
         }
 
 
@@ -112,7 +102,7 @@ const MultiSelector = (props: any) => {
                             <ReactSelect options={users} isMulti closeMenuOnSelect={false} hideSelectedOptions={false} components={{ Option }} onChange={handleChange} value={optionSelected} />
                         </Col>
                         <Col sm={2}>
-                            <Button variant="danger" onClick={() => logData(optionSelected)}>Submit</Button>
+                            <Button variant="danger" type="submit" onClick={() => logData(optionSelected)}>Submit</Button>
                         </Col>
                     </Row>
                 </Container>
