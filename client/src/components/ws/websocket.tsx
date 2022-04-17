@@ -11,22 +11,11 @@ interface IncomingMessage {
   main: {}
 };
 
-interface UserObject {
-  id: number;
-  role: string;
-  userName: string;
-}
-
 interface ElementProvider {
   type: JSX.Element;
 }
 
-interface ElementLocal {
-  type: string | null;
-}
-
 const ws = new WebSocket('ws://127.0.0.1:8000/ws');
-let dismissedMessagesArray: number[] = [];
 
 const WebsocketData = () => {
 
