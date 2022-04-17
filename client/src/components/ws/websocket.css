@@ -1,3 +1,12 @@
 .websocket-hide {
     display: none;
 }
+
+#task-span {
+    font-style: italic;
+}
+
+#user-span,
+#message-span {
+    font-weight: bolder;
+}

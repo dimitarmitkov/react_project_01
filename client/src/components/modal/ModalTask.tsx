@@ -7,8 +7,6 @@ import './modalTask.css';
 import DeleteTaskModalApp from './ModalDeleteTask';
 import { Link } from 'react-router-dom';
 import MultiSelector from './MultiSelector';
-// import websocket from '../ws/websocket';
-import ChildComponent from '../ws/WsChildComponent';
 
 interface Provider {
     type: JSX.Element;

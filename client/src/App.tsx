@@ -23,8 +23,6 @@ import CurrentLoggedUser from './components/functions/currentLoggedUser';
 import UserCardData from './components/user/UserCardData';
 import CurrentUserCard from './components/user/CurrentUserDataCard';
 import WebsocketData from './components/ws/websocket';
-import Application from './components/ws/wsTest';
-import WssElement from './components/ws/wssElement';
 
 function App() {
 
@@ -64,9 +62,7 @@ function App() {
                 < Route path="/users/:id" element={<UserCardData />} />
                 < Route path="/currentuser/:id" element={<CurrentUserCard />} />
                 < Route path="/websocket" element={<WebsocketData />} />
-                < Route path="/wstest" element={<Application />} />
-                < Route path="/wselement" element={<WssElement />} />
-
+                
               </Routes>
             </Col>
           </Row>
