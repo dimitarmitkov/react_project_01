@@ -3,18 +3,23 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
 import axios from "axios";
+import CurrentLoggedUser from '../functions/currentLoggedUser';
 import { useNavigate } from "react-router-dom";
 
 type FormValues = {
     taskType: string;
     taskName: string;
     taskProgress: string;
+    initiatedByUserId: string;
 };
 
 const CreateTaskGroup = () => {
-
+    
+    const [user, setUser] = useState(Object);
     const { register, handleSubmit } = useForm<FormValues>();
     const [selectValues, setSelectValues] = useState(undefined);
+
+    CurrentLoggedUser(setUser);
     const navigate = useNavigate();
 
     const taskTypeArray = [{ name: 'Project', value: 'project' }, { name: 'Meeting', value: 'meeting' }];
@@ -29,7 +34,8 @@ const CreateTaskGroup = () => {
             {
                 taskType: selectValues,
                 taskName: data.taskName,
-                taskProgress: 'initial'
+                taskProgress: 'initial',
+                initiatedByUserId: user.id
             })
             .then(result => {
                 if (result.status === 201) {
@@ -66,6 +72,7 @@ const CreateTaskGroup = () => {
                                     <i className="pi pi-envelope"></i>
                                 </span>
                                 <InputText placeholder="Task Name" {...register("taskName")} />
+                                {/* <InputText placeholder="User current" {...register("initiatedByUserId")} type="hidden" value={user.id}/> */}
                             </div>
                         </div>
                     </div>

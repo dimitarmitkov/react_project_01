@@ -1,5 +1,3 @@
-
-
 import { useEffect, useState } from 'react';
 import CurrentLoggedUser from '../functions/currentLoggedUser';
 import { FormCheck } from 'react-bootstrap';
@@ -30,10 +28,11 @@ const WebsocketData = () => {
   let storedNames: any[] = transferArray !== null ? JSON.parse(transferArray) : [];
 
   const handleChange = (props: string) => {
-
     // set timestamp and and find element by id
-    let value: number = Date.parse(props);
-    let element = document.getElementById(`task_${props}`);
+    let value: string = props;
+    console.log(value);
+
+    let element = document.getElementById(`task_${value}`);
 
     if (element && element !== null) {
 
@@ -44,6 +43,9 @@ const WebsocketData = () => {
 
     }
   }
+
+  console.log(storedNames);
+
 
   useEffect(() => {
 
@@ -71,36 +73,52 @@ const WebsocketData = () => {
 
       let userId = user.id as never;
 
+      // console.log(storedNames);
+// debugger;
+
       const MessagesList = () => (
         <div>
           {messageList.length > 0 ?
-            <ul>{messageList.map((message: any) => (message.allowedList).includes(userId) && !storedNames.includes(Date.parse(message.main.initiatedAt)) ? <div key={message.main.taskName + message.main.initiatedAt} id={`task_${message.main.initiatedAt}`} className='websocket-show'><hr /> <li  >
-              <div><span id="task-span">{message.main.taskType}</span> '{message.main.taskName}' was changed by <span id="user-span">{message.main.firstName} {message.main.lastName}</span>, new status: <span id="message-span">{message.action}</span>
-                <FormCheck type='checkbox' id={`default-${message.main.taskId}`} label={`dismiss`} onChange={() => handleChange(message.main.initiatedAt)} />
-              </div>
-            </li>
-              <hr />
-            </div>
-              : null
+            <ul>{messageList.map((message: any) =>
+              (message.allowedList).includes(userId) && !storedNames.includes(`${Date.parse(message.main.createdAt)}_${message.action}_${user.userName}`) && message.action !== 'added' ?
+                  <div key={message.main.taskName + message.main.createdAt + message.action} id={`task_${Date.parse(message.main.createdAt)}_${message.action}_${user.userName}`} className='websocket-show'><hr /> <li>
+                    <div><span id="task-span">{message.main.taskType}</span> '{message.main.taskName}' was changed by <span id="user-span">{message.main.firstName ? message.main.firstName : user.userName} {message.main.lastName}</span>, new status: <span id="message-span">{message.action}</span>
+                      <FormCheck type='checkbox' id={`default-${message.main.taskId}`} label={`dismiss`} onChange={() => handleChange(`${Date.parse(message.main.createdAt)}_${message.action}_${user.userName}`)} />
+                    </div></li><hr /></div> 
+                : 
+                (message.allowedList).includes(userId) && !storedNames.includes(`${Date.parse(message.main.createdAt)}_${message.action}_${message.main.firstName}`) && message.action === 'added' ?
+                  <div key={message.main.taskName + message.main.createdAt + message.action + message.main.firstName.replace(/\s/g, '')} id={`task_${Date.parse(message.main.createdAt)}_${message.action}_${message.main.firstName}`} className='websocket-show'><hr /> <li>
+                    <div><span id="task-span">{message.main.taskType}</span> '{message.main.taskName}' was changed, new user <span id="user-span">{message.main.firstName}</span>, was <span id="message-span">{message.action}</span>
+                      <FormCheck type='checkbox' id={`default-${message.main.taskId}`} label={`dismiss`} onChange={() => handleChange(`${Date.parse(message.main.createdAt)}_${message.action}_${message.main.firstName}`)} />
+                    </div></li><hr /></div>
+                  : null
             )}</ul>
             : <div>no messages</div>
           }
         </div>
       );
       setMessageListElement(MessagesList);
+
+
     }
 
     ws.onerror = () => {
       console.log('error');
     }
-    
-    ws.onclose = (evt) => {
-      if (evt.wasClean) {
-        localStorage.clear();
-      } else {
-       
-      }
-    };
+
+    ws.onclose = () => {
+      localStorage.clear();
+      console.log('connection closed');
+
+    }
+
+    // ws.onclose = (evt) => {
+    //   if (evt.wasClean) {
+    //     localStorage.clear();
+    //   } else {
+
+    //   }
+    // };
 
   }, [messageList]);
 

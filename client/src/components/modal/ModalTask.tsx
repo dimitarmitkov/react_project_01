@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import { Button, DropdownButton, Dropdown, Form, Container, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
@@ -48,7 +48,6 @@ const MyVerticallyCenteredModal = (props: any) => {
                     if (result.status === 200) {
 
                     }
-
                 })
                 .catch(err => console.log(err));
         }
@@ -109,10 +108,6 @@ const MyVerticallyCenteredModal = (props: any) => {
         meetingArray.map((element: string, k: number) => {
             return <Dropdown.Item as="button" key={'bbd' + k}>{element}</Dropdown.Item>
         });
-
-    // useEffect(() => {
-    //     getData();
-    // }, [queryData]);
 
     return (
         <Modal

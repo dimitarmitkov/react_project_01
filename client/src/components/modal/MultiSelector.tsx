@@ -6,22 +6,32 @@ import { default as ReactSelect } from "react-select";
 import { components } from "react-select";
 import './multiSelector.css';
 
+const ws = new WebSocket('ws://127.0.0.1:8000/ws');
 
+// get allowed users
+// const GetAllowedUsers = (currentTaskId: number) => {
+//     const [allowedUsers, setAllowedUsers] = useState([]);
 
+//     let usersQuery = { idData: currentTaskId };
+//     axios.patch("http://localhost:62000/api/v1/usertasks", usersQuery)
+//       .then(result => {
 
+//         const currentData = result.data;
 
-// const users = [
-//     { value: "ocean1", label: "Ocean" },
-//     { value: "blue", label: "Blue" },
-//     { value: "purple", label: "Purple" },
-//     { value: "red", label: "Red" },
-//     { value: "orange", label: "Orange" },
-//     { value: "yellow", label: "Yellow" },
-//     { value: "green", label: "Green" },
-//     { value: "forest", label: "Forest" },
-//     { value: "slate", label: "Slate" },
-//     { value: "silver", label: "Silver" }
-// ];
+//         if(currentData.length>0){
+//             const allowedUsersList = () => (
+//               currentData.map((name: any) => name.id)
+//             );
+
+//             setAllowedUsers(allowedUsersList);
+//         }
+
+//       })
+//       .catch(err => console.log(err));
+
+//       return allowedUsers;
+//   }
+
 
 const Option = (props: any) => {
     return (
@@ -40,9 +50,37 @@ const Option = (props: any) => {
 
 const MultiSelector = (props: any) => {
 
+    let main = {
+            createdAt: props.createdAt,
+            taskName: props.taskName,
+            taskType: props.taskType,
+            firstName: ''
+        };
     let taskIdGlobal = props.taskId ? props.taskId : props.id;
 
     const [users, setUsers] = useState<never[]>([]);
+    const [optionSelected, setOptionSelected] = useState(null);
+    const [allowedUsers, setAllowedUsers] = useState([]);
+
+    const getAllowedUsers = (currentTaskId: number) => {
+
+        let usersQuery = { idData: currentTaskId };
+        axios.patch("http://localhost:62000/api/v1/usertasks", usersQuery)
+            .then(result => {
+
+                const currentData = result.data;
+
+                if (currentData.length > 0) {
+                    const allowedUsersList = () => (
+                        currentData.map((name: any) => name.id)
+                    );
+
+                    setAllowedUsers(allowedUsersList);
+                }
+
+            })
+            .catch(err => console.log(err));
+    }
 
     const getUsers = () => {
 
@@ -55,14 +93,12 @@ const MultiSelector = (props: any) => {
     }
 
     useEffect(() => {
-
+        getAllowedUsers(taskIdGlobal);
         getUsers();
-    }, []);
+    }, [taskIdGlobal]);
 
-    const [optionSelected, setOptionSelected] = useState(null);
 
     if (users.length > 0) {
-
 
         const handleChange = (selected: any) => {
             setOptionSelected(selected);
@@ -70,31 +106,38 @@ const MultiSelector = (props: any) => {
 
         const logData = (props: any) => {
 
-            let resArray = props.map((e: any)=>({userId: e.value, taskId: taskIdGlobal}));
-
+            let resArray = props.map((e: any) => ({ userId: e.value, taskId: taskIdGlobal }));
 
             axios.put("http://localhost:62000/api/v1/usertasks",
-            {
-                userIdArray: resArray,
-                taskId: taskIdGlobal
-            }
-            )
-            .then(result=>{
-                console.log(result);
-                if(result.status===200){
-                    window.location.reload();
+                {
+                    userIdArray: resArray,
+                    taskId: taskIdGlobal
                 }
-            })
-            .catch(err=>console.log(err));
-        }
+            )
+                .then(result => {
+                    if (result.status === 200) {
+                        const idArray = result.data.map((r: any) => r.userId);
+                        const resultAllowedUsersArray = [...allowedUsers, ...idArray];
 
+                        users.forEach((user: any) => {
+                            if(idArray.includes(user.value)){
+                                main['firstName']=user.label;
+                                ws.send(JSON.stringify({main, action: 'added', allowedList: resultAllowedUsersArray }));
+                            }
+                        })
+
+                        window.location.reload();
+                    }
+                })
+                .catch(err => console.log(err));
+        }
 
         return (
             <span
                 className="d-inline-block"
                 data-toggle="popover"
                 data-trigger="focus"
-                data-content="Please selecet account(s)"
+                data-content="Please select account(s)"
             >
                 <Container>
                     <Row>

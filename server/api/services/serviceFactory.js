@@ -545,16 +545,21 @@ module.exports = function serviceFactory(model) {
 
     function createSingleTask(req, res, next, attributesArray, editObject) {
 
+        const initiatedAt = new Date(Date.now()).toISOString();
+
         const {
             taskType,
             taskName,
             taskProgress,
+            initiatedByUserId
         } = req.body;
 
         model.create({
             taskType,
             taskName,
             taskProgress,
+            initiatedAt,
+            initiatedByUserId
         }).then(task => {
             res.status(201).send('task created');
         }).catch(next => {

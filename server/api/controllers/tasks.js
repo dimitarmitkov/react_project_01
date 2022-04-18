@@ -40,10 +40,13 @@ let taskName = '';
 let taskProgress = '';
 let userId = '';
 let taskId = '';
+let initiatedAt = '';
+let initiatedByUserId = '';
+
 
 const usersTable = serviceFactory(sequelize.define('usersModel', { firstName, lastName, password, email, role, picture, deletedAt }, { tableName: "Users" }));
 
-const tasksTable = serviceFactory(sequelize.define('tasksModel', { taskType, taskName, taskProgress, deletedAt }, { tableName: "Tasks" }));
+const tasksTable = serviceFactory(sequelize.define('tasksModel', { taskType, taskName, taskProgress, initiatedAt, initiatedByUserId, deletedAt }, { tableName: "Tasks" }));
 
 const userTasksTable = serviceFactory(sequelize.define('userTasksModel', { userId, taskId, deletedAt }, { tableName: "UserTasks" }));
 
