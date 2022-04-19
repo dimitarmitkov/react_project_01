@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button } from 'primereact/button';
 import axios from 'axios';
 
-const ShowUsersList = () => {
+const LoggedUser = () => {
 
     const [user, setUser] = useState(Object)
 
@@ -33,4 +33,4 @@ const ShowUsersList = () => {
         }
 }
 
-export default ShowUsersList;
+export default LoggedUser;
