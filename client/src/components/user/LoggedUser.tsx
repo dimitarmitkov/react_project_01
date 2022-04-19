@@ -1,25 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Button } from 'primereact/button';
-import axios from 'axios';
+import CurrentLoggedUser from '../functions/currentLoggedUser';
 
 const LoggedUser = () => {
 
-    const [user, setUser] = useState(Object)
+    const [user, setUser] = useState(Object);
 
-        const url = "http://localhost:62000/api/v1/currentLoggedUser";
-
-        function axiosFunction() {
-            axios.get(url, {withCredentials: true})
-                .then(response => setUser(response.data))
-                .catch(err => {
-                    console.log('Error from Show List: ', err);
-                });
-        }
-    
-        useEffect(() => {
-            axiosFunction()
-        }, []);
-
+    CurrentLoggedUser(setUser);
 
         if (user.deletedAt) {
             return <Button icon="pi pi-user" className="p-button-rounded p-button-info" disabled />
