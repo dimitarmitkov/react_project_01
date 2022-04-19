@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import axios from 'axios';
 
-const AxiosRequester = (getImportedValue: never[], setImportedValue: React.Dispatch<React.SetStateAction<never[]>>, url: string) => {
+const AxiosRequester = (setImportedValue: React.Dispatch<React.SetStateAction<never[]>>, url: string) => {
     function axiosFunction() {
         // debugger;
         axios.get(url, {withCredentials: true})

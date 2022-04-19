@@ -5,7 +5,7 @@ import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
 import ReactPaginate from 'react-paginate';
 import { useState, useEffect } from 'react'
-import UsersCard from '../UsersCard';
+import UsersCard from '../user/UsersCard';
 import { useNavigate } from "react-router-dom";
 import './paginate.css';
 import '../buttons/DropdownButton.css';

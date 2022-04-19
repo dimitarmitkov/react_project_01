@@ -17,7 +17,7 @@ import { addAbortSignal } from 'stream';
     const [tasks, setTasks] = useState([])
 
     
-        AxiosRequester(tasks, setTasks, "http://localhost:62000/api/v1/tasks");
+        AxiosRequester(setTasks, "http://localhost:62000/api/v1/tasks");
 
         // state array declaration
         let progressArray: string[] = ["initial", "selected", "progress", "review", "done"];

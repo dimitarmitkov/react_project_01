@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import UsersCard from './UsersCard';
+import UsersCard from './user/UsersCard';
 import { JsxElement } from 'typescript';
 import AxiosRequester from './functions/axiosRequester';
 
@@ -8,7 +8,7 @@ const ShowUsersList = () => {
 
     const [users, setUsers] = useState([]);
 
-    AxiosRequester(users, setUsers, "http://localhost:62000/api/v1/users");
+    AxiosRequester(setUsers, "http://localhost:62000/api/v1/users");
 
     
     let usersList = () => {

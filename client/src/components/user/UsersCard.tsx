@@ -1,45 +1,19 @@
-import { Button } from 'primereact/button';
 import { Link } from 'react-router-dom';
-import './user/userCard.css';
+import './userCard.css';
 import { Row, Col, Container } from 'react-bootstrap';
-import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import EditUserApp from './user/EditUser';
-import DeleteUserModalApp from './modal/ModalDelete';
+import EditUserApp from './EditUser';
+import DeleteUserModalApp from '../modal/ModalDelete';
+import AxiosRequester from '../functions/axiosRequester';
 
 
 const UsersCard = (props: any) => {
     const user = props.user;
+    const [userLogged, setUserLogged] = useState(Object);
+    // const url = ;
 
-    const navigate = useNavigate();
-    const editUserRoute = () => {
-        let path = `/edituser/${user.id}`;
-        navigate(path);
-    }
-   
-    const deleteUserRoute = () => {
-        let path = `/edituser/${user.id}`;
-        navigate(path);
-    }
-
-    const [userLogged, setUserLogged] = useState(Object)
-
-
-    const url = "http://localhost:62000/api/v1/currentLoggedUser";
-
-
-    function axiosFunction() {
-        axios.get(url, { withCredentials: true })
-            .then(response => setUserLogged(response.data))
-            .catch(err => {
-                console.log('Error from Show List: ', err);
-            });
-    }
-
-    useEffect(() => {
-        axiosFunction()
-    }, []);
+    AxiosRequester(setUserLogged,"http://localhost:62000/api/v1/currentLoggedUser" )
 
     return (
         <Container className="card-container" key={user.id + 5 + 'userId'}>
@@ -51,8 +25,8 @@ const UsersCard = (props: any) => {
                         </Link>
                     </h2>
                     <h5>{user.email}</h5>
-                    <span>User role: {user.role}</span>
-                    <span>User Id: {user.id}</span>
+                    <span id="userRole">User role: <span className="user-role-id">{user.role}</span></span>
+                    <span id="userId">User Id: <span className="user-role-id">{user.id}</span></span>
                 </Col>
             </Row>
             <Row>
