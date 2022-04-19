@@ -1,11 +1,11 @@
 import axios from "axios";
 
-const axiosFunction = (url: string, query: {}, queryType: string, specification: string | null) =>{
+const axiosFunction = (url: string, query: {}, queryType: string, specification: string | null, location = '/',status = 200) => {
 
     if(queryType === 'post' && specification === 'windowReload'){
-        return axios.post(url, query)
+        axios.post(url, query)
         .then(response => {
-            if (response.status === 200) {
+            if (response.status === status) {
                 window.location.reload();
             }
         })
@@ -14,6 +14,19 @@ const axiosFunction = (url: string, query: {}, queryType: string, specification:
         });
     }
     
+    if(queryType === 'post' && specification === 'windowHref'){
+        axios.post(url, query)
+        .then(response => {
+            if (response.status === status) {
+                window.location.href = location;
+            }
+        })
+        .catch(err => {
+            console.log(err);
+        });
+    }
 }
+
+
 
 export default axiosFunction;

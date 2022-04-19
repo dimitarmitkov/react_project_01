@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const AxiosRequester = (setImportedValue: React.Dispatch<React.SetStateAction<never[]>>, url: string) => {
     function axiosFunction() {
-        // debugger;
+        
         axios.get(url, {withCredentials: true})
             .then(response => setImportedValue(response.data))
             .catch(err => {

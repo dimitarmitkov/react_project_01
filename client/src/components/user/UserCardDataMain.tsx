@@ -12,7 +12,7 @@ const UserElement = (user: any, handleSubmit: any, onSubmit: any, onImageChange:
                     <Row className="mt-3">
                         <Row>
                             <Col sm={2} className="border rounded">
-                                <Image fluid src={user.picture} alt="pic" />
+                                <Image id="user-picture" fluid src={user.picture} alt="pic" />
                             </Col>
                             <Col sm={3} className="ml-3">
                                 <Row>
@@ -44,7 +44,7 @@ const UserElement = (user: any, handleSubmit: any, onSubmit: any, onImageChange:
                                         </Col>
                                     </Row>
 
-                                    <Row className="mt-3 justify-content-md-center">
+                                    <Row id="password-checkbox" className="mt-3 justify-content-md-center">
                                         {allowPasswordChange ?
                                             <Col>
                                                 <div className="p-inputgroup">
@@ -61,7 +61,7 @@ const UserElement = (user: any, handleSubmit: any, onSubmit: any, onImageChange:
                                     </Row>
 
                                     {changePasswordSelected ?
-                                        <Row className="mt-3" >
+                                        <Row id="password-input-field" className="mt-3" >
                                             <Col sm={5}>
                                                 <div className="p-inputgroup">
                                                     <span className="p-inputgroup-addon">
@@ -77,7 +77,7 @@ const UserElement = (user: any, handleSubmit: any, onSubmit: any, onImageChange:
                                     <Row className="mt-3 mb-3 justify-content-md-center">
                                         <Col>
                                             {changePasswordSelected || currentUserPicture.length > 0 ?
-                                                <Button label={changePasswordSelected && currentUserPicture.length > 0 ? "Submit changes" : changePasswordSelected ? "Change password" : "Change picture"}
+                                                <Button id="submit-changes-button" label={changePasswordSelected && currentUserPicture.length > 0 ? "Submit changes" : changePasswordSelected ? "Change password" : "Change picture"}
                                                     className="p-button-primary" disabled={false} /> : null}
                                         </Col>
                                     </Row>

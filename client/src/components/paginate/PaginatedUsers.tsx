@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { Col, Row } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
 import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
 import ReactPaginate from 'react-paginate';

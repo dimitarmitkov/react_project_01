@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
-import { Dropdown } from 'primereact/dropdown';
 import { Password } from 'primereact/password';
 import { Checkbox } from 'primereact/checkbox';
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { Row, Col, Container } from 'react-bootstrap';
 import './signUpForm.css';
+import axiosFunction from '../functions/axiosFunctions';
 
 
 type FormValues = {
@@ -27,33 +27,31 @@ const SignUpGroup = () => {
     const [passwordValue, setPasswordValue] = useState('');
     const [checked, setChecked] = useState(false);
     
-    // const [selectValues, setSelectValues] = useState(undefined);
-    // const userTypeArray = [{ name: 'User', value: 'user' }, { name: 'Admin', value: 'admin' }];
-
     const onSubmit: SubmitHandler<FormValues> = data => {
 
-        console.log(data.email);
-        console.log(data.password);
+        const url = "http://localhost:62000/api/v1/createUser";
+        const queryData = {
+            email: data.email,
+            insertPassword: passwordValue,
+            firstName: data.firstName,
+            lastName: data.lastName,
+            role: checked? 'user': 'admin',
+            picture: data.picture ? data.picture : ""
+        };
 
-        axios.post("http://localhost:62000/api/v1/createUser",
-            {
-                email: data.email,
-                insertPassword: passwordValue,
-                firstName: data.firstName,
-                lastName: data.lastName,
-                role: checked? 'user': 'admin',
-                picture: data.picture ? data.picture : ""
-            })
-            .then(res => {
-                console.log(res);
-                if (res.status === 201) {
-                    window.location.href = '/login';
-                }
-            })
-            .catch(err => {
-                console.log(err);
+        axiosFunction(url, queryData, 'post', 'windowHref','/login', 201);
 
-            });
+        // axios.post(url, queryData)
+        //     .then(res => {
+        //         console.log(res);
+        //         if (res.status === 201) {
+                    
+        //         }
+        //     })
+        //     .catch(err => {
+        //         console.log(err);
+
+        //     });
     };
 
 
@@ -61,10 +59,9 @@ const SignUpGroup = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
 
             <Container className="mt-3">
+
                 <Row className="mt-3 justify-content-md-center">
                     <Col sm={3}>
-
-
                         <div className="p-inputgroup">
                             <span className="p-inputgroup-addon">
                                 <i className="pi pi-user-edit"></i>
@@ -86,6 +83,7 @@ const SignUpGroup = () => {
                         {errors.lastName && <span className="error-message" role="alert">{errors.lastName.message}</span>}
                     </Col>
                 </Row>
+
                 <Row className="mt-3 justify-content-md-center">
                     <Col sm={3}>
 
@@ -111,7 +109,6 @@ const SignUpGroup = () => {
                             <span className="p-inputgroup-addon">
                                 <i className="pi pi-shield"></i>
                             </span>
-                            {/* <InputText type={'password'} placeholder="Password" {...register("password", {required: true, minLength: {value: 6, message: "password must contain at least 6 symbols"}})} /> */}
                             <Password value={passwordValue} onChange={(e) => setPasswordValue(e.target.value)} toggleMask />
                         </div>
                         {errors.password && <span className="error-message" role="alert">{errors.password.message}</span>}
@@ -122,10 +119,6 @@ const SignUpGroup = () => {
                     <Col sm={3}>
 
                         <div className="p-inputgroup">
-                            {/* <span className="p-inputgroup-addon">
-                                <i className="pi pi-list"></i>
-                            </span> */}
-                            {/* <Dropdown id={'dropDownButton'} value={selectValues} options={userTypeArray} onChange={onUserSelectorChange} optionLabel="name" placeholder="Select Type" editable /> */}
                             <div className="field-checkbox">
                                 <Checkbox inputId="binary" checked={checked} onChange={e => setChecked(e.checked)} disabled={false}/>
                             </div>
@@ -136,6 +129,7 @@ const SignUpGroup = () => {
                         </div>
                     </Col>
                 </Row>
+
                 <Row className="mt-3 justify-content-md-center">
                     <Col sm={3}>
 

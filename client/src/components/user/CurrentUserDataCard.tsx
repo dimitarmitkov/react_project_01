@@ -1,11 +1,13 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useParams } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import CurrentLoggedUser from '../functions/currentLoggedUser';
 import CurrentUserCardData from './currentUserData';
 import UserElement from './UserCardDataMain';
 import axiosFunction from '../functions/axiosFunctions';
+import axios from "axios";
+import './userCard.css';
 
 interface MyObj {
     [propName: string]: string;
@@ -51,17 +53,22 @@ const CurrentUserCard = () => {
         setCurrentUserPicture(props.name);
     }
 
+    useEffect(()=>{
+        let element = document.getElementById('user-picture') as HTMLImageElement;
+         element.src=`${srcPicture}`;
+    },[srcPicture]);
+    
+
     const editUserRoute = () => {
 
         let path = `/users`;
         navigate(path);
     }
 
-    if (Object.keys(user).length > 0) {
-
         const allowPasswordChange = id == currentUser.id ? true : false;
+        const onSubmit: SubmitHandler<FormValues> = () => {
 
-        const onSubmit: SubmitHandler<FormValues> = data => {
+           
 
             if (changePasswordSelected) {
 
@@ -76,7 +83,22 @@ const CurrentUserCard = () => {
                     id: user.id,
                 };
 
-                axiosFunction(urlPassword, queryDataPassword,'post','windowReload');
+                axios.post(urlPassword, queryDataPassword)
+                    .then(response => {
+                        if (response.status === 200) {
+                            const button = document.getElementById('submit-changes-button') as HTMLElement;
+                            const checkElement = document.getElementById('password-checkbox') as HTMLElement;
+                            const passwordField = document.getElementById('password-input-field') as HTMLElement;
+
+                            button.className = 'p-button-primary-hidden';
+                            checkElement.classList.add('d-none');
+                            passwordField.classList.add('d-none');
+
+                        }
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
             }
 
             if (currentUserPicture.length > 0) {
@@ -90,19 +112,26 @@ const CurrentUserCard = () => {
                     picType: pictureType
                 };
 
-                axiosFunction(urlPicture, queryDataPicture,'post','windowReload');
+                    axios.post(urlPicture, queryDataPicture)
+                    .then(response => {
+                        if (response.status === 201) {
+                            const button = document.getElementById('submit-changes-button') as HTMLElement;
+
+                            button.className = 'p-button-primary-hidden';
+                        }
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    });
             }
         };
 
         return (
             <>
-            {UserElement(user, handleSubmit, onSubmit, onImageChange, allowPasswordChange, changePasswordSelected, setChangePasswordSelected, passwordValue,
-            setPasswordValue, errors, currentUserPicture, editUserRoute)}
+                {UserElement(user, handleSubmit, onSubmit, onImageChange, allowPasswordChange, changePasswordSelected, setChangePasswordSelected, passwordValue,
+                    setPasswordValue, errors, currentUserPicture, editUserRoute)}
             </>
         )
-    } else {
-        return null
-    }
 }
 
 export default CurrentUserCard;

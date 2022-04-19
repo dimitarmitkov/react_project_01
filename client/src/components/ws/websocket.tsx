@@ -30,7 +30,6 @@ const WebsocketData = () => {
   const handleChange = (props: string) => {
     // set timestamp and and find element by id
     let value: string = props;
-    console.log(value);
 
     let element = document.getElementById(`task_${value}`);
 

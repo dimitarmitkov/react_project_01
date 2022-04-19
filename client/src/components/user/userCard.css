@@ -10,3 +10,8 @@
 #userRole {
     margin-right: 1rem;
 }
+
+.p-button-primary-hidden,
+.d-none {
+    display: none;
+}
