@@ -28,7 +28,10 @@ const UserCardData = () => {
     const [user, setUser] = useState({});
 
     const getUser = () => {
-        axios.post("http://localhost:62000/api/v1/users",
+
+        const urlUser = "http://localhost:62000/api/v1/users";
+
+        axios.post(urlUser,
             {
                 id: id
             }, {
@@ -48,9 +51,6 @@ const UserCardData = () => {
 
     return user;
 }
-
-
-
 
 const UserCard = () => {
 
@@ -96,7 +96,10 @@ const UserCard = () => {
         const onSubmit: SubmitHandler<FormValues> = data => {
 
             if (changePasswordSelected) {
-                axios.post("http://localhost:62000/api/v1/usersEdit",
+
+                const urlPassword = "http://localhost:62000/api/v1/usersEdit";
+
+                axios.post(urlPassword,
                     {
                         email: user.email,
                         insertPassword: passwordValue ? passwordValue : null,
@@ -117,7 +120,10 @@ const UserCard = () => {
             }
 
             if (currentUserPicture.length > 0) {
-                axios.post("http://localhost:62000/api/v1/photos/upload",
+
+                const urlPicture = "http://localhost:62000/api/v1/photos/upload";
+
+                axios.post(urlPicture,
                     {
                         userId: user.id,
                         userName: user.firstName,
@@ -126,7 +132,6 @@ const UserCard = () => {
                         picType: pictureType
                     })
                     .then(response => {
-                        console.log(response);
                          window.location.reload();
                     })
                     .catch(err => {
@@ -154,12 +159,9 @@ const UserCard = () => {
                                     <h5>email: {user.email}</h5>
                                 </Row>
                             </Col>
-                            <Col sm={3} className="text-end">
-                            </Col>
                         </Row>
 
                         <Row className="mt-3">
-
                             <Col sm={12}>
                                 <form onSubmit={handleSubmit(onSubmit)}>
 
@@ -173,7 +175,6 @@ const UserCard = () => {
                                                     onImageChange(file);
                                                 }} />
                                             </Form.Group>
-
                                         </Col>
                                     </Row>
 
@@ -186,12 +187,12 @@ const UserCard = () => {
                                                     </div>
                                                     <div className="field-checkbox-label">
                                                         <label htmlFor="passwordChecker">{changePasswordSelected ? 'Change password selected' : 'Change password?'}</label>
-
                                                     </div>
                                                 </div>
                                             </Col>
                                             : null}
                                     </Row>
+
                                     {changePasswordSelected ?
                                         <Row className="mt-3" >
                                             <Col sm={5}>
@@ -214,6 +215,7 @@ const UserCard = () => {
                                         </Col>
                                     </Row>
                                 </form >
+
                                 <Row className="mt-3 mb-3 justify-content-md-center">
                                     <Col>
                                         <Button label="Back to users" className="p-button-primary" disabled={false} onClick={editUserRoute} />

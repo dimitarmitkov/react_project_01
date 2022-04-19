@@ -29,16 +29,18 @@ const CurrentUserCardData = () => {
 
     const getUser = () => {
 
-        axios.post("http://localhost:62000/api/v1/users",
+        const urlUser = "http://localhost:62000/api/v1/users";
+
+        axios.post(urlUser,
             {
                 id: id
-            }, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
+            },
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
             .then(result => {
-
                 setUser(result.data);
             })
             .catch(err => console.log(err));
@@ -61,7 +63,7 @@ const CurrentUserCard = () => {
     const [pictureName, setPictureName] = useState<any | null>(null);
     const [pictureType, setPictureType] = useState<any | null>(null);
     const navigate = useNavigate();
-    
+
     CurrentLoggedUser(setCurrentUser);
 
     let { id } = useParams();
@@ -86,7 +88,7 @@ const CurrentUserCard = () => {
         let path = `/users`;
         navigate(path);
     }
-    
+
     if (Object.keys(user).length > 0) {
 
         const allowPasswordChange = id == currentUser.id ? true : false;
@@ -94,7 +96,10 @@ const CurrentUserCard = () => {
         const onSubmit: SubmitHandler<FormValues> = data => {
 
             if (changePasswordSelected) {
-                axios.post("http://localhost:62000/api/v1/usersEdit",
+
+                const urlPassword = "http://localhost:62000/api/v1/usersEdit";
+
+                axios.post(urlPassword,
                     {
                         email: user.email,
                         insertPassword: passwordValue ? passwordValue : null,
@@ -115,7 +120,10 @@ const CurrentUserCard = () => {
             }
 
             if (currentUserPicture.length > 0) {
-                axios.post("http://localhost:62000/api/v1/photos/upload",
+
+                const urlPicture = "http://localhost:62000/api/v1/photos/upload";
+
+                axios.post(urlPicture,
                     {
                         userId: user.id,
                         userName: user.firstName,
@@ -125,7 +133,7 @@ const CurrentUserCard = () => {
                     })
                     .then(response => {
                         console.log(response);
-                         window.location.reload();
+                        window.location.reload();
                     })
                     .catch(err => {
                         console.log(err);
@@ -152,12 +160,9 @@ const CurrentUserCard = () => {
                                     <h5>email: {user.email}</h5>
                                 </Row>
                             </Col>
-                            <Col sm={3} className="text-end">
-                            </Col>
                         </Row>
 
                         <Row className="mt-3">
-
                             <Col sm={12}>
                                 <form onSubmit={handleSubmit(onSubmit)}>
 
@@ -171,7 +176,6 @@ const CurrentUserCard = () => {
                                                     onImageChange(file);
                                                 }} />
                                             </Form.Group>
-
                                         </Col>
                                     </Row>
 
@@ -190,6 +194,7 @@ const CurrentUserCard = () => {
                                             </Col>
                                             : null}
                                     </Row>
+
                                     {changePasswordSelected ?
                                         <Row className="mt-3" >
                                             <Col sm={5}>
@@ -212,6 +217,7 @@ const CurrentUserCard = () => {
                                         </Col>
                                     </Row>
                                 </form >
+
                                 <Row className="mt-3 mb-3 justify-content-md-center">
                                     <Col>
                                         <Button label="Back to users" className="p-button-primary" disabled={false} onClick={editUserRoute} />

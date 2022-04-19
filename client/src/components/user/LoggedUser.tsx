@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import AxiosRequester from '../functions/axiosRequester';
 import { Button } from 'primereact/button';
 import axios from 'axios';
 
@@ -7,9 +6,7 @@ const ShowUsersList = () => {
 
     const [user, setUser] = useState(Object)
 
-
         const url = "http://localhost:62000/api/v1/currentLoggedUser";
-        
 
         function axiosFunction() {
             axios.get(url, {withCredentials: true})

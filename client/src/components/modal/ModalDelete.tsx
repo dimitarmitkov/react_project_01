@@ -9,7 +9,7 @@ const DeleteUserModal = (props: any) => {
 
   const getData = () => axios.post("http://localhost:62000/api/v1/usersDelete",
     {
-      id: props.data.id
+      idData: props.data.id
     })
     .then(res => {
       if (res.status === 200) {

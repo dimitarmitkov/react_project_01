@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import EditUserApp from './user/EditUser';
-import DeleteUserApp from './user/DeleteUser';
 import DeleteUserModalApp from './modal/ModalDelete';
 
 

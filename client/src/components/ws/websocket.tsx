@@ -44,9 +44,6 @@ const WebsocketData = () => {
     }
   }
 
-  console.log(storedNames);
-
-
   useEffect(() => {
 
     ws.onopen = () => {
@@ -73,9 +70,6 @@ const WebsocketData = () => {
 
       let userId = user.id as never;
 
-      // console.log(storedNames);
-// debugger;
-
       const MessagesList = () => (
         <div>
           {messageList.length > 0 ?
@@ -98,8 +92,6 @@ const WebsocketData = () => {
         </div>
       );
       setMessageListElement(MessagesList);
-
-
     }
 
     ws.onerror = () => {
@@ -109,17 +101,7 @@ const WebsocketData = () => {
     ws.onclose = () => {
       localStorage.clear();
       console.log('connection closed');
-
     }
-
-    // ws.onclose = (evt) => {
-    //   if (evt.wasClean) {
-    //     localStorage.clear();
-    //   } else {
-
-    //   }
-    // };
-
   }, [messageList]);
 
   return (

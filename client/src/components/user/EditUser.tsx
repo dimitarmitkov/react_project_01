@@ -2,14 +2,11 @@ import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
-import { Dropdown } from 'primereact/dropdown';
 import { Password } from 'primereact/password';
 import { Checkbox } from 'primereact/checkbox';
 import axios from "axios";
-import { Link, useParams } from "react-router-dom";
 import { Row, Col, Container } from 'react-bootstrap';
 import './editUser.css';
-import { userInfo } from "os";
 
 
 type FormValues = {
@@ -27,10 +24,14 @@ const EditUserGroup = (props: any) => {
     const { register, watch, formState: { errors }, handleSubmit } = useForm<FormValues>();
     const [passwordValue, setPasswordValue] = useState('');
     const [checked, setChecked] = useState(false);
+    const [changePasswordSelected, setChangePasswordSelected] = useState(false);
+
 
     const onSubmit: SubmitHandler<FormValues> = data => {
 
-        axios.post("http://localhost:62000/api/v1/usersEdit",
+        const url = "http://localhost:62000/api/v1/usersEdit"
+
+        axios.post(url,
             {
                 email: data.email ? data.email : props.data.email,
                 insertPassword: passwordValue ? passwordValue : null,
@@ -49,9 +50,6 @@ const EditUserGroup = (props: any) => {
                 console.log(err);
             });
     };
-
-
-    const [changePasswordSelected, setChangePasswordSelected] = useState(false);
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
