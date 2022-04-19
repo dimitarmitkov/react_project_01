@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Container, Row, Col, Navbar, NavDropdown } from 'react-bootstrap';
+import React, { useState } from 'react';
+import { Container, Row, Col } from 'react-bootstrap';
 import CurrentLoggedUser from '../functions/currentLoggedUser';
 import { Link } from 'react-router-dom';
 import './sidebarFive.css';

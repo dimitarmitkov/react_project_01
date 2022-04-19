@@ -11,7 +11,6 @@ import AxiosRequester from '../functions/axiosRequester';
 const UsersCard = (props: any) => {
     const user = props.user;
     const [userLogged, setUserLogged] = useState(Object);
-    // const url = ;
 
     AxiosRequester(setUserLogged,"http://localhost:62000/api/v1/currentLoggedUser" )
 

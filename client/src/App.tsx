@@ -5,8 +5,6 @@ import "primereact/resources/themes/lara-light-indigo/theme.css";  //theme
 import "primereact/resources/primereact.min.css";                  //core css
 import "primeicons/primeicons.css";                                //icons
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Users from './components/Users';
-import Tasks from './components/Tasks';
 import NavbarData from './components/navbar/NavbarData';
 import { Container, Row, Col } from 'react-bootstrap';
 import Hello from './components/test_components/HelloWorld';
