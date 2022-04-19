@@ -39,13 +39,14 @@ const MyVerticallyCenteredModal = (props: any) => {
         done: { doneAt: currentDate, doneByUserId: props.data.userId ? props.data.userId : user.id }
     };
 
-    const getData = () => {
+    const getData = (checkValue: any) => {
 
         if (Object.keys(queryData).length > 0) {
             axios.post("http://localhost:62000/api/v1/tasks", queryData)
                 .then(result => {
 
                     if (result.status === 200) {
+                        ws.send(JSON.stringify({ main: props.data, action: checkValue, allowedList: allowedUsers }));
 
                     }
                 })
@@ -70,7 +71,7 @@ const MyVerticallyCenteredModal = (props: any) => {
                 );
 
                 const allowedUsersList = () => (
-                        currentData.map((name: any) =>name.id)
+                    currentData.map((name: any) => name.id)
                 );
 
                 setShowUsers(NamesList);
@@ -81,17 +82,16 @@ const MyVerticallyCenteredModal = (props: any) => {
 
     const changeTaskStatus = (e: any) => {
 
-        // e.preventDefault();
         const checkValue = e.target.innerText;
         if (projectArray.includes(checkValue) || meetingArray.includes(checkValue)) {
-            
+
             queryData = {
                 changeData: actionDataObject[checkValue],
                 idData: props.data.taskId ? props.data.taskId : props.data.id,
                 taskProgress: checkValue
             };
-            ws.send(JSON.stringify({main: props.data, action: checkValue, allowedList: allowedUsers}));
-            getData();
+
+            getData(checkValue);
         }
     };
 
@@ -129,21 +129,21 @@ const MyVerticallyCenteredModal = (props: any) => {
                     {props.data.taskType}
                 </p>
                 <div>
-                    <p>Users related to this {props.data.taskType}</p>
+                    <p>Users related to this {props.data.taskType}:</p>
                     {showUsers}
                 </div>
 
                 <Container>
                     <Row>
+                        <Col sm={8}>
+                            <Form>
+                                <DropdownButton id="dropdown-item-button" title="Select status" onClick={e => { changeTaskStatus(e) }}>
+                                    {dropdownButtonsArray}
+                                </DropdownButton>
+                            </Form>
+                        </Col>
                         {user && user.role === 'admin' ?
                             <>
-                                <Col sm={8}>
-                                    <Form>
-                                        <DropdownButton id="dropdown-item-button" title="Select status" onClick={e => { changeTaskStatus(e) }}>
-                                            {dropdownButtonsArray}
-                                        </DropdownButton>
-                                    </Form>
-                                </Col>
                                 <Col sm={4} className="delete-button-group">
                                     <DeleteTaskModalApp {...props.data} />
                                 </Col>
@@ -162,6 +162,17 @@ const MyVerticallyCenteredModal = (props: any) => {
                 </Container>
             </Modal.Body>
             <Modal.Footer>
+                {/* <Col> */}
+                    
+                    <Form>
+                        <DropdownButton id="dropdown-item-button" title="Select status" onClick={e => { changeTaskStatus(e) }}>
+                            {dropdownButtonsArray}
+                        </DropdownButton>
+                        {user && user.role === 'admin' ?
+                                <DeleteTaskModalApp {...props.data} />
+                        : null}
+                    </Form>
+                {/* </Col> */}
                 <Button onClick={props.onHide}>Close</Button>
             </Modal.Footer>
         </Modal >

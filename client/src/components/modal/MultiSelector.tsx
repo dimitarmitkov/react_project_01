@@ -8,31 +8,6 @@ import './multiSelector.css';
 
 const ws = new WebSocket('ws://127.0.0.1:8000/ws');
 
-// get allowed users
-// const GetAllowedUsers = (currentTaskId: number) => {
-//     const [allowedUsers, setAllowedUsers] = useState([]);
-
-//     let usersQuery = { idData: currentTaskId };
-//     axios.patch("http://localhost:62000/api/v1/usertasks", usersQuery)
-//       .then(result => {
-
-//         const currentData = result.data;
-
-//         if(currentData.length>0){
-//             const allowedUsersList = () => (
-//               currentData.map((name: any) => name.id)
-//             );
-
-//             setAllowedUsers(allowedUsersList);
-//         }
-
-//       })
-//       .catch(err => console.log(err));
-
-//       return allowedUsers;
-//   }
-
-
 const Option = (props: any) => {
     return (
         <div>

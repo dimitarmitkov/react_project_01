@@ -7,7 +7,7 @@ module.exports.connect = function(path, app) {
 
     router.route("/tasks")
         .get(authMiddleware.auth, authMiddleware.isAdmin, tasksController.getAllTasks)
-        .post(authMiddleware.auth, authMiddleware.isAdmin, tasksController.editTask);
+        .post(authMiddleware.auth, tasksController.editTask);
 
     router.route("/users")
         .get(authMiddleware.auth, authMiddleware.isAdmin, tasksController.getAllUsers)
