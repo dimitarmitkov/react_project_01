@@ -38,8 +38,9 @@ const MultiSelector = (props: any) => {
 
     const getAllowedUsers = (currentTaskId: number) => {
 
-        let usersQuery = { idData: currentTaskId };
-        axios.patch("http://localhost:62000/api/v1/usertasks", usersQuery)
+        const usersUrl = "http://localhost:62000/api/v1/usertasks";
+        const usersQuery = { idData: currentTaskId };
+        axios.patch(usersUrl, usersQuery)
             .then(result => {
 
                 const currentData = result.data;
@@ -57,7 +58,9 @@ const MultiSelector = (props: any) => {
 
     const getUsers = () => {
 
-        axios.get("http://localhost:62000/api/v1/users")
+        const urlGet = "http://localhost:62000/api/v1/users";
+
+        axios.get(urlGet)
             .then(result => {
 
                 setUsers(result.data.map((el: any) => ({ value: el.id, label: el.firstName + ' ' + el.lastName })));
@@ -71,7 +74,6 @@ const MultiSelector = (props: any) => {
         getUsers();
     }, [taskIdGlobal]);
 
-
     if (users.length > 0) {
 
         const handleChange = (selected: any) => {
@@ -81,15 +83,13 @@ const MultiSelector = (props: any) => {
         const logData = (props: any) => {
 
             let resArray = props.map((e: any) => ({ userId: e.value, taskId: taskIdGlobal }));
+            const urlLogData = "http://localhost:62000/api/v1/usertasks";
+            const queryLogData = { userIdArray: resArray, taskId: taskIdGlobal }
 
-            axios.put("http://localhost:62000/api/v1/usertasks",
-                {
-                    userIdArray: resArray,
-                    taskId: taskIdGlobal
-                }
-            )
+            axios.put(urlLogData, queryLogData)
                 .then(result => {
                     if (result.status === 200) {
+
                         const idArray = result.data.map((r: any) => r.userId);
                         const resultAllowedUsersArray = [...allowedUsers, ...idArray];
 
@@ -114,10 +114,12 @@ const MultiSelector = (props: any) => {
                 data-content="Please select account(s)"
             >
                 <Container>
+
                     <Row>
                         <Col sm={10}>
                             <ReactSelect options={users} isMulti closeMenuOnSelect={false} hideSelectedOptions={false} components={{ Option }} onChange={handleChange} value={optionSelected} />
                         </Col>
+
                         <Col sm={2}>
                             <Button variant="danger" type="submit" onClick={() => logData(optionSelected)}>Submit</Button>
                         </Col>

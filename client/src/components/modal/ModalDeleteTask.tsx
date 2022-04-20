@@ -6,10 +6,12 @@ import axios from 'axios';
 const ws = new WebSocket('ws://127.0.0.1:8000/ws');
 
 const GetUsers = (currentTaskId: number) => {
-  const [allowedUsers, setAllowedUsers] = useState([]);
 
+  const [allowedUsers, setAllowedUsers] = useState([]);
+  const url = "http://localhost:62000/api/v1/usertasks";
   const usersQuery = { idData: currentTaskId };
-  axios.patch("http://localhost:62000/api/v1/usertasks", usersQuery)
+
+  axios.patch(url, usersQuery)
     .then(result => {
 
       const currentData = result.data;
@@ -30,14 +32,13 @@ const DeleteTaskModal = (props: any) => {
   const [showDeleteTaskModal, setShowDeleteTaskModal] = useState(true);
   const currentTaskId = props.data.taskId ? props.data.taskId : props.data.id;
   const currentAllowedUsersList = GetUsers(currentTaskId);
+  const url = "http://localhost:62000/api/v1/tasksDelete";
+  const query = { idData: currentTaskId };
 
-  const getData = () => axios.post("http://localhost:62000/api/v1/tasksDelete",
-    {
-      idData: currentTaskId
-    })
+  const getData = () => axios.post(url, query)
     .then(res => {
-      if (res.status === 200) {
 
+      if (res.status === 200) {
         ws.send(JSON.stringify({ main: props.data, action: 'delete', allowedList: currentAllowedUsersList }));
         window.location.reload();
       }
@@ -56,14 +57,19 @@ const DeleteTaskModal = (props: any) => {
   return (
     <>
       <Modal {...props} show={showDeleteTaskModal}>
+
         <Modal.Header closeButton onClick={HandleDiscardDeleteTask}>
           <Modal.Title>Delete Task {props.data.firstName}</Modal.Title>
         </Modal.Header>
+
         <Modal.Body>You're about to delete this Task. Are you sure?</Modal.Body>
+        
         <Modal.Footer>
+         
           <ButtonBs variant="secondary" onClick={HandleDiscardDeleteTask}>
             Discard
           </ButtonBs>
+          
           <ButtonBs variant="danger" onClick={HandleDeleteTask}>
             Delete
           </ButtonBs>

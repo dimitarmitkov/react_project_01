@@ -3,7 +3,7 @@ import './userCard.css';
 import { Row, Col, Container } from 'react-bootstrap';
 import { useState } from 'react';
 import EditUserApp from './EditUser';
-import DeleteUserModalApp from '../modal/ModalDelete';
+import DeleteUserModalApp from '../modal/ModalDeleteUser';
 import CurrentLoggedUser from '../functions/currentLoggedUser';
 
 

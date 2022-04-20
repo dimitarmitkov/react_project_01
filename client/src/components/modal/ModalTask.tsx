@@ -14,7 +14,7 @@ interface Provider {
 
 const ws = new WebSocket('ws://127.0.0.1:8000/ws');
 
-const MyVerticallyCenteredModal = (props: any) => {
+const VerticallyCenteredModal = (props: any) => {
     const [user, setUser] = useState(Object);
     const [showUsers, setShowUsers] = useState<Provider>();
     const [allowedUsers, setAllowedUsers] = useState([]);
@@ -177,7 +177,7 @@ const ModalApp = (props: any[]) => {
                 Edit Task
             </Button>
 
-            <MyVerticallyCenteredModal
+            <VerticallyCenteredModal
                 show={modalShow}
                 onHide={() => { setModalShow(prevCheck => !prevCheck) }}
                 data={props}
