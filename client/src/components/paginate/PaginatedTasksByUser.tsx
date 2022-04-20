@@ -5,7 +5,7 @@ import { Card, Col, Row } from 'react-bootstrap';
 import { Dropdown } from 'primereact/dropdown';
 import { JsxElement } from 'typescript';
 import ReactPaginate from 'react-paginate';
-import TasksCard from '../TasksCard';
+import TasksCard from '../tasks/TasksCard';
 import { Checkbox } from 'primereact/checkbox';
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
