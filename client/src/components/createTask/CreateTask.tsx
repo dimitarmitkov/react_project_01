@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Container, Row, Col } from 'react-bootstrap';
 import { useForm, SubmitHandler } from "react-hook-form";
 import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
@@ -14,7 +15,7 @@ type FormValues = {
 };
 
 const CreateTaskGroup = () => {
-    
+
     const [user, setUser] = useState(Object);
     const { register, handleSubmit } = useForm<FormValues>();
     const [selectValues, setSelectValues] = useState(undefined);
@@ -30,13 +31,15 @@ const CreateTaskGroup = () => {
 
     const onSubmit: SubmitHandler<FormValues> = data => {
 
-        axios.post("http://localhost:62000/api/v1/createTask",
-            {
-                taskType: selectValues,
-                taskName: data.taskName,
-                taskProgress: 'initial',
-                initiatedByUserId: user.id
-            })
+        const url= "http://localhost:62000/api/v1/createTask";
+        const query = {
+            taskType: selectValues,
+            taskName: data.taskName,
+            taskProgress: 'initial',
+            initiatedByUserId: user.id
+        };
+
+        axios.post(url, query)
             .then(result => {
                 if (result.status === 201) {
                     navigate('/tasks');
@@ -49,41 +52,37 @@ const CreateTaskGroup = () => {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <div>
-                <div className="grid">
 
-                    <div className="row mb-3">
-                        <div className="col-3"></div>
-                        <div className="col-3">
-                            <div className="p-inputgroup">
-                                <span className="p-inputgroup-addon">
-                                    <i className="pi pi-envelope"></i>
-                                </span>
-                                <Dropdown id={'dropDownButton'} value={selectValues} options={taskTypeArray} onChange={onTypeSelectorChange} optionLabel="name" placeholder="Select Type" editable />
-                            </div>
+            <Container>
+
+                <Row className="mb-3 justify-content-md-center">
+                    <Col sm={3}>
+                        <div className="p-inputgroup">
+                            <span className="p-inputgroup-addon">
+                                <i className="pi pi-envelope"></i>
+                            </span>
+                            <Dropdown id={'dropDownButton'} value={selectValues} options={taskTypeArray} onChange={onTypeSelectorChange} optionLabel="name" placeholder="Select Type" editable />
                         </div>
-                    </div>
+                    </Col>
+                </Row>
 
-                    <div className="row mb-3">
-                        <div className="col-3"></div>
-                        <div className="col-3">
-                            <div className="p-inputgroup">
-                                <span className="p-inputgroup-addon">
-                                    <i className="pi pi-envelope"></i>
-                                </span>
-                                <InputText placeholder="Task Name" {...register("taskName")} />
-                            </div>
+                <Row className="mb-3 justify-content-md-center">
+                    <Col sm={3}>
+                        <div className="p-inputgroup">
+                            <span className="p-inputgroup-addon">
+                                <i className="pi pi-envelope"></i>
+                            </span>
+                            <InputText placeholder="Task Name" {...register("taskName")} />
                         </div>
-                    </div>
-                </div>
-            </div>
+                    </Col>
+                </Row>
 
-            <div className="row mb-3">
-                <div className="col-3"></div>
-                <div className="col-3">
-                    <input className="btn btn-danger" type="submit" value="Create Task" />
-                </div>
-            </div>
+                <Row className="mb-3 justify-content-md-center">
+                    <Col sm={3}>
+                        <input className="btn btn-danger" type="submit" value="Create Task" />
+                    </Col>
+                </Row>
+            </Container>
         </form>
     );
 }
