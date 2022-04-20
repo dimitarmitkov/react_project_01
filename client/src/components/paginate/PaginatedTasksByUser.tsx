@@ -23,14 +23,13 @@ const PaginatedTasksByUser = (props: any) => {
         type: JSX.Element[];
     }
 
-    let [offset, setOffset] = useState(0);
+    const [offset, setOffset] = useState(0);
     const [data, setData] = useState<Provider[]>([]);
     const [perPage, setPerPage] = useState(10);
     const [pageCount, setPageCount] = useState(0);
     const [selectValues, setSelectValues] = useState(null);
-    // let [rowsNumber, setRowsNumber] = useState(0);
-    let [endValue, setEndValue] = useState(10);
-    let [startValue, setStartValue] = useState(0);
+    const [endValue, setEndValue] = useState(10);
+    const [startValue, setStartValue] = useState(0);
     const [checkedProject, setCheckedProject] = useState(false);
     const [checkedMeeting, setCheckedMeeting] = useState(false);
 
@@ -96,8 +95,8 @@ const PaginatedTasksByUser = (props: any) => {
 
     const handlePageClick = (e: any) => {
         selectedPage = e.selected;
-        setOffset(offset = (1 + selectedPage * perPage));
-        setEndValue(endValue = (perPage + selectedPage * perPage));
+        setOffset(1 + selectedPage * perPage);
+        setEndValue(perPage + selectedPage * perPage);
         setStartValue(1 + selectedPage * perPage);
     };
 
@@ -117,11 +116,15 @@ const PaginatedTasksByUser = (props: any) => {
     }
 
     return <div className="App">
+
         <Row className='selector' key={"selectorTop1"}>
+
             <Col sm={2}>
+
                 <div className="field-checkbox-label">
                     <label htmlFor="projectsShow">Show projects</label>
                 </div>
+
                 <div className="field-checkbox">
                     <Checkbox inputId="projectsShow" checked={project} onChange={(e) => {
                         project = e.checked;
@@ -131,10 +134,13 @@ const PaginatedTasksByUser = (props: any) => {
                 } disabled={checkedMeeting}/>
                 </div>
             </Col>
+
             <Col sm={2}>
+
                 <div className="field-checkbox-label">
                     <label htmlFor="meetingsShow">Show meetings</label>
                 </div>
+
                 <div className="field-checkbox">
                     <Checkbox inputId="meetingsShow" checked={meeting} onChange={(e) =>{ 
                         meeting = e.checked;
@@ -144,18 +150,23 @@ const PaginatedTasksByUser = (props: any) => {
                         } disabled={checkedProject}/>
                 </div>
             </Col>
+
             <Col>
+
             {props.data.role === 'admin' ? 
                 <Button icon="pi pi-plus" label="Create Task" className="p-button-outlined p-button-secondary" onClick={redirectToCreateTask} />
                 : null }
             </Col>
+
             <Col className="dropdown-demo" key={'paginateDropDown'}>
                 <Dropdown id={'dropDownButton'} value={selectValues} options={valuesArray} onChange={onValuesChange} placeholder="All" editable />
             </Col>
         </Row>
+
         <Row key={"selectorTop2"}>
             {data}
         </Row>
+        
         <Row>
             <Col>
                 <ReactPaginate

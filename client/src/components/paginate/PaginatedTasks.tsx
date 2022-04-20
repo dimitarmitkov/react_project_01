@@ -23,13 +23,13 @@ const PaginatedTasks = () => {
         type: JSX.Element[];
       }
 
-    let [offset, setOffset] = useState(0);
+    const [offset, setOffset] = useState(0);
     const [data, setData] = useState<Provider[]>([]);
     const [perPage, setPerPage] = useState(10);
     const [pageCount, setPageCount] = useState(0);
     const [selectValues, setSelectValues] = useState(null);
-    let [endValue, setEndValue] = useState(10);
-    let [startValue, setStartValue] = useState(0);
+    const [endValue, setEndValue] = useState(10);
+    const [startValue, setStartValue] = useState(0);
     const [checkedProject, setCheckedProject] = useState(false);
     const [checkedMeeting, setCheckedMeeting] = useState(false);
 
@@ -38,19 +38,21 @@ const PaginatedTasks = () => {
 
     const getData = async (offset: number, perPage: number) => {
 
-
-        let res = meeting || project ? 
-        await axios.patch("http://localhost:62000/api/v1/tasksPage",
-        {
+        const url = "http://localhost:62000/api/v1/tasksPage";
+        const selectedQuery = {
             offsetData: startValue,
             limitData: endValue,
             whereSelector: project ? "project" : "meeting"
-        }) 
-        : await axios.post("http://localhost:62000/api/v1/tasksPage",
-        {
+        };
+
+        const commonQuery = {
             offsetData: startValue,
             limitData: endValue
-        });
+        };
+
+        let res = meeting || project ? 
+        await axios.patch(url, selectedQuery) 
+        : await axios.post(url, commonQuery);
        
         const slice = res.data.responseData;
 
@@ -87,8 +89,8 @@ const PaginatedTasks = () => {
 
     const handlePageClick = (e: any) => {
         selectedPage = e.selected;
-        setOffset(offset = (1 + selectedPage*perPage));
-        setEndValue(endValue=(perPage+selectedPage*perPage));
+        setOffset(1 + selectedPage*perPage);
+        setEndValue(perPage+selectedPage*perPage);
         setStartValue(1 + selectedPage*perPage);
     };
 
@@ -110,10 +112,13 @@ const PaginatedTasks = () => {
 
     const nextElement = <div className="App">
         <Row className='selector' key={"selectorTop1"}>
+
         <Col sm={2}>
+
                 <div className="field-checkbox-label">
                     <label htmlFor="projectsShow">Show projects</label>
                 </div>
+
                 <div className="field-checkbox">
                     <Checkbox inputId="projectsShow" checked={project} onChange={(e) => {
                         project = e.checked;
@@ -123,10 +128,13 @@ const PaginatedTasks = () => {
                 } disabled={checkedMeeting}/>
                 </div>
             </Col>
+
             <Col sm={2}>
+
                 <div className="field-checkbox-label">
                     <label htmlFor="meetingsShow">Show meetings</label>
                 </div>
+
                 <div className="field-checkbox">
                     <Checkbox inputId="meetingsShow" checked={meeting} onChange={(e) =>{ 
                         meeting = e.checked;
@@ -136,16 +144,21 @@ const PaginatedTasks = () => {
                         } disabled={checkedProject}/>
                 </div>
             </Col>
+
             <Col>
+
             <Button icon="pi pi-plus" label="Create Task" className="p-button-outlined p-button-secondary" onClick={redirectToCreateTask}/>
             </Col>
+
             <Col className="dropdown-demo" key={'paginateDropDown'}>
                 <Dropdown id={'dropDownButton'} value={selectValues} options={valuesArray} onChange={onValuesChange} placeholder="All" editable />
             </Col>
         </Row>
+
         <Row key={"selectorTop2"}>
             {data}
         </Row>
+
         <Row>
             <Col>
                 <ReactPaginate
@@ -162,7 +175,6 @@ const PaginatedTasks = () => {
                     activeClassName={"active"} />
             </Col>
         </Row>
-
     </div>
 
     return nextElement

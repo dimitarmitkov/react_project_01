@@ -21,19 +21,17 @@ function PaginatedUsers() {
     const valuesArray2 = ['5', '10', 'All'];
 
     const getData = async (offset: number, perPage: number) => {
-        const res = await axios.post("http://localhost:62000/api/v1/usersPage",
-            {
-                offsetData: offset,
-                limitData: perPage
-            }
-        );
+
+        const url = "http://localhost:62000/api/v1/usersPage";
+        const query = { offsetData: offset, limitData: perPage }
+        const res = await axios.post(url, query);
         const data = res.data;
         const slice = data.rows;
         setRowsNumber(data.count);
 
         const postData = slice.map((pd: any, pdk: number) => {
 
-            return <div id={'user_'+pd.id} className="ShowUsersList" key={pdk + 101 + 'pdKey'}>
+            return <div id={'user_' + pd.id} className="ShowUsersList" key={pdk + 101 + 'pdKey'}>
                 <UsersCard user={pd} key={pdk + 100 + 'pdKey'} />
             </div>
 
@@ -45,7 +43,7 @@ function PaginatedUsers() {
 
     const handlePageClick = (e: any) => {
         const selectedPage = e.selected;
-        setOffset(selectedPage*perPage)
+        setOffset(selectedPage * perPage)
     };
 
     const onPageNumbersChange = (e: any) => {
@@ -59,20 +57,26 @@ function PaginatedUsers() {
     }, [offset, perPage]);
 
     const navigate = useNavigate();
-    const redirectToCreateUser = () =>{
+    const redirectToCreateUser = () => {
         navigate('/signup');
     }
 
     return (
         <div className="App">
+
             <Row className='selector' key={"selectorTop1"}>
-                <Col className="create-user"><Button icon="pi pi-plus" label="Create User" className="p-button-outlined p-button-secondary" onClick={redirectToCreateUser}/></Col>
+
+                <Col className="create-user"><Button icon="pi pi-plus" label="Create User" className="p-button-outlined p-button-secondary" onClick={redirectToCreateUser} /></Col>
+
                 <Col className="dropdown-demo" key={'paginateDropDown'}>
                     <Dropdown id={'dropDownButton'} value={selectValues} options={valuesArray2} onChange={onPageNumbersChange} placeholder="5" editable />
                 </Col>
             </Row>
+
             <Row key={"selectorTop2"}>
+
                 <Col key={"selectorTopCol2"}>
+                    
                     <div key={"selectorTopColDiv2"}>
                         {data}
                     </div>
