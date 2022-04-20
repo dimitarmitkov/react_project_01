@@ -13,11 +13,12 @@ const LogoutGroup = () => {
 
     const onSubmit: SubmitHandler<FormValues> = data => {
 
-        axios.get("http://localhost:62000/api/v1/userLogout",{withCredentials: true})
+        const url = "http://localhost:62000/api/v1/userLogout";
+        const query = { withCredentials: true };
+
+        axios.get(url, query)
             .then(res => {
-                console.log(res);
                 if (res.status === 200) {
-                    console.log(res);
                     window.location.href = '/login';
                 }
             })
@@ -28,17 +29,21 @@ const LogoutGroup = () => {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
+            
             <Container>
+
                 <Row className="mt-3 justify-content-md-center">
                     <Col sm={3}>
-                           <h5>You're about to log out</h5>
+                        <h5>You're about to log out</h5>
                     </Col>
                 </Row>
+
                 <Row className="mt-3 justify-content-md-center">
                     <Col sm={3}>
-                           <h6>Please confirm</h6>
+                        <h6>Please confirm</h6>
                     </Col>
                 </Row>
+
                 <Row className="mt-3 justify-content-md-center">
                     <Col sm={3}>
                         <label></label>

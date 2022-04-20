@@ -10,7 +10,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 import Hello from './components/test_components/HelloWorld';
 import HelloClass from './components/test_components/HelloClass';
 import SidebarFive from './components/sidebar/SidebarFive';
-import LoginForm from './components/login/LoginForm';
+import LoginGroup from './components/login/LoginForm';
 import SignUpForm from './components/signup/SignUpForm';
 import Logout from './components/login/Logout';
 import PaginatedTasks from './components/paginate/PaginatedTasks';
@@ -52,7 +52,7 @@ function App() {
                 < Route path="/helloMitko" element={<Hello />} />
                 < Route path="/users" element={<PaginatedUsers />} />
                 < Route path="/tasks" element={<PaginatedTasks />} />
-                < Route path="/login" element={<LoginForm />} />
+                < Route path="/login" element={<LoginGroup />} />
                 < Route path="/logout" element={<Logout />} />
                 < Route path="/signup" element={<SignUpForm />} />
                 < Route path="/createTask" element={<CreateTask />} />
