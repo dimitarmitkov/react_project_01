@@ -1,7 +1,6 @@
 import axios from "axios";
-import React, { Component, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Container, Row, Col } from "react-bootstrap";
-import ReactDOM from "react-dom";
 import { default as ReactSelect } from "react-select";
 import { components } from "react-select";
 import './multiSelector.css';
@@ -26,11 +25,11 @@ const Option = (props: any) => {
 const MultiSelector = (props: any) => {
 
     let main = {
-            createdAt: props.createdAt,
-            taskName: props.taskName,
-            taskType: props.taskType,
-            firstName: ''
-        };
+        createdAt: props.createdAt,
+        taskName: props.taskName,
+        taskType: props.taskType,
+        firstName: ''
+    };
     let taskIdGlobal = props.taskId ? props.taskId : props.id;
 
     const [users, setUsers] = useState<never[]>([]);
@@ -52,7 +51,6 @@ const MultiSelector = (props: any) => {
 
                     setAllowedUsers(allowedUsersList);
                 }
-
             })
             .catch(err => console.log(err));
     }
@@ -68,6 +66,7 @@ const MultiSelector = (props: any) => {
     }
 
     useEffect(() => {
+
         getAllowedUsers(taskIdGlobal);
         getUsers();
     }, [taskIdGlobal]);
@@ -95,9 +94,9 @@ const MultiSelector = (props: any) => {
                         const resultAllowedUsersArray = [...allowedUsers, ...idArray];
 
                         users.forEach((user: any) => {
-                            if(idArray.includes(user.value)){
-                                main['firstName']=user.label;
-                                ws.send(JSON.stringify({main, action: 'added', allowedList: resultAllowedUsersArray }));
+                            if (idArray.includes(user.value)) {
+                                main['firstName'] = user.label;
+                                ws.send(JSON.stringify({ main, action: 'added', allowedList: resultAllowedUsersArray }));
                             }
                         })
 
@@ -124,13 +123,11 @@ const MultiSelector = (props: any) => {
                         </Col>
                     </Row>
                 </Container>
-
             </span>
         );
     } else {
         return null;
     }
-
 }
 
 export default MultiSelector;

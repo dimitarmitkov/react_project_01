@@ -55,7 +55,8 @@ const MyVerticallyCenteredModal = (props: any) => {
     };
 
     const getUsers = (props: number) => {
-        let usersQuery = { idData: props };
+
+        const usersQuery = { idData: props };
         axios.patch("http://localhost:62000/api/v1/usertasks", usersQuery)
             .then(result => {
 
@@ -99,7 +100,6 @@ const MyVerticallyCenteredModal = (props: any) => {
         getUsers(props);
 
         return showUsers;
-
     }
 
     let dropdownButtonsArray = props.data.taskType === 'project' ? projectArray.map((element: string, k: number) => {
@@ -162,17 +162,6 @@ const MyVerticallyCenteredModal = (props: any) => {
                 </Container>
             </Modal.Body>
             <Modal.Footer>
-                {/* <Col> */}
-                    
-                    <Form>
-                        <DropdownButton id="dropdown-item-button" title="Select status" onClick={e => { changeTaskStatus(e) }}>
-                            {dropdownButtonsArray}
-                        </DropdownButton>
-                        {user && user.role === 'admin' ?
-                                <DeleteTaskModalApp {...props.data} />
-                        : null}
-                    </Form>
-                {/* </Col> */}
                 <Button onClick={props.onHide}>Close</Button>
             </Modal.Footer>
         </Modal >

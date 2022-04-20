@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import ButtonBs from 'react-bootstrap/Button';
 import { Button } from 'primereact/button';
@@ -22,15 +22,9 @@ const DeleteUserModal = (props: any) => {
 
   const handleDiscard = () => setShow(false);
   const handleDelete = () => {
-
     getData();
-
     setShow(false);
   }
-
-  useEffect(()=>{
-    
-  },[])
 
   return (
     <>
@@ -61,9 +55,7 @@ const DeleteUserModalApp = (props: any[]) => {
         Delete User
       </Button>
 
-      {modalShow ? <DeleteUserModal
-        data={props}
-      /> : null}
+      {modalShow ? <DeleteUserModal data={props} /> : null}
     </>
   );
 }

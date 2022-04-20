@@ -9,7 +9,7 @@ import TasksCard from '../TasksCard';
 import { Checkbox } from 'primereact/checkbox';
 import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-import '../buttons/DropdownButton.css';
+import './DropdownButton.css';
 import './paginate.css';
 
 let meeting = false;

@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import ButtonBs from 'react-bootstrap/Button';
-import { Button } from 'primereact/button';
 import axios from 'axios';
 
 const ws = new WebSocket('ws://127.0.0.1:8000/ws');
@@ -9,7 +8,7 @@ const ws = new WebSocket('ws://127.0.0.1:8000/ws');
 const GetUsers = (currentTaskId: number) => {
   const [allowedUsers, setAllowedUsers] = useState([]);
 
-  let usersQuery = { idData: currentTaskId };
+  const usersQuery = { idData: currentTaskId };
   axios.patch("http://localhost:62000/api/v1/usertasks", usersQuery)
     .then(result => {
 
@@ -23,41 +22,22 @@ const GetUsers = (currentTaskId: number) => {
     })
     .catch(err => console.log(err));
 
-    return allowedUsers;
+  return allowedUsers;
 }
 
-
-
 const DeleteTaskModal = (props: any) => {
+
   const [showDeleteTaskModal, setShowDeleteTaskModal] = useState(true);
-
-  let currentTaskId = props.data.taskId ? props.data.taskId : props.data.id;
-
-  // const getUsers = (currentTaskId: number) => {
-  //   let usersQuery = { idData: currentTaskId };
-  //   axios.patch("http://localhost:62000/api/v1/usertasks", usersQuery)
-  //       .then(result => {
-
-  //           const currentData = result.data;
-
-  //           const allowedUsersList = () => (
-  //                   currentData.map((name: any) =>name.id)
-  //           );
-
-  //           setAllowedUsers(allowedUsersList);
-  //         })
-  //         .catch(err => console.log(err));
-  //       }
-
+  const currentTaskId = props.data.taskId ? props.data.taskId : props.data.id;
   const currentAllowedUsersList = GetUsers(currentTaskId);
-  
+
   const getData = () => axios.post("http://localhost:62000/api/v1/tasksDelete",
-  {
-    idData: currentTaskId
-  })
-  .then(res => {
-    if (res.status === 200) {
-      
+    {
+      idData: currentTaskId
+    })
+    .then(res => {
+      if (res.status === 200) {
+
         ws.send(JSON.stringify({ main: props.data, action: 'delete', allowedList: currentAllowedUsersList }));
         window.location.reload();
       }
@@ -72,8 +52,6 @@ const DeleteTaskModal = (props: any) => {
     getData();
     setShowDeleteTaskModal(false);
   }
-
-
 
   return (
     <>

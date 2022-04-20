@@ -72,7 +72,6 @@ const CreateTaskGroup = () => {
                                     <i className="pi pi-envelope"></i>
                                 </span>
                                 <InputText placeholder="Task Name" {...register("taskName")} />
-                                {/* <InputText placeholder="User current" {...register("initiatedByUserId")} type="hidden" value={user.id}/> */}
                             </div>
                         </div>
                     </div>

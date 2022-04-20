@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react'
 import UsersCard from '../user/UsersCard';
 import { useNavigate } from "react-router-dom";
 import './paginate.css';
-import '../buttons/DropdownButton.css';
+import './DropdownButton.css';
 
 function PaginatedUsers() {
 
@@ -33,7 +33,7 @@ function PaginatedUsers() {
 
         const postData = slice.map((pd: any, pdk: number) => {
 
-            return <div className="ShowUsersList" key={pdk + 101 + 'pdKey'}>
+            return <div id={'user_'+pd.id} className="ShowUsersList" key={pdk + 101 + 'pdKey'}>
                 <UsersCard user={pd} key={pdk + 100 + 'pdKey'} />
             </div>
 
@@ -55,7 +55,7 @@ function PaginatedUsers() {
     }
 
     useEffect(() => {
-        getData(offset, perPage)
+        getData(offset, perPage);
     }, [offset, perPage]);
 
     const navigate = useNavigate();

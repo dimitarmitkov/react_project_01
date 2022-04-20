@@ -1,18 +1,17 @@
 import { Link } from 'react-router-dom';
 import './userCard.css';
 import { Row, Col, Container } from 'react-bootstrap';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { useState } from 'react';
 import EditUserApp from './EditUser';
 import DeleteUserModalApp from '../modal/ModalDelete';
-import AxiosRequester from '../functions/axiosRequester';
+import CurrentLoggedUser from '../functions/currentLoggedUser';
 
 
 const UsersCard = (props: any) => {
     const user = props.user;
     const [userLogged, setUserLogged] = useState(Object);
 
-    AxiosRequester(setUserLogged,"http://localhost:62000/api/v1/currentLoggedUser" )
+    CurrentLoggedUser(setUserLogged);
 
     return (
         <Container className="card-container" key={user.id + 5 + 'userId'}>
