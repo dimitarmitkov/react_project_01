@@ -21,6 +21,7 @@ import CurrentLoggedUser from './components/functions/currentLoggedUser';
 import UserCardData from './components/user/UserCardData';
 import CurrentUserCard from './components/user/CurrentUserDataCard';
 import WebsocketData from './components/ws/websocket';
+import ToasterMessage from './components/signup/Toaster';
 
 function App() {
 
@@ -60,6 +61,7 @@ function App() {
                 < Route path="/users/:id" element={<UserCardData />} />
                 < Route path="/currentuser/:id" element={<CurrentUserCard />} />
                 < Route path="/websocket" element={<WebsocketData />} />
+                < Route path="/toaster" element={<ToasterMessage />} />
                 
               </Routes>
             </Col>
