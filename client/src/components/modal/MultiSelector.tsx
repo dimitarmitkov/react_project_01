@@ -4,6 +4,8 @@ import { Button, Container, Row, Col } from "react-bootstrap";
 import { default as ReactSelect } from "react-select";
 import { components } from "react-select";
 import './multiSelector.css';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ws = new WebSocket('ws://127.0.0.1:8000/ws');
 
@@ -30,30 +32,30 @@ const MultiSelector = (props: any) => {
         taskType: props.taskType,
         firstName: ''
     };
-    let taskIdGlobal = props.taskId ? props.taskId : props.id;
+    const taskIdGlobal = props.taskId ? props.taskId : props.id;
 
     const [users, setUsers] = useState<never[]>([]);
     const [optionSelected, setOptionSelected] = useState(null);
     const [allowedUsers, setAllowedUsers] = useState([]);
 
-    const getAllowedUsers = (currentTaskId: number) => {
+    const getAllowedUsers = async (currentTaskId: number) => {
 
         const usersUrl = "http://localhost:62000/api/v1/usertasks";
         const usersQuery = { idData: currentTaskId };
-        axios.patch(usersUrl, usersQuery)
-            .then(result => {
 
-                const currentData = result.data;
+        const result = await axios.patch(usersUrl, usersQuery)
+        const currentData = result.data;
 
-                if (currentData.length > 0) {
-                    const allowedUsersList = () => (
-                        currentData.map((name: any) => name.id)
-                    );
+        if (currentData.length > 0) {
+            const allowedUsersList = () => (
+                currentData.map((name: any) => name.id)
+            );
 
-                    setAllowedUsers(allowedUsersList);
-                }
-            })
-            .catch(err => console.log(err));
+            setAllowedUsers(allowedUsersList);
+        } else {
+            toast.configure();
+            toast('Something went wrong, you are not allowed.');
+        }
     }
 
     const getUsers = () => {
@@ -80,30 +82,31 @@ const MultiSelector = (props: any) => {
             setOptionSelected(selected);
         };
 
-        const logData = (props: any) => {
+        const logData = async (props: any) => {
 
-            let resArray = props.map((e: any) => ({ userId: e.value, taskId: taskIdGlobal }));
+            const resArray = props.map((e: any) => ({ userId: e.value, taskId: taskIdGlobal }));
             const urlLogData = "http://localhost:62000/api/v1/usertasks";
             const queryLogData = { userIdArray: resArray, taskId: taskIdGlobal }
 
-            axios.put(urlLogData, queryLogData)
-                .then(result => {
-                    if (result.status === 200) {
 
-                        const idArray = result.data.map((r: any) => r.userId);
-                        const resultAllowedUsersArray = [...allowedUsers, ...idArray];
+            const result = await axios.put(urlLogData, queryLogData);
+            if (result.status === 200) {
 
-                        users.forEach((user: any) => {
-                            if (idArray.includes(user.value)) {
-                                main['firstName'] = user.label;
-                                ws.send(JSON.stringify({ main, action: 'added', allowedList: resultAllowedUsersArray }));
-                            }
-                        })
+                const idArray = result.data.map((r: any) => r.userId);
+                const resultAllowedUsersArray = [...allowedUsers, ...idArray];
 
-                        window.location.reload();
+                users.forEach((user: any) => {
+                    if (idArray.includes(user.value)) {
+                        main['firstName'] = user.label;
+                        ws.send(JSON.stringify({ main, action: 'added', allowedList: resultAllowedUsersArray }));
                     }
                 })
-                .catch(err => console.log(err));
+
+                window.location.reload();
+            } else {
+                toast.configure();
+                toast('Something went wrong, you are not allowed.');
+            }
         }
 
         return (

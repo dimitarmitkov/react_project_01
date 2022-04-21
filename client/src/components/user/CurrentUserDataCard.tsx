@@ -5,9 +5,11 @@ import { useNavigate } from "react-router-dom";
 import CurrentLoggedUser from '../functions/currentLoggedUser';
 import CurrentUserCardData from './currentUserData';
 import UserElement from './UserCardDataMain';
-import axiosFunction from '../functions/axiosFunctions';
 import axios from "axios";
 import './userCard.css';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 interface MyObj {
     [propName: string]: string;
@@ -36,12 +38,12 @@ const CurrentUserCard = () => {
 
     CurrentLoggedUser(setCurrentUser);
 
-    let { id } = useParams();
-    let user: MyObj = CurrentUserCardData(id);
+    const { id } = useParams();
+    const user: MyObj = CurrentUserCardData(id);
 
     const onImageChange = (props: any) => {
 
-        let reader = new FileReader();
+        const reader = new FileReader();
         reader.readAsDataURL(props);
         reader.onload = () => {
 
@@ -53,85 +55,75 @@ const CurrentUserCard = () => {
         setCurrentUserPicture(props.name);
     }
 
-    useEffect(()=>{
-        let element = document.getElementById('user-picture') as HTMLImageElement;
-         element.src=`${srcPicture}`;
-    },[srcPicture]);
-    
+    useEffect(() => {
+        const element = document.getElementById('user-picture') as HTMLImageElement;
+        element.src = `${srcPicture}`;
+    }, [srcPicture]);
+
 
     const editUserRoute = () => {
 
-        let path = `/users`;
+        const path = `/users`;
         navigate(path);
     }
 
-        const allowPasswordChange = id == currentUser.id ? true : false;
-        const onSubmit: SubmitHandler<FormValues> = () => {
+    const allowPasswordChange = id == currentUser.id ? true : false;
+    const onSubmit: SubmitHandler<FormValues> = async () => {
 
-           
+        if (changePasswordSelected) {
 
-            if (changePasswordSelected) {
+            const urlPassword = "http://localhost:62000/api/v1/usersEdit";
+            const queryDataPassword = {
+                email: user.email,
+                insertPassword: passwordValue ? passwordValue : null,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                role: user.role,
+                picture: user.picture,
+                id: user.id,
+            };
 
-                const urlPassword = "http://localhost:62000/api/v1/usersEdit";
-                const queryDataPassword = {
-                    email: user.email,
-                    insertPassword: passwordValue ? passwordValue : null,
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    role: user.role,
-                    picture: user.picture,
-                    id: user.id,
-                };
+            const result = await axios.post(urlPassword, queryDataPassword);
 
-                axios.post(urlPassword, queryDataPassword)
-                    .then(response => {
-                        if (response.status === 200) {
-                            const button = document.getElementById('submit-changes-button') as HTMLElement;
-                            const checkElement = document.getElementById('password-checkbox') as HTMLElement;
-                            const passwordField = document.getElementById('password-input-field') as HTMLElement;
+            if (result.status === 200) {
 
-                            button.className = 'p-button-primary-hidden';
-                            checkElement.classList.add('d-none');
-                            passwordField.classList.add('d-none');
+                window.location.reload();
+            } else {
 
-                        }
-                    })
-                    .catch(err => {
-                        console.log(err);
-                    });
+                toast.configure();
+                toast('Something went wrong, you are not allowed.');
             }
+        }
 
-            if (currentUserPicture.length > 0) {
+        if (currentUserPicture.length > 0) {
 
-                const urlPicture = "http://localhost:62000/api/v1/photos/upload";
-                const queryDataPicture = {
-                    userId: user.id,
-                    userName: user.firstName,
-                    picture: srcPicture,
-                    picName: pictureName,
-                    picType: pictureType
-                };
+            const urlPicture = "http://localhost:62000/api/v1/photos/upload";
+            const queryDataPicture = {
+                userId: user.id,
+                userName: user.firstName,
+                picture: srcPicture,
+                picName: pictureName,
+                picType: pictureType
+            };
 
-                    axios.post(urlPicture, queryDataPicture)
-                    .then(response => {
-                        if (response.status === 201) {
-                            const button = document.getElementById('submit-changes-button') as HTMLElement;
+            const result = await axios.post(urlPicture, queryDataPicture)
+            if (result.status === 201) {
 
-                            button.className = 'p-button-primary-hidden';
-                        }
-                    })
-                    .catch(err => {
-                        console.log(err);
-                    });
+                window.location.reload();
+            } else {
+                
+                toast.configure();
+                toast('Something went wrong, you are not allowed.');
             }
-        };
+        }
+    };
 
-        return (
-            <>
-                {UserElement(user, handleSubmit, onSubmit, onImageChange, allowPasswordChange, changePasswordSelected, setChangePasswordSelected, passwordValue,
-                    setPasswordValue, errors, currentUserPicture, editUserRoute)}
-            </>
-        )
+    return (
+        <>
+            {UserElement(user, handleSubmit, onSubmit, onImageChange, allowPasswordChange, changePasswordSelected, setChangePasswordSelected, passwordValue,
+                setPasswordValue, errors, currentUserPicture, editUserRoute)}
+        </>
+    )
 }
 
 export default CurrentUserCard;

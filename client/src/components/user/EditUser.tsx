@@ -7,6 +7,8 @@ import { Checkbox } from 'primereact/checkbox';
 import axios from "axios";
 import { Row, Col, Container } from 'react-bootstrap';
 import './editUser.css';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 type FormValues = {
@@ -27,28 +29,24 @@ const EditUserGroup = (props: any) => {
     const [changePasswordSelected, setChangePasswordSelected] = useState(false);
 
 
-    const onSubmit: SubmitHandler<FormValues> = data => {
+    const onSubmit: SubmitHandler<FormValues> = async data => {
 
-        const url = "http://localhost:62000/api/v1/usersEdit"
+        const url = "http://localhost:62000/api/v1/usersEdit";
+        const query = {
+            email: data.email ? data.email : props.data.email,
+            insertPassword: passwordValue ? passwordValue : null,
+            firstName: data.firstName ? data.firstName : props.data.firstName,
+            lastName: data.lastName ? data.lastName : props.data.lastName,
+            role: checked ? 'user' : 'admin',
+            picture: data.picture ? data.picture : "",
+            id: props.data.id
+        };
 
-        axios.post(url,
-            {
-                email: data.email ? data.email : props.data.email,
-                insertPassword: passwordValue ? passwordValue : null,
-                firstName: data.firstName ? data.firstName : props.data.firstName,
-                lastName: data.lastName ? data.lastName : props.data.lastName,
-                role: checked ? 'user' : 'admin',
-                picture: data.picture ? data.picture : "",
-                id: props.data.id
-            })
-            .then(res => {
-                if (res.status === 200) {
-                    window.location.reload();
-                }
-            })
-            .catch(err => {
-                console.log(err);
-            });
+        const result = await axios.post(url, query);
+
+        toast.configure();
+
+        result.status === 200 ? window.location.reload() : toast('Something went wrong, you are not allowed.');
     };
 
     return (
@@ -101,49 +99,49 @@ const EditUserGroup = (props: any) => {
                     <Col>
                         <div className="p-inputgroup">
                             <div className="field-checkbox">
-                            <Checkbox inputId="passwordChecker" checked={changePasswordSelected} onChange={e => setChangePasswordSelected(e.checked)} />
-                         </div>
-                        <div className="field-checkbox-label">
-                            <label htmlFor="passwordChecker">{changePasswordSelected ? 'Change password selected' : 'Change password?'}</label>
+                                <Checkbox inputId="passwordChecker" checked={changePasswordSelected} onChange={e => setChangePasswordSelected(e.checked)} />
+                            </div>
+                            <div className="field-checkbox-label">
+                                <label htmlFor="passwordChecker">{changePasswordSelected ? 'Change password selected' : 'Change password?'}</label>
 
+                            </div>
                         </div>
-                    </div>
-                </Col>
-            </Row>
-            {changePasswordSelected ? <Row className="mt-3 justify-content-md-center" >
-                <Col>
-                    <div className="p-inputgroup">
-                        <span className="p-inputgroup-addon">
-                            <i className="pi pi-shield"></i>
-                        </span>
-                        <Password defaultValue={passwordValue} onChange={(e) => setPasswordValue(e.target.value)} toggleMask />
-                    </div>
-                    {errors.password && <span className="error-message" role="alert">{errors.password.message}</span>}
-                </Col>
-            </Row>
-                : ''}
-            <Row className="mt-3 justify-content-md-center">
-                <Col>
+                    </Col>
+                </Row>
+                {changePasswordSelected ? <Row className="mt-3 justify-content-md-center" >
+                    <Col>
+                        <div className="p-inputgroup">
+                            <span className="p-inputgroup-addon">
+                                <i className="pi pi-shield"></i>
+                            </span>
+                            <Password defaultValue={passwordValue} onChange={(e) => setPasswordValue(e.target.value)} toggleMask />
+                        </div>
+                        {errors.password && <span className="error-message" role="alert">{errors.password.message}</span>}
+                    </Col>
+                </Row>
+                    : ''}
+                <Row className="mt-3 justify-content-md-center">
+                    <Col>
 
-                    <div className="p-inputgroup">
-                        <div className="field-checkbox">
-                            <Checkbox inputId="binary" checked={checked} onChange={e => setChecked(e.checked)} disabled={false} />
-                        </div>
-                        <div className="field-checkbox-label">
-                            <label htmlFor="binary">{checked ? 'User role selected' : 'Please check for User role'}</label>
+                        <div className="p-inputgroup">
+                            <div className="field-checkbox">
+                                <Checkbox inputId="binary" checked={checked} onChange={e => setChecked(e.checked)} disabled={false} />
+                            </div>
+                            <div className="field-checkbox-label">
+                                <label htmlFor="binary">{checked ? 'User role selected' : 'Please check for User role'}</label>
 
+                            </div>
                         </div>
-                    </div>
-                </Col>
-            </Row>
-            <Row className="mt-3 mb-3 justify-content-md-center">
-                <Col>
-                    <Button label="Submit" className="p-button-primary" disabled={false} />
-                </Col>
-            </Row>
-        </Container>
-    </form >
-);
+                    </Col>
+                </Row>
+                <Row className="mt-3 mb-3 justify-content-md-center">
+                    <Col>
+                        <Button label="Submit" className="p-button-primary" disabled={false} />
+                    </Col>
+                </Row>
+            </Container>
+        </form >
+    );
 }
 
 const EditUserApp = (props: any) => {

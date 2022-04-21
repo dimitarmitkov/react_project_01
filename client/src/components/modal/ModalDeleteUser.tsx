@@ -3,22 +3,23 @@ import Modal from 'react-bootstrap/Modal';
 import ButtonBs from 'react-bootstrap/Button';
 import { Button } from 'primereact/button';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const DeleteUserModal = (props: any) => {
   const [show, setShow] = useState(true);
 
-  const getData = () => axios.post("http://localhost:62000/api/v1/usersDelete",
-    {
-      idData: props.data.id
-    })
-    .then(res => {
-      if (res.status === 200) {
-        window.location.reload();
-      }
-    })
-    .catch(err => {
-      console.log(err);
-    });
+  const getData = async () => {
+
+    const url = "http://localhost:62000/api/v1/usersDelete";
+    const queryData = { idData: props.data.id }
+    const result = await axios.post(url, queryData);
+
+    toast.configure();
+
+    result.status === 200 ? window.location.reload() : toast('Something went wrong, you are not allowed.');
+  }
 
   const handleDiscard = () => setShow(false);
   const handleDelete = () => {

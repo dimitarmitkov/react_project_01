@@ -8,10 +8,10 @@ const CurrentUserCardData = (id: string | undefined) => {
     const getUser = () => {
 
         const urlUser = "http://localhost:62000/api/v1/users";
-        const query = { id: id };
+        const queryData = { id: id };
         const headersData = { 'Content-Type': 'application/json' };
 
-        axios.post(urlUser, query, { headers: headersData })
+        axios.post(urlUser, queryData, { headers: headersData })
             .then(result => {
                 setCurrentUserCardData(result.data);
             })

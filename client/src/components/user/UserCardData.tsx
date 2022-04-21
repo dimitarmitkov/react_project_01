@@ -7,6 +7,9 @@ import CurrentUserCardData from './currentUserData';
 import UserElement from './UserCardDataMain';
 import axiosFunction from '../functions/axiosFunctions';
 import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 interface MyObj {
     [propName: string]: string;
@@ -36,8 +39,8 @@ const UserCard = () => {
 
     CurrentLoggedUser(setCurrentUser);
 
-    let { id } = useParams();
-    let user: MyObj = CurrentUserCardData(id);
+    const { id } = useParams();
+    const user: MyObj = CurrentUserCardData(id);
 
     const onImageChange = (props: any) => {
 
@@ -54,21 +57,19 @@ const UserCard = () => {
     }
 
     useEffect(() => {
-        let element = document.getElementById('user-picture') as HTMLImageElement;
+        const element = document.getElementById('user-picture') as HTMLImageElement;
         element.src = `${srcPicture}`;
     }, [srcPicture]);
 
     const editUserRoute = () => {
 
-        let path = `/users`;
+        const path = `/users`;
         navigate(path);
     }
 
     const allowPasswordChange = id == currentUser.id ? true : false;
 
-    const onSubmit: SubmitHandler<FormValues> = data => {
-
-
+    const onSubmit: SubmitHandler<FormValues> = async data => {
 
         if (changePasswordSelected) {
 
@@ -83,22 +84,16 @@ const UserCard = () => {
                 id: user.id,
             };
 
-            axios.post(urlPassword, queryDataPassword)
-                .then(response => {
-                    if (response.status === 200) {
-                        const button = document.getElementById('submit-changes-button') as HTMLElement;
-                        const checkElement = document.getElementById('password-checkbox') as HTMLElement;
-                        const passwordField = document.getElementById('password-input-field') as HTMLElement;
+            const result = await axios.post(urlPassword, queryDataPassword);
 
-                        button.className = 'p-button-primary-hidden';
-                        checkElement.classList.add('d-none');
-                        passwordField.classList.add('d-none');
+            if (result.status === 200) {
 
-                    }
-                })
-                .catch(err => {
-                    console.log(err);
-                });
+                window.location.reload();
+            } else {
+                toast.configure();
+                toast('Something went wrong, you are not allowed.');
+            }
+
         }
 
         if (currentUserPicture.length > 0) {
@@ -112,17 +107,16 @@ const UserCard = () => {
                 picType: pictureType
             };
 
-            axios.post(urlPicture, queryDataPicture)
-                .then(response => {
-                    if (response.status === 201) {
-                        const button = document.getElementById('submit-changes-button') as HTMLElement;
+            const result = await axios.post(urlPicture, queryDataPicture);
 
-                        button.className = 'p-button-primary-hidden';
-                    }
-                })
-                .catch(err => {
-                    console.log(err);
-                });
+            if (result.status === 201) {
+
+                window.location.reload();
+
+            } else {
+                toast.configure();
+                toast('Something went wrong, you are not allowed.');
+            }
         }
     };
 

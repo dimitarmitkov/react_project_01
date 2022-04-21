@@ -1,9 +1,9 @@
 import { Card } from 'react-bootstrap';
 import ModalApp from '../modal/ModalTask';
-import './tasks/tasks.css';
+import './tasks.css';
 
 const TasksCard = (props: any) => {
-    
+
     const task = props.task;
 
     return (

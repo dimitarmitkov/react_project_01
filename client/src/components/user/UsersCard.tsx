@@ -15,6 +15,7 @@ const UsersCard = (props: any) => {
 
     return (
         <Container className="card-container" key={user.id + 5 + 'userId'}>
+            
             <Row className="desc mt-3">
                 <Col sm={3}>
                     <h2>
@@ -27,6 +28,7 @@ const UsersCard = (props: any) => {
                     <span id="userId">User Id: <span className="user-role-id">{user.id}</span></span>
                 </Col>
             </Row>
+
             <Row>
                 <Col sm={6}>
                         <EditUserApp {...user} />
@@ -35,9 +37,9 @@ const UsersCard = (props: any) => {
                 <Col sm={2}>
                 </Col>
             </Row>
+
             <Row className="mt-1">
                 <hr />
-
             </Row>
         </Container>
     )
