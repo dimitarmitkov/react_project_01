@@ -2,10 +2,7 @@ import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import ButtonBs from 'react-bootstrap/Button';
 import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
-const ws = new WebSocket('ws://127.0.0.1:8000/ws');
+import axiosFunction from '../functions/axiosFunctions';
 
 const GetUsers = (currentTaskId: number) => {
 
@@ -34,22 +31,13 @@ const DeleteTaskModal = (props: any) => {
   const [showDeleteTaskModal, setShowDeleteTaskModal] = useState(true);
   const currentTaskId = props.data.taskId ? props.data.taskId : props.data.id;
   const currentAllowedUsersList = GetUsers(currentTaskId);
-  const url = "http://localhost:62000/api/v1/tasksDelete";
-  const query = { idData: currentTaskId };
-
+  
   const getData = async() => {
-    
-    const result = await axios.post(url, query);
 
-      if (result.status === 200) {
-        
-        ws.send(JSON.stringify({ main: props.data, action: 'delete', allowedList: currentAllowedUsersList }));
-        window.location.reload();
-      } else {
+    const query = { idData: currentTaskId };
+    const jsonData = JSON.stringify({ main: props.data, action: 'delete', allowedList: currentAllowedUsersList });
 
-        toast.configure();
-        toast('Something went wrong, you are not allowed.');
-      }
+    axiosFunction('modalDeleteTask',query,'post', 200, jsonData)
   }
 
   const HandleDiscardDeleteTask = () => setShowDeleteTaskModal(false);

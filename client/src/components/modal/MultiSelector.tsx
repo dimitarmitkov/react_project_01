@@ -54,7 +54,7 @@ const MultiSelector = (props: any) => {
             setAllowedUsers(allowedUsersList);
         } else {
             toast.configure();
-            toast('Something went wrong, you are not allowed.');
+            toast('No users attached to this task.');
         }
     }
 
