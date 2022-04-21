@@ -1,7 +1,7 @@
 global.__basedir = __dirname;
 
 const path = require('path');
-const { Sequelize } = require('sequelize');
+const { Sequelize, where } = require('sequelize');
 const cs = require("../connection/connectionData");
 const jwt = require("jsonwebtoken");
 const User = require("../../models/users");
@@ -271,11 +271,15 @@ module.exports = function serviceFactory(model) {
             picture
         } = req.body;
 
+        model.findOne({
+                where: { id: idData }
+            })
+            .then(result => {
 
-        if (insertPassword) {
-            replacePassword = bcrypt.hashSync(`${insertPassword}`, 10);
-            isValidPass = bcrypt.compareSync(`${insertPassword}`, `${replacePassword}`);
-            queryText = `UPDATE "Users"
+                if (insertPassword) {
+                    replacePassword = bcrypt.hashSync(`${insertPassword}`, 10);
+                    isValidPass = bcrypt.compareSync(`${insertPassword}`, `${replacePassword}`);
+                    queryText = `UPDATE "Users"
             SET "firstName" = :firstName,
                 "lastName" = :lastName,
                 "password" = :password,
@@ -283,49 +287,50 @@ module.exports = function serviceFactory(model) {
                 "role" = :role,
                 "picture" = :picture,
                 "updatedAt" = :date
-            WHERE "id" = :id;`;
+                WHERE "id" = :id;`;
 
-            replacementsData = {
-                firstName: `${firstName}`,
-                lastName: `${lastName}`,
-                password: `${replacePassword}`,
-                email: `${email}`,
-                role: `${role}`,
-                picture: `${picture}`,
-                id: `${idData}`,
-                date: `${updateDate}`
-            }
-        } else {
-            queryText = `UPDATE "Users"
+                    replacementsData = {
+                        firstName: `${firstName}`,
+                        lastName: `${lastName}`,
+                        password: `${replacePassword}`,
+                        email: `${email}`,
+                        role: `${role}`,
+                        picture: `${result.picture}`,
+                        id: `${idData}`,
+                        date: `${updateDate}`
+                    }
+                } else {
+                    queryText = `UPDATE "Users"
             SET "firstName" = :firstName,
-            "lastName" = :lastName,
-            "email" = :email,
-            "role" = :role,
-            "picture" = :picture,
-            "updatedAt" = :date
-        WHERE "id" = :id;`;
+                "lastName" = :lastName,
+                "email" = :email,
+                "role" = :role,
+                "picture" = :picture,
+                "updatedAt" = :date
+                WHERE "id" = :id;`;
 
-            replacementsData = {
-                firstName: `${firstName}`,
-                lastName: `${lastName}`,
-                email: `${email}`,
-                role: `${role}`,
-                picture: `${picture}`,
-                id: `${idData}`,
-                date: `${updateDate}`
-            }
+                    replacementsData = {
+                        firstName: `${firstName}`,
+                        lastName: `${lastName}`,
+                        email: `${email}`,
+                        role: `${role}`,
+                        picture: `${result.picture}`,
+                        id: `${idData}`,
+                        date: `${updateDate}`
+                    }
+                }
 
-        }
-
-        const { QueryTypes } = require('sequelize');
-        sequelize.query(queryText, {
-                replacements: replacementsData,
-                type: QueryTypes.SELECT
-            })
-            .then(res => {
-                res.send('username of user ' + idData + ' is changed');
-            })
-            .catch(err => res.send(err));
+                const { QueryTypes } = require('sequelize');
+                sequelize.query(queryText, {
+                        replacements: replacementsData,
+                        type: QueryTypes.SELECT
+                    })
+                    .then(res => {
+                        res.send('username of user ' + idData + ' is changed');
+                    })
+                    .catch(err => res.send(err));
+                // console.log(result.picture);
+            }).catch(err => res.send(err));
     }
 
     function getUserTasks(req, res, next, attributesArray, editObject) {

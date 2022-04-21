@@ -35,7 +35,7 @@ const EditUserGroup = (props: any) => {
             firstName: data.firstName ? data.firstName : props.data.firstName,
             lastName: data.lastName ? data.lastName : props.data.lastName,
             role: checked ? 'user' : 'admin',
-            picture: data.picture ? data.picture : "",
+            picture: data.picture ? data.picture : props.data.picture,
             id: props.data.id
         };
 
