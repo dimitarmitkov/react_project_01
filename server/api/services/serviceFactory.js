@@ -329,7 +329,6 @@ module.exports = function serviceFactory(model) {
                         res.send('username of user ' + idData + ' is changed');
                     })
                     .catch(err => res.send(err));
-                // console.log(result.picture);
             }).catch(err => res.send(err));
     }
 
