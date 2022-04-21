@@ -4,11 +4,9 @@ import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
 import { Checkbox } from 'primereact/checkbox';
-import axios from "axios";
 import { Row, Col, Container } from 'react-bootstrap';
 import './editUser.css';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import axiosFunction from '../functions/axiosFunctions';
 
 
 type FormValues = {
@@ -31,7 +29,6 @@ const EditUserGroup = (props: any) => {
 
     const onSubmit: SubmitHandler<FormValues> = async data => {
 
-        const url = "http://localhost:62000/api/v1/usersEdit";
         const query = {
             email: data.email ? data.email : props.data.email,
             insertPassword: passwordValue ? passwordValue : null,
@@ -42,11 +39,7 @@ const EditUserGroup = (props: any) => {
             id: props.data.id
         };
 
-        const result = await axios.post(url, query);
-
-        toast.configure();
-
-        result.status === 200 ? window.location.reload() : toast('Something went wrong, you are not allowed.');
+        await axiosFunction('editUser', query);
     };
 
     return (
