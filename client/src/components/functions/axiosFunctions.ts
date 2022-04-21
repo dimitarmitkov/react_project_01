@@ -1,30 +1,40 @@
 import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-const axiosFunction = (url: string, query: {}, queryType: string, specification: string | null, location = '/',status = 200) => {
+const axiosFunction = async (requestLocation: string, query: {}) => {
 
-    if(queryType === 'post' && specification === 'windowReload'){
-        axios.post(url, query)
-        .then(response => {
-            if (response.status === status) {
-                window.location.reload();
-            }
-        })
-        .catch(err => {
-            console.log(err);
-        });
+    if (requestLocation === 'currentUserCurrentPicture') {
+
+        const url = "http://localhost:62000/api/v1/photos/upload";
+        const result = await axios.post(url, query)
+        if (result.status === 201) {
+
+            window.location.reload();
+        } else {
+
+            toast.configure();
+            toast('Something went wrong, you are not allowed.');
+        }
     }
-    
-    if(queryType === 'post' && specification === 'windowHref'){
-        axios.post(url, query)
-        .then(response => {
-            if (response.status === status) {
-                window.location.href = location;
-            }
-        })
-        .catch(err => {
-            console.log(err);
-        });
+
+    if (requestLocation === 'currentUserCurrentPassword') {
+
+        const urlPassword = "http://localhost:62000/api/v1/usersEdit";
+
+        const result = await axios.post(urlPassword, query);
+
+        if (result.status === 200) {
+
+            window.location.reload();
+        } else {
+
+            toast.configure();
+            toast('Something went wrong, you are not allowed.');
+        }
     }
+
+
 }
 
 

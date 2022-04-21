@@ -6,9 +6,7 @@ import { useNavigate } from "react-router-dom";
 import CurrentUserCardData from './currentUserData';
 import UserElement from './UserCardDataMain';
 import axiosFunction from '../functions/axiosFunctions';
-import axios from "axios";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+
 
 
 interface MyObj {
@@ -73,7 +71,6 @@ const UserCard = () => {
 
         if (changePasswordSelected) {
 
-            const urlPassword = "http://localhost:62000/api/v1/usersEdit";
             const queryDataPassword = {
                 email: user.email,
                 insertPassword: passwordValue ? passwordValue : null,
@@ -84,21 +81,11 @@ const UserCard = () => {
                 id: user.id,
             };
 
-            const result = await axios.post(urlPassword, queryDataPassword);
-
-            if (result.status === 200) {
-
-                window.location.reload();
-            } else {
-                toast.configure();
-                toast('Something went wrong, you are not allowed.');
-            }
-
+            await axiosFunction('currentUserCurrentPassword', queryDataPassword);
         }
 
         if (currentUserPicture.length > 0) {
-
-            const urlPicture = "http://localhost:62000/api/v1/photos/upload";
+            
             const queryDataPicture = {
                 userId: user.id,
                 userName: user.firstName,
@@ -107,16 +94,7 @@ const UserCard = () => {
                 picType: pictureType
             };
 
-            const result = await axios.post(urlPicture, queryDataPicture);
-
-            if (result.status === 201) {
-
-                window.location.reload();
-
-            } else {
-                toast.configure();
-                toast('Something went wrong, you are not allowed.');
-            }
+            await axiosFunction('currentUserCurrentPicture', queryDataPicture);
         }
     };
 
