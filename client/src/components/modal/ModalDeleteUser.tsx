@@ -5,20 +5,17 @@ import { Button } from 'primereact/button';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import axiosFunction from '../functions/axiosFunctions';
 
 const DeleteUserModal = (props: any) => {
   const [show, setShow] = useState(true);
 
   const getData = async () => {
 
-    const url = "http://localhost:62000/api/v1/usersDelete";
-    const queryData = { idData: props.data.id }
-    const result = await axios.post(url, queryData);
 
-    toast.configure();
+    const query = { idData: props.data.id }
 
-    result.status === 200 ? window.location.reload() : toast('Something went wrong, you are not allowed.');
+    await axiosFunction('modalDeleteUser', query, 'post', 200);
   }
 
   const handleDiscard = () => setShow(false);

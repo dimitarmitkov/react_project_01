@@ -39,7 +39,7 @@ const EditUserGroup = (props: any) => {
             id: props.data.id
         };
 
-        await axiosFunction('editUser', query);
+        await axiosFunction('editUser', query, 'post', 200);
     };
 
     return (

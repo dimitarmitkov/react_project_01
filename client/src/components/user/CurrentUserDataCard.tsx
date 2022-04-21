@@ -81,11 +81,11 @@ const CurrentUserCard = () => {
                 id: user.id,
             };
 
-            await axiosFunction('currentUserCurrentPassword', queryDataPassword);
+            await axiosFunction('currentUserCurrentPassword', queryDataPassword, 'post', 200);
         }
 
         if (currentUserPicture.length > 0) {
-            
+
             const queryDataPicture = {
                 userId: user.id,
                 userName: user.firstName,
@@ -94,7 +94,7 @@ const CurrentUserCard = () => {
                 picType: pictureType
             };
 
-            await axiosFunction('currentUserCurrentPicture', queryDataPicture);
+            await axiosFunction('currentUserCurrentPicture', queryDataPicture, 'post', 201);
         }
     };
 
