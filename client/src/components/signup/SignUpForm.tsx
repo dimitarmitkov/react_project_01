@@ -8,9 +8,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { Row, Col, Container } from 'react-bootstrap';
 import './signUpForm.css';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
+import axiosFunction from '../functions/axiosFunctions';
 
 type FormValues = {
     firstName: string;
@@ -24,16 +22,12 @@ type FormValues = {
 
 const SignUpGroup = () => {
 
-    const { register, watch, formState: { errors }, handleSubmit } = useForm<FormValues>();
+    const { register, formState: { errors }, handleSubmit } = useForm<FormValues>();
     const [passwordValue, setPasswordValue] = useState('');
     const [checked, setChecked] = useState(false);
 
     const onSubmit: SubmitHandler<FormValues> = data => {
 
-        toast.configure();
-        toast('Well done');
-
-        const url = "http://localhost:62000/api/v1/createUser";
         const queryData = {
             email: data.email,
             insertPassword: passwordValue,
@@ -43,15 +37,7 @@ const SignUpGroup = () => {
             picture: data.picture ? data.picture : ""
         };
 
-        axios.post(url, queryData)
-            .then(res => {
-                if (res.status === 201) {
-                    window.location.href = '/users';
-                }
-            })
-            .catch(err => {
-                console.log(err);
-            });
+        axiosFunction('signUpForm', queryData, 'post', 201, undefined, '/users');
     };
 
     return (

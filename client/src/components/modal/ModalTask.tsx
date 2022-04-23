@@ -13,8 +13,6 @@ interface Provider {
     type: JSX.Element;
 }
 
-const ws = new WebSocket('ws://127.0.0.1:8000/ws');
-
 const VerticallyCenteredModal = (props: any) => {
     const [user, setUser] = useState(Object);
     const [showUsers, setShowUsers] = useState<Provider>();
@@ -54,7 +52,7 @@ const VerticallyCenteredModal = (props: any) => {
 
         const url = "http://localhost:62000/api/v1/usertasks";
         const usersQuery = { idData: props };
-        
+
         axios.patch(url, usersQuery)
             .then(result => {
 

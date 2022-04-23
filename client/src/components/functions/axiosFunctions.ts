@@ -49,11 +49,16 @@ const axiosFunction = async (requestLocation: string, query: {}, action: string,
 
         url = "http://localhost:62000/api/v1/tasks";
     }
+    
+    if (requestLocation === 'signUpForm') {
+
+        url = "http://localhost:62000/api/v1/createUser";
+    }
 
     const result = action === 'post' ? await axios.post(url, query) : await axios.get(url, query);
 
     if (result.status === resultValue) {
-        
+
         if (wsText) ws.send(wsText);
         locationReload === 'reload' ? window.location.reload() : window.location.href = locationReload;
     } else {
