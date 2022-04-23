@@ -8,7 +8,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import NavbarData from './components/navbar/NavbarData';
 import { Container, Row, Col } from 'react-bootstrap';
 import Hello from './components/test_components/HelloWorld';
-import HelloClass from './components/test_components/HelloClass';
 import SidebarFive from './components/sidebar/SidebarFive';
 import LoginGroup from './components/login/LoginForm';
 import SignUpForm from './components/signup/SignUpForm';
