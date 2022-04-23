@@ -7,6 +7,7 @@ import './modalTask.css';
 import DeleteTaskModalApp from './ModalDeleteTask';
 import { Link } from 'react-router-dom';
 import MultiSelector from './MultiSelector';
+import axiosFunction from '../functions/axiosFunctions';
 
 interface Provider {
     type: JSX.Element;
@@ -42,22 +43,19 @@ const VerticallyCenteredModal = (props: any) => {
     const getData = (checkValue: any) => {
 
         if (Object.keys(queryData).length > 0) {
-            axios.post("http://localhost:62000/api/v1/tasks", queryData)
-                .then(result => {
 
-                    if (result.status === 200) {
-                        ws.send(JSON.stringify({ main: props.data, action: checkValue, allowedList: allowedUsers }));
+            const jsonStringGetData = JSON.stringify({ main: props.data, action: checkValue, allowedList: allowedUsers });
 
-                    }
-                })
-                .catch(err => console.log(err));
+            axiosFunction('modalTaskGetData',queryData, 'post', 200, jsonStringGetData);
         }
     };
 
     const getUsers = (props: number) => {
 
+        const url = "http://localhost:62000/api/v1/usertasks";
         const usersQuery = { idData: props };
-        axios.patch("http://localhost:62000/api/v1/usertasks", usersQuery)
+        
+        axios.patch(url, usersQuery)
             .then(result => {
 
                 const currentData = result.data;

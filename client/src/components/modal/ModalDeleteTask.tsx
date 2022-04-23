@@ -29,6 +29,7 @@ const DeleteTaskModal = (props: any) => {
   }
 
   const HandleDiscardDeleteTask = () => setShowDeleteTaskModal(false);
+  
   const HandleDeleteTask = () => {
 
     getData();

@@ -2,9 +2,6 @@ import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import ButtonBs from 'react-bootstrap/Button';
 import { Button } from 'primereact/button';
-import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import axiosFunction from '../functions/axiosFunctions';
 
 const DeleteUserModal = (props: any) => {
@@ -12,13 +9,13 @@ const DeleteUserModal = (props: any) => {
 
   const getData = async () => {
 
-
     const query = { idData: props.data.id }
 
     await axiosFunction('modalDeleteUser', query, 'post', 200);
   }
 
   const handleDiscard = () => setShow(false);
+
   const handleDelete = () => {
     getData();
     setShow(false);
