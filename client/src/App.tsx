@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Link, Route, Routes } from 'react-router-dom';
 import './App.css';
 import "primereact/resources/themes/lara-light-indigo/theme.css";  //theme
@@ -27,10 +27,12 @@ function App() {
 
   CurrentLoggedUser(setUser);
 
-  if(!user){
-    CurrentLoggedUser(setUser);
+  // if(!user){
+  //   CurrentLoggedUser(setUser);
 
-  }
+  // }
+
+ 
 
     return (
       <Container fluid>
