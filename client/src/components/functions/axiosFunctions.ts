@@ -2,7 +2,7 @@ import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const axiosFunction = async (requestLocation: string, query: {}, action: string, resultValue: number, wsText: string | undefined = undefined) => {
+const axiosFunction = async (requestLocation: string, query: {}, action: string, resultValue: number, wsText: string | undefined = undefined, locationReload: string | undefined = 'reload') => {
 
     toast.configure();
     const toastMessage = 'Something went wrong, you are not allowed.';
@@ -20,7 +20,6 @@ const axiosFunction = async (requestLocation: string, query: {}, action: string,
         url = "http://localhost:62000/api/v1/usersEdit";
     }
 
-
     if (requestLocation === 'editUser') {
 
         url = "http://localhost:62000/api/v1/usersEdit";
@@ -30,23 +29,28 @@ const axiosFunction = async (requestLocation: string, query: {}, action: string,
 
         url = "http://localhost:62000/api/v1/usersDelete";
     }
-    // not in use now
-    // if (requestLocation === 'modalDeleteTaskGetUsers') {
 
-    //     url = "http://localhost:62000/api/v1/usertasks";
-    // }
-    
     if (requestLocation === 'modalDeleteTask') {
 
         url = "http://localhost:62000/api/v1/tasksDelete";
     }
+    
+    if (requestLocation === 'loginForm') {
 
-    const result = await axios.post(url, query);
+        url = "http://localhost:62000/api/v1/userLogin";
+    }
+    
+    if (requestLocation === 'logoutForm') {
+
+        url = "http://localhost:62000/api/v1/userLogout";
+    }
+
+    const result = action === 'post' ? await axios.post(url, query) : await axios.get(url, query);
 
     if (result.status === resultValue) {
 
-        window.location.reload();
         if (wsText) ws.send(wsText);
+        locationReload === 'reload' ? window.location.reload() : window.location.href = locationReload;
     } else {
 
         toast(toastMessage);

@@ -3,9 +3,8 @@ import { Container, Row, Col } from 'react-bootstrap';
 import { useForm, SubmitHandler } from "react-hook-form";
 import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
-import axios from "axios";
 import CurrentLoggedUser from '../functions/currentLoggedUser';
-import { useNavigate } from "react-router-dom";
+import AxiosSpecialFunction from '../functions/axiosSpecialFunctions';
 
 type FormValues = {
     taskType: string;
@@ -21,7 +20,6 @@ const CreateTaskGroup = () => {
     const [selectValues, setSelectValues] = useState(undefined);
 
     CurrentLoggedUser(setUser);
-    const navigate = useNavigate();
 
     const taskTypeArray = [{ name: 'Project', value: 'project' }, { name: 'Meeting', value: 'meeting' }];
 
@@ -31,7 +29,6 @@ const CreateTaskGroup = () => {
 
     const onSubmit: SubmitHandler<FormValues> = data => {
 
-        const url= "http://localhost:62000/api/v1/createTask";
         const query = {
             taskType: selectValues,
             taskName: data.taskName,
@@ -39,15 +36,7 @@ const CreateTaskGroup = () => {
             initiatedByUserId: user.id
         };
 
-        axios.post(url, query)
-            .then(result => {
-                if (result.status === 201) {
-                    navigate('/tasks');
-                }
-            })
-            .catch(err => {
-                console.log(err);
-            });
+        AxiosSpecialFunction('createTaskPostAxios', query, 'post', undefined, undefined, '/tasks')
     };
 
     return (

@@ -1,14 +1,16 @@
 import axios from 'axios';
 import { useEffect } from 'react';
 
-
 const CurrentLoggedUser = (setImportedValue: React.Dispatch<React.SetStateAction<never[]>>) => {
     
     const url = "http://localhost:62000/api/v1/currentLoggedUser";
     
     function axiosFunction() {
+
         axios.get(url, {withCredentials: true})
-            .then(response => setImportedValue(response.data))
+            .then(response => {
+
+                setImportedValue(response.data)})
             .catch(err => {
                 console.log('Error from Show List: ', err);
             });
@@ -18,7 +20,6 @@ const CurrentLoggedUser = (setImportedValue: React.Dispatch<React.SetStateAction
         axiosFunction()
     }, []);
 }
-
 
 export default CurrentLoggedUser;
     

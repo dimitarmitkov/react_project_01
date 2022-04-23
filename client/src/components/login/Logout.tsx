@@ -1,8 +1,9 @@
-import axios from "axios";
+// import axios from "axios";
 import { Button } from 'primereact/button';
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Row, Col, Container } from 'react-bootstrap';
 import './loginForm.css';
+import axiosFunction from '../functions/axiosFunctions';
 
 type FormValues = {
 };
@@ -13,18 +14,9 @@ const LogoutGroup = () => {
 
     const onSubmit: SubmitHandler<FormValues> = data => {
 
-        const url = "http://localhost:62000/api/v1/userLogout";
         const query = { withCredentials: true };
 
-        axios.get(url, query)
-            .then(res => {
-                if (res.status === 200) {
-                    window.location.href = '/login';
-                }
-            })
-            .catch(err => {
-                console.log(err);
-            });
+        axiosFunction('logoutForm', query, 'get', 200, undefined, '/login')
     };
 
     return (

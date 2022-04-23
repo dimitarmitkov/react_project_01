@@ -8,8 +8,9 @@
     "scripts": {
         "client": "cd client && npm start",
         "server": "cd server && node index.js",
-        "assets": "cd server/websocket/index.js && ionic serve",
-        "start": "concurrently \"npm run client\" \"npm run server\" \"npm run assets\" "
+        "assets": "cd server/websocket && node index.js",
+        "google": "cd ~ && google-chrome --disable-web-security --user-data-dir /Documents",
+        "start": "concurrently \"npm run client\" \"npm run server\" \"npm run assets\" \"npm run google\" "
     },
     "devDependencies": {
         "concurrently": "^7.1.0"

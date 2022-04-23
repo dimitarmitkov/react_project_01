@@ -2,11 +2,11 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { Password } from 'primereact/password';
-import axios from "axios";
 import { Link } from "react-router-dom";
 import './loginForm.css';
 import { Row, Col, Container } from 'react-bootstrap';
 import { useState } from "react";
+import axiosFunction from '../functions/axiosFunctions';
 
 type FormValues = {
     firstName: string;
@@ -18,27 +18,17 @@ type FormValues = {
 
 const LoginGroup = () => {
 
-    const { register, watch, formState: { errors }, handleSubmit } = useForm<FormValues>();
+    const { register, formState: { errors }, handleSubmit } = useForm<FormValues>();
     const [passwordValue, setPasswordValue] = useState('');
 
     const onSubmit: SubmitHandler<FormValues> = data => {
 
-        const url = "http://localhost:62000/api/v1/userLogin";
         const query = {
             insertEmail: data.email,
             insertPassword: passwordValue
         };
-        const headersData = {'Content-Type': 'application/json'};
 
-        axios.post(url, query, { headers: headersData })
-            .then(res => {
-                if (res.status === 200) {
-                    window.location.href = '/helloMitko';
-                }
-            })
-            .catch(err => {
-                console.log(err);
-            });
+        axiosFunction('loginForm', query, 'post', 200, undefined, '/helloMitko')
     };
 
     return (

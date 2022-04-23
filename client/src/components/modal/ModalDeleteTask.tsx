@@ -1,27 +1,15 @@
 import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import ButtonBs from 'react-bootstrap/Button';
-import axios from 'axios';
 import axiosFunction from '../functions/axiosFunctions';
+import AxiosSpecialFunction from '../functions/axiosSpecialFunctions';
 
 const GetUsers = (currentTaskId: number) => {
 
   const [allowedUsers, setAllowedUsers] = useState([]);
-  const url = "http://localhost:62000/api/v1/usertasks";
   const usersQuery = { idData: currentTaskId };
 
-  axios.patch(url, usersQuery)
-    .then(result => {
-
-      const currentData = result.data;
-
-      const allowedUsersList = () => (
-        currentData.map((name: any) => name.id)
-      );
-
-      setAllowedUsers(allowedUsersList);
-    })
-    .catch(err => console.log(err));
+  AxiosSpecialFunction('modalDeletePatchAxios', usersQuery ,'patch', setAllowedUsers);
 
   return allowedUsers;
 }
@@ -31,13 +19,13 @@ const DeleteTaskModal = (props: any) => {
   const [showDeleteTaskModal, setShowDeleteTaskModal] = useState(true);
   const currentTaskId = props.data.taskId ? props.data.taskId : props.data.id;
   const currentAllowedUsersList = GetUsers(currentTaskId);
-  
-  const getData = async() => {
 
-    const query = { idData: currentTaskId };
-    const jsonData = JSON.stringify({ main: props.data, action: 'delete', allowedList: currentAllowedUsersList });
+  const getData = async () => {
 
-    axiosFunction('modalDeleteTask',query,'post', 200, jsonData)
+    const queryGetData = { idData: currentTaskId };
+    const jsonStringGetData = JSON.stringify({ main: props.data, action: 'delete', allowedList: currentAllowedUsersList });
+
+    axiosFunction('modalDeleteTask', queryGetData, 'post', 200, jsonStringGetData)
   }
 
   const HandleDiscardDeleteTask = () => setShowDeleteTaskModal(false);
@@ -56,13 +44,13 @@ const DeleteTaskModal = (props: any) => {
         </Modal.Header>
 
         <Modal.Body>You're about to delete this Task. Are you sure?</Modal.Body>
-        
+
         <Modal.Footer>
-         
+
           <ButtonBs variant="secondary" onClick={HandleDiscardDeleteTask}>
             Discard
           </ButtonBs>
-          
+
           <ButtonBs variant="danger" onClick={HandleDeleteTask}>
             Delete
           </ButtonBs>
