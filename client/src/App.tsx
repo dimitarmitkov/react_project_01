@@ -27,20 +27,12 @@ function App() {
 
   CurrentLoggedUser(setUser);
 
-  // if(!user){
-  //   CurrentLoggedUser(setUser);
-
-  // }
-
- 
-
     return (
       <Container fluid>
         <Router>
           <Row>
             <Col>
               <NavbarData />
-              {/* <HelloClass name={"Orfi"} /> */}
             </Col>
           </Row>
           <Row>
