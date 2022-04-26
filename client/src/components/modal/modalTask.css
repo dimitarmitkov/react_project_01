@@ -1,3 +1,4 @@
-.delete-button-group {
+.delete-button-group,
+.close-button-group {
     text-align: right;
 }

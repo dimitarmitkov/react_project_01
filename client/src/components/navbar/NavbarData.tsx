@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from 'primereact/button';
-import { Container} from 'react-bootstrap';
-import Navbar from 'react-bootstrap/Navbar';
-import Nav from 'react-bootstrap/Nav';
+import { Container, Navbar, Nav } from 'react-bootstrap';
 import './navbarData.css';
 import CurrentLoggedUser from '../functions/currentLoggedUser';
 
@@ -28,23 +26,23 @@ const NavbarMenu: React.FunctionComponent = (props: any) => {
 
                         <Nav className="me-auto">
                             {user.role === 'admin' ?
-                                <>
-                                    <Link to={`/tasks`} className="active-task-link">Tasks Link</Link>
-                                    <Link to={`/users`} className="active-task-link">Users Link</Link>
-                                </>
+                                <div className='navbar-link-group'>
+                                    <Link to={`/tasks`} className="active-task-link"> <Button label="Tasks Link" className="p-button-secondary" /></Link>
+                                    <Link to={`/users`} className="active-task-link"> <Button label="Users Link" className="p-button-secondary" /> </Link>
+                                </div>
                                 : null}
                         </Nav>
 
-                        <Nav>
-                            <Link to={user.userName ? `/logout` : `/login`} className="button active-task-link">{user.userName ? 'LogOut' : 'Login'}</Link>
+                        <Nav className="me-auto right-group">
+                            <Link to={user.userName ? `/logout` : `/login`} >{user.userName ? <Button label="LogOut" /> : <Button label="Login" />}</Link>
 
-                            <Nav className='mt-2'>
+                            <Nav className='mt-2 logged-user'>
                                 {user ? <>{user.userName} {user.role}</> : ''}
                             </Nav>
 
                             {Object.keys(user).length > 0 ?
-                                <Link to={`/currentuser/${user.id}`} className="ml-3">
-                                    <Button icon="pi pi-user" className="p-button-rounded p-button-info" disabled={user.userName ? false : true} />
+                                <Link to={`/currentuser/${user.id}`} className="user-button">
+                                    <Button icon="pi pi-user" className="p-button-rounded" disabled={user.userName ? false : true} />
                                 </Link>
                                 : null}
                         </Nav>

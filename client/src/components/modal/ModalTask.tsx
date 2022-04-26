@@ -44,7 +44,7 @@ const VerticallyCenteredModal = (props: any) => {
 
             const jsonStringGetData = JSON.stringify({ main: props.data, action: checkValue, allowedList: allowedUsers });
 
-            axiosFunction('modalTaskGetData',queryData, 'post', 200, jsonStringGetData);
+            axiosFunction('modalTaskGetData', queryData, 'post', 200, jsonStringGetData);
         }
     };
 
@@ -131,34 +131,29 @@ const VerticallyCenteredModal = (props: any) => {
 
                 <Container>
                     <Row>
-                        <Col sm={8}>
+                        <Col sm={9} className="mt-3">
                             <Form>
-                                <DropdownButton id="dropdown-item-button" title="Select status" onClick={e => { changeTaskStatus(e) }}>
+                                <DropdownButton id="dropdown-item-button" title="Select status" variant="secondary" onClick={e => { changeTaskStatus(e) }}>
                                     {dropdownButtonsArray}
                                 </DropdownButton>
                             </Form>
                         </Col>
-                        {user && user.role === 'admin' ?
-                            <>
-                                <Col sm={4} className="delete-button-group">
-                                    <DeleteTaskModalApp {...props.data} />
-                                </Col>
-                            </>
-                            : null}
-                    </Row>
-                </Container>
-            </Modal.Body>
-            <Modal.Body>
-                <Container>
-                    <Row>
-                        <Col>
-                            <MultiSelector {...props.data} />
+
+                        <Col sm={3} className=" mt-3 delete-button-group">
+                            {user && user.role === 'admin' ? <DeleteTaskModalApp {...props.data} /> : null}
                         </Col>
+
                     </Row>
+                    <MultiSelector {...props.data} />
                 </Container>
             </Modal.Body>
+
             <Modal.Footer>
-                <Button onClick={props.onHide}>Close</Button>
+                <Row className="mb-3">
+                    <Col sm={12} className="close-button-group">
+                        <Button onClick={props.onHide}>Close</Button>
+                    </Col>
+                </Row>
             </Modal.Footer>
         </Modal >
     );

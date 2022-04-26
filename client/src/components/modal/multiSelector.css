@@ -1,3 +1,7 @@
 .d-inline-block {
     min-width: 100%;
 }
+
+.button-danger-multi {
+    text-align: right;
+}
