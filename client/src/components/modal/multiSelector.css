@@ -5,3 +5,7 @@
 .button-danger-multi {
     text-align: right;
 }
+
+.btn-secondary {
+    min-width: 8rem;
+}

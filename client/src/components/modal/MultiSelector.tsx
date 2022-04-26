@@ -123,7 +123,7 @@ const MultiSelector = (props: any) => {
                             <ReactSelect options={users} isMulti closeMenuOnSelect={false} hideSelectedOptions={false} components={{ Option }} onChange={handleChange} value={optionSelected} />
                         </Col>
 
-                        <Col sm={3} className="mt-3 button-danger-multi">
+                        <Col sm="auto" className="mt-3 button-danger-multi">
                             <Button variant="secondary" type="submit" onClick={() => logData(optionSelected)}>Submit user</Button>
                         </Col>
                     </Row>

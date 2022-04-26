@@ -3,6 +3,7 @@ import Modal from 'react-bootstrap/Modal';
 import ButtonBs from 'react-bootstrap/Button';
 import axiosFunction from '../functions/axiosFunctions';
 import AxiosSpecialFunction from '../functions/axiosSpecialFunctions';
+import './modalDelete.css';
 
 const GetUsers = (currentTaskId: number) => {
 
@@ -66,8 +67,8 @@ const DeleteTaskModalApp = (props: any[]) => {
 
   return (
     <>
-      <ButtonBs variant="danger" onClick={() => setDeleteTaskModalShow(prevCheck => !prevCheck)}>
-        Delete Task
+      <ButtonBs id="delete-task-button" variant="danger" onClick={() => setDeleteTaskModalShow(prevCheck => !prevCheck)}>
+        Delete task
       </ButtonBs>
 
       {deleteTaskModalShow ? <DeleteTaskModal

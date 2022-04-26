@@ -1,4 +1,9 @@
 .delete-button-group,
 .close-button-group {
     text-align: right;
+    align-content: right;
+}
+
+.btn-primary {
+    min-width: 8rem;
 }

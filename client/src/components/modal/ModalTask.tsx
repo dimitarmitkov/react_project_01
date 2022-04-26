@@ -139,7 +139,7 @@ const VerticallyCenteredModal = (props: any) => {
                             </Form>
                         </Col>
 
-                        <Col sm={3} className=" mt-3 delete-button-group">
+                        <Col sm="auto" className=" mt-3 delete-button-group">
                             {user && user.role === 'admin' ? <DeleteTaskModalApp {...props.data} /> : null}
                         </Col>
 
@@ -149,11 +149,16 @@ const VerticallyCenteredModal = (props: any) => {
             </Modal.Body>
 
             <Modal.Footer>
-                <Row className="mb-3">
-                    <Col sm={12} className="close-button-group">
-                        <Button onClick={props.onHide}>Close</Button>
-                    </Col>
-                </Row>
+                <Container fluid>
+                    <Row className="mb-3">
+                        <Col sm={9} className="close-button-group">
+
+                        </Col>
+                        <Col sm="auto" className="close-button-group">
+                            <Button onClick={props.onHide}>Close</Button>
+                        </Col>
+                    </Row>
+                </Container>
             </Modal.Footer>
         </Modal >
     );
