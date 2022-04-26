@@ -1,16 +1,26 @@
-.p-button-warning {
-    margin-left: 1rem;
-    margin-top: .5rem;
-}
-
-.user-role-id {
-    font-weight: bold;
-}
-
-#userRole {
-    margin-right: 1rem;
-}
-
-.p-button-primary-hidden {
-    display: none;
-}
+    .p-button-danger {
+        margin-right: 1rem;
+    }
+    
+    .p-button-warning {
+        margin-top: .5rem;
+    }
+    
+    .p-button-warning,
+    .p-button-danger {
+        min-width: 9rem;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .user-role-id {
+        font-weight: bold;
+    }
+    
+    #userRole {
+        margin-right: 1rem;
+    }
+    
+    .p-button-primary-hidden {
+        display: none;
+    }
