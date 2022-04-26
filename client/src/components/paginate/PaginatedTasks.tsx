@@ -11,6 +11,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import './DropdownButton.css';
 import './paginate.css';
+import 'primereact/resources/themes/my-buttons/theme.css';
 
 let meeting = false;
 let project = false;
@@ -145,12 +146,12 @@ const PaginatedTasks = () => {
                 </div>
             </Col>
 
-            <Col>
+            <Col sm={4}>
 
             <Button icon="pi pi-plus" label="Create Task" className="p-button-outlined p-button-secondary" onClick={redirectToCreateTask}/>
             </Col>
 
-            <Col className="dropdown-demo" key={'paginateDropDown'}>
+            <Col sm={4} className="dropdown-demo" key={'paginateDropDown'}>
                 <Dropdown id={'dropDownButton'} value={selectValues} options={valuesArray} onChange={onValuesChange} placeholder="All" editable />
             </Col>
         </Row>

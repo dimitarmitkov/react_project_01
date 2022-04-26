@@ -168,17 +168,19 @@ const ModalApp = (props: any[]) => {
     const [modalShow, setModalShow] = React.useState(false);
 
     return (
-        <>
-            <Button variant="danger" onClick={() => setModalShow(prevCheck => !prevCheck)}>
-                Edit Task
-            </Button>
+        <Row>
+            <Col className="edit-task-button">
+                <Button variant="danger" onClick={() => setModalShow(prevCheck => !prevCheck)}>
+                    Edit task
+                </Button>
 
-            <VerticallyCenteredModal
-                show={modalShow}
-                onHide={() => { setModalShow(prevCheck => !prevCheck) }}
-                data={props}
-            />
-        </>
+                <VerticallyCenteredModal
+                    show={modalShow}
+                    onHide={() => { setModalShow(prevCheck => !prevCheck) }}
+                    data={props}
+                />
+            </Col>
+        </Row>
     );
 }
 

@@ -1,9 +1,17 @@
 /* DropdownButton.css */
 
 .dropdown-demo .p-dropdown {
-    width: 14rem;
+    margin-top: 0.2rem;
+    width: 9.8rem;
+    border-color: #64748b;
+}
+
+.p-dropdown-label {
+    font-weight: bolder;
+    color: #64748b;
 }
 
 .dropdown-demo .country-item-value img.flag {
+    margin-top: 0.2rem;
     width: 17px;
 }
