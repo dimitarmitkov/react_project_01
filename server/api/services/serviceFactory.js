@@ -225,13 +225,10 @@ module.exports = function serviceFactory(model) {
             })
             .then(resultFirstLevel => {
 
-                console.log(resultFirstLevel);
-
                 userTasksTable.findOne({
                         where: whereObj
                     })
                     .then(isExisting => {
-                        console.log(isExisting);
 
                         if (isExisting) {
                             userTasksTable.update({

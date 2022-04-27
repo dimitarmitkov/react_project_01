@@ -28,11 +28,9 @@ wsServer.on('request', function(request) {
     // You can rewrite this part of the code to accept only the requests from allowed origin
     const connection = request.accept(null, request.origin);
     clients[userID] = connection;
-    // console.log('connected: ' + userID + ' in ' + Object.getOwnPropertyNames(clients));
 
     connection.on('message', function(message) {
         if (message.type === 'utf8') {
-            // console.log('received message', message.utf8Data);
             messages = [...messages, message.utf8Data];
             console.log(messages);
             connection.send(JSON.stringify({
@@ -40,12 +38,9 @@ wsServer.on('request', function(request) {
                 serverMessage: messages
             }));
         }
-        // console.log('key here');
 
         for (const key in clients) {
             clients[key].sendUTF(message.utf8Data);
-            // console.log('message to: ', clients[key]);
-            // console.log(message.type);
         }
     })
 });
