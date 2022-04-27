@@ -69,7 +69,6 @@ const WebsocketData = () => {
         })
         setMessageList(mappingArray);
       }
-console.log(messageList);
 
       const MessagesList = () => (
         <Row className='sidebar-row'>
