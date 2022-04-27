@@ -1,62 +1,72 @@
 import React, { useState } from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row } from 'react-bootstrap';
 import CurrentLoggedUser from '../functions/currentLoggedUser';
-import { Link } from 'react-router-dom';
 import './sidebarFive.css';
 import WebsocketData from '../ws/websocket';
+import { useNavigate } from "react-router-dom";
+
 
 const SidebarFive = () => {
 
+    const navigate = useNavigate();
     const [user, setUser] = useState(Object);
 
     CurrentLoggedUser(setUser);
+
+    const clickHandler = (data: string) => {
+
+        switch (data) {
+            case 'tasks': navigate('/tasks');
+                break;
+            case 'users': navigate('/users');
+                break;
+            case 'usertasks': navigate('/usertasks');
+                break;
+            case 'helloMitko': navigate('/helloMitko');
+                break;
+
+            default: navigate('/helloMitko');
+                break;
+        }
+    }
 
     return (
         <>
             <Container className='sidebar-container'>
                 {user.role === 'admin' ?
                     <>
-                        <Row className='sidebar-row'>
-                            <Col className='sidebar-column'>
-                                <Link to={`/tasks`} className="active">Tasks Link</Link>
-                            </Col>
+                        <Row className='sidebar-row sidebar-messages sidebar-pointer'>
+
+                        <div onClick={() => clickHandler('tasks')}><i className="pi pi-folder"></i>&nbsp; Tasks</div>
                         </Row>
 
-                        <Row className='sidebar-row'>
-                            <Col className='sidebar-column'>
-                                <Link to={`/users`} className="active">Users Link</Link>
-                            </Col>
+                        <Row className='sidebar-row sidebar-messages sidebar-pointer'>
+
+                        <div onClick={() => clickHandler('users')}><i className="pi pi-users"></i>&nbsp; Users</div>
                         </Row>
                     </>
                     : null}
 
-                <Row className='sidebar-row'>
-                    
-                    <Col className='sidebar-column'>
-                        <Link to={`/usertasks`} className="active">User Tasks</Link>
-                    </Col>
+                <Row className='sidebar-row sidebar-messages sidebar-pointer'>
+
+                    <div onClick={() => clickHandler('usertasks')}><i className="pi pi-folder-open"></i>&nbsp; User tasks</div>
                 </Row>
 
-                <Row className='sidebar-row'>
+                <Row className='sidebar-row sidebar-messages sidebar-pointer'>
 
-                    <Col className='sidebar-column'>
-                        <Link to={`/helloMitko`} className="active">Mitko Link</Link>
-                    </Col>
+                    <div onClick={() => clickHandler('helloMitko')}><i className="pi pi-home"></i>&nbsp; Dashboard</div>
                 </Row>
 
-                <Row className='sidebar-row'>
+                <Row className='sidebar-row sidebar-messages'>
 
-                    <Col className='sidebar-column'>
-                        <Link to={`/websocket`} className="active">Websocket Link</Link>
-                    </Col>
+                    <div><i className="pi pi-comments"></i>&nbsp; Messages</div>
                 </Row>
 
-                <Row className='sidebar-row'>
+                <Row className="websocket-messages">
 
-                    <Col className='sidebar-column'>
-                        < WebsocketData />
-                    </Col>
+                    < WebsocketData />
                 </Row>
+
             </Container>
         </>
     );

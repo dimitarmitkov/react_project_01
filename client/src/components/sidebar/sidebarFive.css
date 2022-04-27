@@ -4,8 +4,49 @@
         background-color: rgb(220, 228, 231);
         border-radius: calc(.25rem - 1px) calc(.25rem - 1px) 0 0;
         height: 100%;
+        padding-top: 10%;
     }
     
     .websocket-show {
         overflow-wrap: break-word;
+    }
+    
+    .sidebar-buttons {
+        width: 100%;
+        text-align: left;
+    }
+    
+    .sidebar-messages {
+        margin-top: 1rem;
+        color: #64748B;
+        font-weight: 700;
+    }
+    
+    .button-demo .template .p-button i {
+        line-height: 2.25rem;
+    }
+    
+    .sidebar-special-button,
+    .template {
+        width: 100%;
+        text-align: left;
+    }
+    
+    .blockquote-footer {
+        position: fixed;
+        bottom: 0;
+        background-color: black;
+    }
+    
+    html {
+        scroll-behavior: smooth;
+    }
+    
+    .sidebar-pointer {
+        cursor: pointer;
+    }
+    
+    .websocket-messages {
+        height: 60vh;
+        overflow: auto;
     }

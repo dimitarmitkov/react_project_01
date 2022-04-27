@@ -20,6 +20,7 @@ import CurrentLoggedUser from './components/functions/currentLoggedUser';
 import UserCardData from './components/user/UserCardData';
 import CurrentUserCard from './components/user/CurrentUserDataCard';
 import WebsocketData from './components/ws/websocket';
+import ScrollButton from './components/scrollButton/ScrollButton';
 
 function App() {
 
@@ -27,40 +28,40 @@ function App() {
 
   CurrentLoggedUser(setUser);
 
-    return (
-      <Container fluid>
-        <Router>
-          <Row>
-            <Col>
-              <NavbarData />
-            </Col>
-          </Row>
-          <Row>
-            <Col sm={2}>
-              <SidebarFive />
-            </Col>
-            <Col sm={10}>
-              <Routes>
+  return (
+    <Container fluid>
+      <Router>
+        <Row>
+          <Col>
+            <NavbarData />
+          </Col>
+        </Row>
+        <Row>
+          <Col sm={2}>
+            <SidebarFive />
+          </Col>
+          <Col sm={10}>
+            <Routes>
 
-                < Route path="/helloMitko" element={<Hello />} />
-                < Route path="/users" element={<PaginatedUsers />} />
-                < Route path="/tasks" element={<PaginatedTasks />} />
-                < Route path="/login" element={<LoginGroup />} />
-                < Route path="/logout" element={<Logout />} />
-                < Route path="/signup" element={<SignUpForm />} />
-                < Route path="/createTask" element={<CreateTask />} />
-                < Route path="/usertasks" element={<PaginatedTasksByUser data={user} />} />
-                < Route path="/users/:id" element={<UserCardData />} />
-                < Route path="/currentuser/:id" element={<CurrentUserCard />} />
-                < Route path="/websocket" element={<WebsocketData />} />
-                
-              </Routes>
-            </Col>
-          </Row>
-        </Router>
+              < Route path="/helloMitko" element={<Hello />} />
+              < Route path="/users" element={<PaginatedUsers />} />
+              < Route path="/tasks" element={<PaginatedTasks />} />
+              < Route path="/login" element={<LoginGroup />} />
+              < Route path="/logout" element={<Logout />} />
+              < Route path="/signup" element={<SignUpForm />} />
+              < Route path="/createTask" element={<CreateTask />} />
+              < Route path="/usertasks" element={<PaginatedTasksByUser data={user} />} />
+              < Route path="/users/:id" element={<UserCardData />} />
+              < Route path="/currentuser/:id" element={<CurrentUserCard />} />
+              < Route path="/websocket" element={<WebsocketData />} />
 
-      </Container>
-    );
+            </Routes>
+          </Col>
+        </Row>
+      </Router>
+      <ScrollButton />
+    </Container>
+  );
 }
 
 export default App;

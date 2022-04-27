@@ -4,7 +4,10 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
 import CurrentLoggedUser from '../functions/currentLoggedUser';
-import AxiosSpecialFunction from '../functions/axiosSpecialFunctions';
+import { Button } from "primereact/button";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
 
 type FormValues = {
     taskType: string;
@@ -20,6 +23,8 @@ const CreateTaskGroup = () => {
     const [selectValues, setSelectValues] = useState(undefined);
 
     CurrentLoggedUser(setUser);
+    const navigate = useNavigate();
+
 
     const taskTypeArray = [{ name: 'Project', value: 'project' }, { name: 'Meeting', value: 'meeting' }];
 
@@ -29,6 +34,7 @@ const CreateTaskGroup = () => {
 
     const onSubmit: SubmitHandler<FormValues> = data => {
 
+        const url= "http://localhost:62000/api/v1/createTask";
         const query = {
             taskType: selectValues,
             taskName: data.taskName,
@@ -36,7 +42,15 @@ const CreateTaskGroup = () => {
             initiatedByUserId: user.id
         };
 
-        AxiosSpecialFunction('createTaskPostAxios', query, 'post', undefined, undefined, '/tasks')
+        axios.post(url, query)
+            .then(result => {
+                if (result.status === 201) {
+                    navigate('/tasks');
+                }
+            })
+            .catch(err => {
+                console.log(err);
+            });
     };
 
     return (
@@ -68,7 +82,8 @@ const CreateTaskGroup = () => {
 
                 <Row className="mb-3 justify-content-md-center">
                     <Col sm={3}>
-                        <input className="btn btn-danger" type="submit" value="Create Task" />
+                    <Button label="Submit" className="p-button-danger" disabled={false} />
+                        {/* <input className="btn btn-danger" type="submit" value="Create Task" /> */}
                     </Col>
                 </Row>
             </Container>

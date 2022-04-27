@@ -85,7 +85,7 @@ const UserElement = (user: any, handleSubmit: any, onSubmit: any, onImageChange:
 
                                 <Row className="mt-3 mb-3 justify-content-md-center">
                                     <Col>
-                                        <Button label="Back to users" className="p-button-primary" disabled={false} onClick={editUserRoute} />
+                                        {user.role === 'admin' ? <Button label="Back to users" className="p-button-primary" disabled={false} onClick={editUserRoute} /> : null}
                                     </Col>
                                 </Row>
                             </Col>

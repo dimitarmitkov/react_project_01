@@ -7,7 +7,8 @@ import './modalTask.css';
 import DeleteTaskModalApp from './ModalDeleteTask';
 import { Link } from 'react-router-dom';
 import MultiSelector from './MultiSelector';
-import axiosFunction from '../functions/axiosFunctions';
+
+const ws = new WebSocket('ws://127.0.0.1:8000/ws');
 
 interface Provider {
     type: JSX.Element;
@@ -24,8 +25,8 @@ const VerticallyCenteredModal = (props: any) => {
         [propName: string]: {}
     };
 
-    const projectArray: string[] = ["initial", "selected", "progress", "review", "done"];
-    const meetingArray: string[] = ["initial", "selected", "progress", "done"];
+    const projectArray: string[] = [ "selected", "progress", "review", "done"];
+    const meetingArray: string[] = [ "selected", "progress", "done"];
     const currentDate = new Date(Date.now()).toISOString();
 
     let queryData = {};
@@ -38,13 +39,20 @@ const VerticallyCenteredModal = (props: any) => {
         done: { doneAt: currentDate, doneByUserId: props.data.userId ? props.data.userId : user.id }
     };
 
-    const getData = (checkValue: any) => {
+    const getData = async (checkValue: any) => {
 
         if (Object.keys(queryData).length > 0) {
 
-            const jsonStringGetData = JSON.stringify({ main: props.data, action: checkValue, allowedList: allowedUsers });
+            const url = "http://localhost:62000/api/v1/tasks";
+            const userGeneratedProcess = {userGeneratorName: user.userName, userGeneratorId:user.id, userGeneratorRole: user.role};
+            const wsText = JSON.stringify({ main: props.data, action: checkValue, allowedList: allowedUsers, generator: userGeneratedProcess });
 
-            axiosFunction('modalTaskGetData', queryData, 'post', 200, jsonStringGetData);
+            const result = await axios.post(url,queryData);
+
+                if(result.status === 200){
+                    ws.send(wsText);
+                    window.location.reload();
+                }
         }
     };
 

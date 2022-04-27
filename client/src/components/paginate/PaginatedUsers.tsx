@@ -65,21 +65,22 @@ function PaginatedUsers() {
         <div className="App">
 
             <Row className='selector' key={"selectorTop1"}>
+                <Col sm={4}></Col>
 
-                <Col className="create-user"><Button icon="pi pi-plus" label="Create User" className="p-button-outlined p-button-secondary" onClick={redirectToCreateUser} /></Col>
+                <Col sm={4} className="create-user"><Button icon="pi pi-plus" label="Create User" className="p-button-outlined p-button-secondary" onClick={redirectToCreateUser} /></Col>
 
-                <Col className="dropdown-demo" key={'paginateDropDown'}>
+                <Col sm={4} className="dropdown-demo" key={'paginateDropDown'}>
                     <Dropdown id={'dropDownButton'} value={selectValues} options={valuesArray2} onChange={onPageNumbersChange} placeholder="5" editable />
                 </Col>
             </Row>
 
-            <Row key={"selectorTop2"}>
+            <Row className="paginated-users" key={"selectorTop2"}>
 
                 <Col key={"selectorTopCol2"}>
                     
-                    <div key={"selectorTopColDiv2"}>
+                    {/* <div key={"selectorTopColDiv2"}> */}
                         {data}
-                    </div>
+                    {/* </div> */}
 
                     <ReactPaginate
                         key={"reactPaginateKey1"}

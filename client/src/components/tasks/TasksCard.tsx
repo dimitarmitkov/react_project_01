@@ -15,13 +15,13 @@ const TasksCard = (props: any) => {
 
                     <Card.Title>{task.taskName}</Card.Title>
 
-                    <Card.Subtitle className="mb-2 text-muted">{task.taskType}</Card.Subtitle>
+                    <Card.Subtitle className="mb-2 text-muted">task type: &nbsp;<span className="task-card-underline">{task.taskType}</span></Card.Subtitle>
 
                     <Card.Text>
-                        {task.taskProgress}
+                        task progress: &nbsp;<span className="task-card-underline">{task.taskProgress}</span>
                     </Card.Text>
 
-                    <Card.Link href="#">{task.taskId ? task.taskId : task.id}</Card.Link>
+                    <span>task id: &nbsp;<Card.Link href="#">{task.taskId ? task.taskId : task.id}</Card.Link></span>
                     <Card.Link href="#"></Card.Link>
                 </Card.Body>
 

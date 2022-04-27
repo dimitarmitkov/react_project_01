@@ -14,10 +14,11 @@ const UsersCard = (props: any) => {
     CurrentLoggedUser(setUserLogged);
 
     return (
-        <Container className="card-container" key={user.id + 5 + 'userId'}>
+        <Container fluid key={user.id + 5 + 'userId'}>
+            <Col sm={6}>
             
-            <Row className="desc mt-3">
-                <Col sm={3}>
+            <Row className="mt-1">
+                <Col sm={6}>
                     <h2>
                         <Link to={`/users/${user.id}`}>
                             {user.firstName}
@@ -34,13 +35,15 @@ const UsersCard = (props: any) => {
                         <EditUserApp {...user} />
                         {userLogged.role === 'admin' ? <DeleteUserModalApp {...user}/> : null}
                 </Col>
-                <Col sm={2}>
-                </Col>
+                {/* <Col sm={2}>
+                </Col> */}
             </Row>
 
             <Row className="mt-1">
                 <hr />
             </Row>
+            </Col>
+
         </Container>
     )
 };

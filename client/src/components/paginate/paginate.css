@@ -97,5 +97,15 @@ li.previous>a {
     border-bottom-left-radius: 0.25rem !important;
 }
 
+.paginated-tasks {
+    height: 80vh;
+    overflow: auto;
+}
+
+.paginated-users {
+    height: 83vh;
+    overflow: auto;
+}
+
 
 /* element.style border-top-right-radius: 0.25rem; */

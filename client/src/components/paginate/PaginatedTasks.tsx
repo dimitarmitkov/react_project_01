@@ -156,9 +156,10 @@ const PaginatedTasks = () => {
             </Col>
         </Row>
 
-        <Row key={"selectorTop2"}>
+        <Row className="paginated-tasks" key={"selectorTop2"}>
             {data}
         </Row>
+
 
         <Row>
             <Col>
@@ -176,6 +177,7 @@ const PaginatedTasks = () => {
                     activeClassName={"active"} />
             </Col>
         </Row>
+        
     </div>
 
     return nextElement

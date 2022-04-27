@@ -164,7 +164,7 @@ const PaginatedTasksByUser = (props: any) => {
             </Col>
         </Row>
 
-        <Row key={"selectorTop2"}>
+        <Row className="paginated-tasks" key={"selectorTop2"}>
             {data}
         </Row>
         

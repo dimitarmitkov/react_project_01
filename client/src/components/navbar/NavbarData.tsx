@@ -25,7 +25,7 @@ const NavbarMenu: React.FunctionComponent = (props: any) => {
 
                 <Container fluid>
 
-                    <Navbar.Brand >Tasks Nav-bar</Navbar.Brand>
+                    <Navbar.Brand >Current logged: {user.userName ? user.userName : ''}</Navbar.Brand>
 
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
 
@@ -46,11 +46,11 @@ const NavbarMenu: React.FunctionComponent = (props: any) => {
                             <Col sm="auto" className="right-group-buttons mt-2">
                             <Link to={user.userName ? `/logout` : `/login`} >{user.userName ? <Button label="LogOut" /> : <Button label="Login" />}</Link>
                             </Col>
-                            <Col sm="auto" className="right-group-buttons mt-2">
+                            {/* <Col sm="auto" className="right-group-buttons mt-2">
                             <Nav className='mt-2 logged-user'>
-                                {user ? <>{user.userName} {user.role}</> : ''}
+                                {user.userName ? <>{user.userName} {user.role}</> : ''}
                             </Nav>
-                            </Col>
+                            </Col> */}
                             <Col sm="auto" className="mt-2">
                             {Object.keys(user).length > 0 ?
                                 <Link to={`/currentuser/${user.id}`} className="user-button">
