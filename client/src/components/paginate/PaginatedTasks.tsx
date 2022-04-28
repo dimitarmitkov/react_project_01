@@ -148,7 +148,7 @@ const PaginatedTasks = () => {
 
             <Col sm={4}>
 
-            <Button icon="pi pi-plus" label="Create Task" className="p-button-outlined p-button-secondary" onClick={redirectToCreateTask}/>
+            <Button icon="pi pi-plus" label="Create Task" className="p-button-outlined p-button-secondary paginate-p-button" onClick={redirectToCreateTask}/>
             </Col>
 
             <Col sm={4} className="dropdown-demo" key={'paginateDropDown'}>

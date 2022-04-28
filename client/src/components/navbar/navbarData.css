@@ -1,33 +1,28 @@
-.active-task-link {
-    margin-right: 1rem;
-    margin-top: 0.5rem;
-}
-
-.right-group-buttons {
-    margin-right: 0.5rem;
-}
-
-.right-group {
-    margin-left: auto;
-    margin-right: 5%;
-}
-
 .logged-user {
     color: #6366F1;
     font-weight: 700;
     font-size: 1rem;
-    padding-top: 5%;
-    padding-left: 2.5%;
-    padding-bottom: 5%;
-    padding-right: 2.5%;
+    margin: 5% auto 0 40%;
+}
+
+.parent-logged-user {
+    margin: 0 auto;
+}
+
+@media only screen and (max-width: 569px) {
+    .logged-user {
+        margin: 2.5% auto 0 0;
+    }
+}
+
+@media only screen and (min-width:570px) and (max-width:870px) {
+    .logged-user {
+        margin: 2.5% auto 0 25%;
+    }
 }
 
 .user-content {
     border: 0.1rem solid #6366F1;
     border-radius: 6px;
     text-align: center;
-}
-
-.navbar-brand {
-    padding-top: 0 !important;
 }

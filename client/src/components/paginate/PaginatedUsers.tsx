@@ -67,7 +67,7 @@ function PaginatedUsers() {
             <Row className='selector' key={"selectorTop1"}>
                 <Col sm={4}></Col>
 
-                <Col sm={4} className="create-user"><Button icon="pi pi-plus" label="Create User" className="p-button-outlined p-button-secondary" onClick={redirectToCreateUser} /></Col>
+                <Col sm={4} className="create-user"><Button icon="pi pi-plus" label="Create User" className="p-button-outlined p-button-secondary paginate-p-button" onClick={redirectToCreateUser} /></Col>
 
                 <Col sm={4} className="dropdown-demo" key={'paginateDropDown'}>
                     <Dropdown id={'dropDownButton'} value={selectValues} options={valuesArray2} onChange={onPageNumbersChange} placeholder="5" editable />

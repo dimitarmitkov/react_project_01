@@ -155,7 +155,7 @@ const PaginatedTasksByUser = (props: any) => {
             <Col sm={4}>
 
             {props.data.role === 'admin' ? 
-                <Button icon="pi pi-plus" label="Create Task" className="p-button-outlined p-button-secondary" onClick={redirectToCreateTask} />
+                <Button icon="pi pi-plus" label="Create Task" className="p-button-outlined p-button-secondary paginate-p-button" onClick={redirectToCreateTask} />
                 : null }
             </Col>
 
