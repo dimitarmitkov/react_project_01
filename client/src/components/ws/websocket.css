@@ -11,6 +11,16 @@
         font-weight: bolder;
     }
     
-    li {
+    .websocket-show>li {
         list-style-type: none;
+        /* border: 0.1rem solid #f7f7f7; */
+        border-radius: 0.3rem;
+        margin-top: 1rem;
+        box-shadow: 3px 3px #bfc6c8;
+        background-color: #d8e0e2;
+        overflow: auto;
+    }
+    
+    .form-check-label {
+        color: #64748B;
     }

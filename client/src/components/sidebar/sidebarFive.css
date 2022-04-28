@@ -49,6 +49,20 @@
     }
     
     .websocket-messages {
-        height: 60vh;
+        height: 70vh;
         overflow: auto;
+    }
+    
+    @media only screen and (min-width:400px) and (max-width:575px) {
+        .websocket-messages {
+            height: 10vh;
+            overflow: auto;
+        }
+    }
+    
+    @media only screen and (max-width:399px) {
+        .websocket-messages {
+            height: 15vh;
+            overflow: auto;
+        }
     }

@@ -75,22 +75,22 @@ const WebsocketData = () => {
           {messageList.length > 0 ?
             <ul>{messageList.map((message: any) =>
               ((message.allowedList).includes(user.id) && message.action !== 'added') && (!storedNames.includes(`${Date.parse(message.main.createdAt)}_${message.action}_${user.userName}`)) ?
-                <div key={message.main.taskName + message.main.createdAt + message.action} id={`task_${Date.parse(message.main.createdAt)}_${message.action}_${user.userName}`} className='websocket-show'><hr /> <li>
+                <div key={message.main.taskName + message.main.createdAt + message.action} id={`task_${Date.parse(message.main.createdAt)}_${message.action}_${user.userName}`} className='websocket-show'> <li>
                   <div><span id="task-span">{message.main.taskType}</span>&nbsp;
                   '{message.main.taskName}'&nbsp;was changed by&nbsp;
                   <span id="user-span">{message.generator.userGeneratorName ? message.generator.userGeneratorName : user.userName}</span>
                   ,&nbsp;new status:&nbsp;<span id="message-span">{message.action}</span>
                     <FormCheck type='checkbox' id={`default-${message.main.taskId}`} label={`dismiss`} onChange={() => handleChange(`${Date.parse(message.main.createdAt)}_${message.action}_${user.userName}`)} />
-                  </div></li><hr /></div>
+                  </div></li></div>
                 :
                 ((message.allowedList).includes(user.id) && message.action === 'added') && (!storedNames.includes(`${Date.parse(message.main.createdAt)}_${message.action}_${message.main.firstName}`)) ?
                   <div key={message.main.taskName + message.main.createdAt + message.action + message.main.firstName.replace(/\s/g, '')} 
-                  id={`task_${Date.parse(message.main.createdAt)}_${message.action}_${message.main.firstName}`} className='websocket-show'><hr /> <li>
+                  id={`task_${Date.parse(message.main.createdAt)}_${message.action}_${message.main.firstName}`} className='websocket-show'> <li>
                     <div><span id="task-span">{message.main.taskType}</span>&nbsp;
                     '{message.main.taskName}'&nbsp;was changed, new user&nbsp;<span id="user-span">{message.main.firstName}</span>
                     , was&nbsp;<span id="message-span">{message.action}</span>
                       <FormCheck type='checkbox' id={`default-${message.main.taskId}`} label={`dismiss`} onChange={() => handleChange(`${Date.parse(message.main.createdAt)}_${message.action}_${message.main.firstName}`)} />
-                    </div></li><hr /></div>
+                    </div></li></div>
                   : null
             )}</ul>
             : <div>no messages</div>
