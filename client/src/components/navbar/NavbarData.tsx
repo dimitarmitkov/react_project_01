@@ -53,14 +53,14 @@ const NavbarMenu: React.FunctionComponent = (props: any) => {
 
                             <Row>
 
-                                <Col sm={6}>
+                                <Col sm={6} >
                                     {user.role === 'admin' ?
                                         <Row >
-                                            <Col sm="auto" >
+                                            <Col sm="auto" className='navbar-link-group'>
                                                 <Button label="Tasks Link" className="p-button-secondary" onClick={() => clickHandler('tasks')} />
                                             </Col>
 
-                                            <Col sm="auto" >
+                                            <Col sm="auto" className='navbar-link-group'>
                                                 <Button label="Users Link" className="p-button-secondary" onClick={() => clickHandler('users')} />
                                             </Col>
                                         </Row>
@@ -75,11 +75,11 @@ const NavbarMenu: React.FunctionComponent = (props: any) => {
 
                                 <Col sm={3}>
                                     <Row className='navbar-link-group'>
-                                        <Col sm="auto" >
+                                        <Col sm="auto">
                                             {user.userName ? <Button label="LogOut" onClick={() => clickHandler('logout')} /> : <Button label="Login" onClick={() => clickHandler('login')} />}
                                         </Col>
 
-                                        <Col sm="auto">
+                                        <Col sm="auto" className='navbar-link-group'>
                                             {Object.keys(user).length > 0 ?
                                                 <Button icon="pi pi-user" className="p-button-rounded" disabled={user.userName ? false : true} onClick={() => clickHandler('currentuser')} />
                                                 : null}
