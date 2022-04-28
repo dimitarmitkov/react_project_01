@@ -78,7 +78,7 @@ const WebsocketData = () => {
                 <div key={message.main.taskName + message.main.createdAt + message.action} id={`task_${Date.parse(message.main.createdAt)}_${message.action}_${user.userName}`} className='websocket-show'><hr /> <li>
                   <div><span id="task-span">{message.main.taskType}</span>&nbsp;
                   '{message.main.taskName}'&nbsp;was changed by&nbsp;
-                  <span id="user-span">{message.generator.userGeneratorName ? message.generator.userGeneratorName : user.userName} {message.main.lastName}</span>
+                  <span id="user-span">{message.generator.userGeneratorName ? message.generator.userGeneratorName : user.userName}</span>
                   ,&nbsp;new status:&nbsp;<span id="message-span">{message.action}</span>
                     <FormCheck type='checkbox' id={`default-${message.main.taskId}`} label={`dismiss`} onChange={() => handleChange(`${Date.parse(message.main.createdAt)}_${message.action}_${user.userName}`)} />
                   </div></li><hr /></div>
@@ -87,7 +87,7 @@ const WebsocketData = () => {
                   <div key={message.main.taskName + message.main.createdAt + message.action + message.main.firstName.replace(/\s/g, '')} 
                   id={`task_${Date.parse(message.main.createdAt)}_${message.action}_${message.main.firstName}`} className='websocket-show'><hr /> <li>
                     <div><span id="task-span">{message.main.taskType}</span>&nbsp;
-                    '{message.main.taskName}'&nbsp;was changed, new user&nbsp;<span id="user-span">{message.main.firstName}</span>&nbsp;
+                    '{message.main.taskName}'&nbsp;was changed, new user&nbsp;<span id="user-span">{message.main.firstName}</span>
                     , was&nbsp;<span id="message-span">{message.action}</span>
                       <FormCheck type='checkbox' id={`default-${message.main.taskId}`} label={`dismiss`} onChange={() => handleChange(`${Date.parse(message.main.createdAt)}_${message.action}_${message.main.firstName}`)} />
                     </div></li><hr /></div>

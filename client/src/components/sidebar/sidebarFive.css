@@ -20,6 +20,7 @@
         margin-top: 1rem;
         color: #64748B;
         font-weight: 700;
+        overflow: auto;
     }
     
     .button-demo .template .p-button i {
@@ -44,6 +45,7 @@
     
     .sidebar-pointer {
         cursor: pointer;
+        overflow: auto;
     }
     
     .websocket-messages {
