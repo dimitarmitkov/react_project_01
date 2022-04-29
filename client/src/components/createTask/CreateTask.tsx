@@ -16,25 +16,38 @@ type FormValues = {
     initiatedByUserId: string;
 };
 
+const ErrorComponent = () => {
+    return <h1>Some error appears, please contact sys admin.</h1>
+}
+
 const CreateTaskGroup = () => {
 
     const [user, setUser] = useState(Object);
     const { register, handleSubmit } = useForm<FormValues>();
     const [selectValues, setSelectValues] = useState(undefined);
-
-    CurrentLoggedUser(setUser);
+    const [hasError, setHasError] = useState(false);
     const navigate = useNavigate();
+
+    try {
+        CurrentLoggedUser(setUser);
+    } catch (error) {
+        setHasError(true);
+    }
 
 
     const taskTypeArray = [{ name: 'Project', value: 'project' }, { name: 'Meeting', value: 'meeting' }];
 
     const onTypeSelectorChange = (e: any) => {
-        setSelectValues(e.value);
+        try {
+            setSelectValues(e.value);
+        } catch (error) {
+            setHasError(true);
+        }
     };
 
     const onSubmit: SubmitHandler<FormValues> = data => {
 
-        const url= "http://localhost:62000/api/v1/createTask";
+        const url = "http://localhost:62000/api/v1/createTask";
         const query = {
             taskType: selectValues,
             taskName: data.taskName,
@@ -49,46 +62,50 @@ const CreateTaskGroup = () => {
                 }
             })
             .catch(err => {
-                console.log(err);
+                setHasError(true);
             });
     };
+    if (!hasError) {
 
-    return (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        return (
+            <form onSubmit={handleSubmit(onSubmit)}>
 
-            <Container>
+                <Container>
 
-                <Row className="mb-3 justify-content-md-center">
-                    <Col sm={3}>
-                        <div className="p-inputgroup">
-                            <span className="p-inputgroup-addon">
-                                <i className="pi pi-envelope"></i>
-                            </span>
-                            <Dropdown id={'dropDownButton'} value={selectValues} options={taskTypeArray} onChange={onTypeSelectorChange} optionLabel="name" placeholder="Select Type" editable />
-                        </div>
-                    </Col>
-                </Row>
+                    <Row className="mb-3 justify-content-md-center">
+                        <Col sm={3}>
+                            <div className="p-inputgroup">
+                                <span className="p-inputgroup-addon">
+                                    <i className="pi pi-envelope"></i>
+                                </span>
+                                <Dropdown id={'dropDownButton'} value={selectValues} options={taskTypeArray} onChange={onTypeSelectorChange} optionLabel="name" placeholder="Select Type" editable />
+                            </div>
+                        </Col>
+                    </Row>
 
-                <Row className="mb-3 justify-content-md-center">
-                    <Col sm={3}>
-                        <div className="p-inputgroup">
-                            <span className="p-inputgroup-addon">
-                                <i className="pi pi-envelope"></i>
-                            </span>
-                            <InputText placeholder="Task Name" {...register("taskName")} />
-                        </div>
-                    </Col>
-                </Row>
+                    <Row className="mb-3 justify-content-md-center">
+                        <Col sm={3}>
+                            <div className="p-inputgroup">
+                                <span className="p-inputgroup-addon">
+                                    <i className="pi pi-envelope"></i>
+                                </span>
+                                <InputText placeholder="Task Name" {...register("taskName")} />
+                            </div>
+                        </Col>
+                    </Row>
 
-                <Row className="mb-3 justify-content-md-center">
-                    <Col sm={3}>
-                    <Button label="Submit" className="p-button-danger" disabled={false} />
-                        {/* <input className="btn btn-danger" type="submit" value="Create Task" /> */}
-                    </Col>
-                </Row>
-            </Container>
-        </form>
-    );
+                    <Row className="mb-3 justify-content-md-center">
+                        <Col sm={3}>
+                            <Button label="Submit" className="p-button-danger" disabled={false} />
+                            {/* <input className="btn btn-danger" type="submit" value="Create Task" /> */}
+                        </Col>
+                    </Row>
+                </Container>
+            </form>
+        );
+    } else {
+        return <ErrorComponent/>
+    }
 }
 
 export default CreateTaskGroup;
