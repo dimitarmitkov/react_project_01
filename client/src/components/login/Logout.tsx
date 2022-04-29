@@ -5,13 +5,10 @@ import { Row, Col, Container } from 'react-bootstrap';
 import './loginForm.css';
 import axiosFunction from '../functions/axiosFunctions';
 import { useState } from 'react';
+import ErrorComponent from '../error/ErrorComponent';
 
 type FormValues = {
 };
-
-const ErrorComponent = () => {
-    return <h1>Some error appears, please contact sys admin.</h1>
-}
 
 const LogoutGroup = () => {
     const [hasError, setHasError] = useState(false);

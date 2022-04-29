@@ -7,6 +7,8 @@ import CurrentLoggedUser from '../functions/currentLoggedUser';
 import { Button } from "primereact/button";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import ErrorComponent from '../error/ErrorComponent';
+
 
 
 type FormValues = {
@@ -15,10 +17,6 @@ type FormValues = {
     taskProgress: string;
     initiatedByUserId: string;
 };
-
-const ErrorComponent = () => {
-    return <h1>Some error appears, please contact sys admin.</h1>
-}
 
 const CreateTaskGroup = () => {
 

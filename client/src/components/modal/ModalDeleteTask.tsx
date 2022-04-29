@@ -5,13 +5,14 @@ import axiosFunction from '../functions/axiosFunctions';
 import AxiosSpecialFunction from '../functions/axiosSpecialFunctions';
 import './modalDelete.css';
 import CurrentLoggedUser from '../functions/currentLoggedUser';
+import ErrorComponent from '../error/ErrorComponent';
 
 const GetUsers = (currentTaskId: number) => {
 
   const [allowedUsers, setAllowedUsers] = useState([]);
   const usersQuery = { idData: currentTaskId };
 
-  AxiosSpecialFunction('modalDeletePatchAxios', usersQuery ,'patch', setAllowedUsers);
+  AxiosSpecialFunction('modalDeletePatchAxios', usersQuery, 'patch', setAllowedUsers);
 
   return allowedUsers;
 }
@@ -19,10 +20,15 @@ const GetUsers = (currentTaskId: number) => {
 const DeleteTaskModal = (props: any) => {
   const [user, setUser] = useState(Object);
   const [showDeleteTaskModal, setShowDeleteTaskModal] = useState(true);
+  const [hasError, setHasError] = useState(false);
   const currentTaskId = props.data.taskId ? props.data.taskId : props.data.id;
   const currentAllowedUsersList = GetUsers(currentTaskId);
 
-  CurrentLoggedUser(setUser);
+  try {
+    CurrentLoggedUser(setUser);
+  } catch (error) {
+    setHasError(true);
+  }
 
   const getData = async () => {
 
@@ -30,53 +36,73 @@ const DeleteTaskModal = (props: any) => {
     const userGeneratedProcess = { userGeneratorName: user.userName, userGeneratorId: user.id, userGeneratorRole: user.role };
     const jsonStringGetData = JSON.stringify({ main: props.data, action: 'delete', allowedList: currentAllowedUsersList, generator: userGeneratedProcess });
 
-    axiosFunction('modalDeleteTask', queryGetData, 'post', 200, jsonStringGetData)
+    try {
+      axiosFunction('modalDeleteTask', queryGetData, 'post', 200, jsonStringGetData)
+    } catch (error) {
+      setHasError(true);
+    }
   }
 
-  const HandleDiscardDeleteTask = () => setShowDeleteTaskModal(false);
-  
+  const HandleDiscardDeleteTask = () => {
+
+    try {
+      setShowDeleteTaskModal(false);
+    } catch (error) {
+      setHasError(true);
+    }
+  }
+
   const HandleDeleteTask = () => {
 
-    getData();
-    setShowDeleteTaskModal(false);
+    try {
+      getData();
+      setShowDeleteTaskModal(false);
+    } catch (error) {
+      setHasError(true);
+    }
   }
 
-  return (
-    <>
-      <Modal {...props} show={showDeleteTaskModal}>
+  if (!hasError) {
 
-        <Modal.Header closeButton onClick={HandleDiscardDeleteTask}>
-          <Modal.Title>Delete Task {props.data.firstName}</Modal.Title>
-        </Modal.Header>
+    return (
+      <>
+        <Modal {...props} show={showDeleteTaskModal}>
 
-        <Modal.Body>You're about to delete this Task. Are you sure?</Modal.Body>
+          <Modal.Header closeButton onClick={HandleDiscardDeleteTask}>
+            <Modal.Title>Delete Task {props.data.firstName}</Modal.Title>
+          </Modal.Header>
 
-        <Modal.Footer>
+          <Modal.Body>You're about to delete this Task. Are you sure?</Modal.Body>
 
-          <ButtonBs variant="secondary" onClick={HandleDiscardDeleteTask}>
-            Discard
-          </ButtonBs>
+          <Modal.Footer>
 
-          <ButtonBs variant="danger" onClick={HandleDeleteTask}>
-            Delete
-          </ButtonBs>
-        </Modal.Footer>
-      </Modal>
-    </>
-  );
+            <ButtonBs variant="secondary" onClick={HandleDiscardDeleteTask}>
+              Discard
+            </ButtonBs>
+
+            <ButtonBs variant="danger" onClick={HandleDeleteTask}>
+              Delete
+            </ButtonBs>
+          </Modal.Footer>
+        </Modal>
+      </>
+    );
+  } else {
+    return <ErrorComponent />
+  }
 }
 
 const DeleteTaskModalApp = (props: any[]) => {
   const [deleteTaskModalShow, setDeleteTaskModalShow] = useState(false);
 
-  const modalElement = document.getElementsByClassName('fade modal show')[0] as HTMLElement;
-   
+    const modalElement = document.getElementsByClassName('fade modal show')[0] as HTMLElement;
+
   return (
     <>
       <ButtonBs id="delete-task-button" variant="danger" onClick={() => {
         setDeleteTaskModalShow(prevCheck => !prevCheck);
         modalElement.style.display = 'none';
-        }}>
+      }}>
         Delete task
       </ButtonBs>
 

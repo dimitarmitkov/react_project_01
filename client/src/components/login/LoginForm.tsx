@@ -7,6 +7,7 @@ import './loginForm.css';
 import { Row, Col, Container } from 'react-bootstrap';
 import { useState } from "react";
 import axiosFunction from '../functions/axiosFunctions';
+import ErrorComponent from '../error/ErrorComponent';
 
 type FormValues = {
     firstName: string;
@@ -15,10 +16,6 @@ type FormValues = {
     password: string;
     email: string;
 };
-
-const ErrorComponent = () => {
-    return <h1>Some error appears, please contact sys admin.</h1>
-}
 
 const LoginGroup = () => {
 

@@ -3,47 +3,70 @@ import Modal from 'react-bootstrap/Modal';
 import ButtonBs from 'react-bootstrap/Button';
 import { Button } from 'primereact/button';
 import axiosFunction from '../functions/axiosFunctions';
+import ErrorComponent from '../error/ErrorComponent';
 
 const DeleteUserModal = (props: any) => {
   const [show, setShow] = useState(true);
+  const [hasError, setHasError] = useState(false);
 
   const getData = async () => {
 
     const query = { idData: props.data.id }
 
-    await axiosFunction('modalDeleteUser', query, 'post', 200);
+    try {
+      await axiosFunction('modalDeleteUser', query, 'post', 200);
+    } catch (error) {
+      setHasError(true);
+    }
   }
 
-  const handleDiscard = () => setShow(false);
+  const handleDiscard = () => {
+
+    try {
+      setShow(false);
+    } catch (error) {
+      setHasError(true);
+    }
+  }
 
   const handleDelete = () => {
-    getData();
-    setShow(false);
+
+    try {
+      getData();
+      setShow(false);
+    } catch (error) {
+      setHasError(true);
+    }
   }
 
-  return (
-    <>
-      <Modal {...props} show={show}>
+  if (!hasError) {
 
-        <Modal.Header closeButton onClick={handleDiscard}>
-          <Modal.Title>Delete User {props.data.firstName}</Modal.Title>
-        </Modal.Header>
+    return (
+      <>
+        <Modal {...props} show={show}>
 
-        <Modal.Body>You're about to delete user <span>{props.data.firstName} {props.data.lastName}</span>. Are you sure?</Modal.Body>
+          <Modal.Header closeButton onClick={handleDiscard}>
+            <Modal.Title>Delete User {props.data.firstName}</Modal.Title>
+          </Modal.Header>
 
-        <Modal.Footer>
+          <Modal.Body>You're about to delete user <span>{props.data.firstName} {props.data.lastName}</span>. Are you sure?</Modal.Body>
 
-          <ButtonBs variant="secondary" onClick={handleDiscard}>
-            Discard
-          </ButtonBs>
+          <Modal.Footer>
 
-          <ButtonBs variant="danger" onClick={handleDelete}>
-            Delete
-          </ButtonBs>
-        </Modal.Footer>
-      </Modal>
-    </>
-  );
+            <ButtonBs variant="secondary" onClick={handleDiscard}>
+              Discard
+            </ButtonBs>
+
+            <ButtonBs variant="danger" onClick={handleDelete}>
+              Delete
+            </ButtonBs>
+          </Modal.Footer>
+        </Modal>
+      </>
+    );
+  } else {
+    return <ErrorComponent />
+  }
 }
 
 const DeleteUserModalApp = (props: any[]) => {

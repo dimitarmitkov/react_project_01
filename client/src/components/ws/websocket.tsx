@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import CurrentLoggedUser from '../functions/currentLoggedUser';
 import { FormCheck, Row } from 'react-bootstrap';
 import './websocket.css';
+import ErrorComponent from '../error/ErrorComponent';
 
 interface IncomingMessage {
   action: string;
@@ -16,10 +17,6 @@ interface ElementProvider {
 let storedNames: any[] = [];
 
 const ws = new WebSocket('ws://127.0.0.1:8000/ws');
-
-const ErrorComponent = () => {
-  return <h1>Some error appears, please contact sys admin.</h1>
-}
 
 const WebsocketData = () => {
 
