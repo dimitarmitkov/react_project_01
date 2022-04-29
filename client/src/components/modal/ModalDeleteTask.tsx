@@ -4,6 +4,7 @@ import ButtonBs from 'react-bootstrap/Button';
 import axiosFunction from '../functions/axiosFunctions';
 import AxiosSpecialFunction from '../functions/axiosSpecialFunctions';
 import './modalDelete.css';
+import CurrentLoggedUser from '../functions/currentLoggedUser';
 
 const GetUsers = (currentTaskId: number) => {
 
@@ -16,15 +17,18 @@ const GetUsers = (currentTaskId: number) => {
 }
 
 const DeleteTaskModal = (props: any) => {
-
+  const [user, setUser] = useState(Object);
   const [showDeleteTaskModal, setShowDeleteTaskModal] = useState(true);
   const currentTaskId = props.data.taskId ? props.data.taskId : props.data.id;
   const currentAllowedUsersList = GetUsers(currentTaskId);
 
+  CurrentLoggedUser(setUser);
+
   const getData = async () => {
 
     const queryGetData = { idData: currentTaskId };
-    const jsonStringGetData = JSON.stringify({ main: props.data, action: 'delete', allowedList: currentAllowedUsersList });
+    const userGeneratedProcess = { userGeneratorName: user.userName, userGeneratorId: user.id, userGeneratorRole: user.role };
+    const jsonStringGetData = JSON.stringify({ main: props.data, action: 'delete', allowedList: currentAllowedUsersList, generator: userGeneratedProcess });
 
     axiosFunction('modalDeleteTask', queryGetData, 'post', 200, jsonStringGetData)
   }
@@ -65,9 +69,14 @@ const DeleteTaskModal = (props: any) => {
 const DeleteTaskModalApp = (props: any[]) => {
   const [deleteTaskModalShow, setDeleteTaskModalShow] = useState(false);
 
+  const modalElement = document.getElementsByClassName('fade modal show')[0] as HTMLElement;
+   
   return (
     <>
-      <ButtonBs id="delete-task-button" variant="danger" onClick={() => setDeleteTaskModalShow(prevCheck => !prevCheck)}>
+      <ButtonBs id="delete-task-button" variant="danger" onClick={() => {
+        setDeleteTaskModalShow(prevCheck => !prevCheck);
+        modalElement.style.display = 'none';
+        }}>
         Delete task
       </ButtonBs>
 

@@ -25,8 +25,8 @@ const VerticallyCenteredModal = (props: any) => {
         [propName: string]: {}
     };
 
-    const projectArray: string[] = [ "selected", "progress", "review", "done"];
-    const meetingArray: string[] = [ "selected", "progress", "done"];
+    const projectArray: string[] = ["selected", "progress", "review", "done"];
+    const meetingArray: string[] = ["selected", "progress", "done"];
     const currentDate = new Date(Date.now()).toISOString();
 
     let queryData = {};
@@ -44,15 +44,15 @@ const VerticallyCenteredModal = (props: any) => {
         if (Object.keys(queryData).length > 0) {
 
             const url = "http://localhost:62000/api/v1/tasks";
-            const userGeneratedProcess = {userGeneratorName: user.userName, userGeneratorId:user.id, userGeneratorRole: user.role};
+            const userGeneratedProcess = { userGeneratorName: user.userName, userGeneratorId: user.id, userGeneratorRole: user.role };
             const wsText = JSON.stringify({ main: props.data, action: checkValue, allowedList: allowedUsers, generator: userGeneratedProcess });
 
-            const result = await axios.post(url,queryData);
+            const result = await axios.post(url, queryData);
 
-                if(result.status === 200){
-                    ws.send(wsText);
-                    window.location.reload();
-                }
+            if (result.status === 200) {
+                ws.send(wsText);
+                window.location.reload();
+            }
         }
     };
 
@@ -148,7 +148,7 @@ const VerticallyCenteredModal = (props: any) => {
                         </Col>
 
                         <Col sm="auto" className=" mt-3 delete-button-group">
-                            {user && user.role === 'admin' ? <DeleteTaskModalApp {...props.data} /> : null}
+                            {user && user.role === 'admin' ? <DeleteTaskModalApp {...props.data} onClick={()=>{console.log(props.show)}} /> : null}
                         </Col>
 
                     </Row>
@@ -173,7 +173,8 @@ const VerticallyCenteredModal = (props: any) => {
 }
 
 const ModalApp = (props: any[]) => {
-    const [modalShow, setModalShow] = React.useState(false);
+    const [modalShow, setModalShow] = useState(false);
+    
 
     return (
         <Row>

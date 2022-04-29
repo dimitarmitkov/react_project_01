@@ -16,7 +16,7 @@ const LogoutGroup = () => {
 
         const query = { withCredentials: true };
 
-        axiosFunction('logoutForm', query, 'get', 200, undefined, '/login')
+        axiosFunction('logoutForm', query, 'get', 200, undefined, '/login');
     };
 
     return (

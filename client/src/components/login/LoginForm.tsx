@@ -28,7 +28,7 @@ const LoginGroup = () => {
             insertPassword: passwordValue
         };
 
-        axiosFunction('loginForm', query, 'post', 200, undefined, '/helloMitko')
+        axiosFunction('loginForm', query, 'post', 200, undefined, '/helloMitko');
     };
 
     return (
