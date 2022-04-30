@@ -4,15 +4,19 @@ import CurrentLoggedUser from '../functions/currentLoggedUser';
 import './sidebarFive.css';
 import WebsocketData from '../ws/websocket';
 import { useNavigate } from "react-router-dom";
-
+import ErrorComponent from '../error/ErrorComponent';
 
 const SidebarFive = () => {
 
     const navigate = useNavigate();
     const [user, setUser] = useState(Object);
+    const [hasError, setHasError] = useState(false);
 
-    CurrentLoggedUser(setUser);
-
+    try {
+        CurrentLoggedUser(setUser);
+    } catch (error) {
+        setHasError(true);
+    }
     const clickHandler = (data: string) => {
 
         switch (data) {
@@ -30,46 +34,51 @@ const SidebarFive = () => {
         }
     }
 
-    return (
-        <>
-            <Container className='sidebar-container'>
-                {user.role === 'admin' ?
-                    <>
-                        <Row className='sidebar-row sidebar-messages sidebar-pointer'>
+    if (!hasError) {
 
-                        <div onClick={() => clickHandler('tasks')}><i className="pi pi-folder"></i>&nbsp; Tasks</div>
-                        </Row>
+        return (
+            <>
+                <Container className='sidebar-container'>
+                    {user.role === 'admin' ?
+                        <>
+                            <Row className='sidebar-row sidebar-messages sidebar-pointer'>
 
-                        <Row className='sidebar-row sidebar-messages sidebar-pointer'>
+                                <div onClick={() => clickHandler('tasks')}><i className="pi pi-folder"></i>&nbsp; Tasks</div>
+                            </Row>
 
-                        <div onClick={() => clickHandler('users')}><i className="pi pi-users"></i>&nbsp; Users</div>
-                        </Row>
-                    </>
-                    : null}
+                            <Row className='sidebar-row sidebar-messages sidebar-pointer'>
 
-                <Row className='sidebar-row sidebar-messages sidebar-pointer'>
+                                <div onClick={() => clickHandler('users')}><i className="pi pi-users"></i>&nbsp; Users</div>
+                            </Row>
+                        </>
+                        : null}
 
-                    <div onClick={() => clickHandler('usertasks')}><i className="pi pi-folder-open"></i>&nbsp; User tasks</div>
-                </Row>
+                    <Row className='sidebar-row sidebar-messages sidebar-pointer'>
 
-                <Row className='sidebar-row sidebar-messages sidebar-pointer'>
+                        <div onClick={() => clickHandler('usertasks')}><i className="pi pi-folder-open"></i>&nbsp; User tasks</div>
+                    </Row>
 
-                    <div onClick={() => clickHandler('helloMitko')}><i className="pi pi-home"></i>&nbsp; Dashboard</div>
-                </Row>
+                    <Row className='sidebar-row sidebar-messages sidebar-pointer'>
 
-                <Row className='sidebar-row sidebar-messages'>
+                        <div onClick={() => clickHandler('helloMitko')}><i className="pi pi-home"></i>&nbsp; Dashboard</div>
+                    </Row>
 
-                    <div><i className="pi pi-comments"></i>&nbsp; Messages</div>
-                </Row>
+                    <Row className='sidebar-row sidebar-messages'>
 
-                <Row className="websocket-messages">
+                        <div><i className="pi pi-comments"></i>&nbsp; Messages</div>
+                    </Row>
 
-                    < WebsocketData />
-                </Row>
+                    <Row className="websocket-messages">
 
-            </Container>
-        </>
-    );
+                        < WebsocketData />
+                    </Row>
+
+                </Container>
+            </>
+        );
+    } else {
+        return <ErrorComponent />
+    }
 }
 
 export default SidebarFive;
