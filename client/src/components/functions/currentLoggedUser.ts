@@ -12,7 +12,7 @@ const CurrentLoggedUser = (setImportedValue: React.Dispatch<React.SetStateAction
 
                 setImportedValue(response.data)})
             .catch(err => {
-                console.log('Error from Show List: ', err);
+                // console.log('No user logged');
             });
     }
 

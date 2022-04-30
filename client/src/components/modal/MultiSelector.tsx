@@ -116,8 +116,6 @@ const MultiSelector = (props: any) => {
                 data-trigger="focus"
                 data-content="Please select account(s)"
             >
-                {/* <Container> */}
-
                     <Row> 
                         <Col sm={9} className="mt-3">
                             <ReactSelect options={users} isMulti closeMenuOnSelect={false} hideSelectedOptions={false} components={{ Option }} onChange={handleChange} value={optionSelected} />
@@ -127,7 +125,6 @@ const MultiSelector = (props: any) => {
                             <Button variant="secondary" type="submit" onClick={() => logData(optionSelected)}>Submit user</Button>
                         </Col>
                     </Row>
-                {/* </Container> */}
             </span>
         );
     } else {

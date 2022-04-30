@@ -7,6 +7,7 @@ import './modalTask.css';
 import DeleteTaskModalApp from './ModalDeleteTask';
 import { Link } from 'react-router-dom';
 import MultiSelector from './MultiSelector';
+import ErrorComponent from '../error/ErrorComponent';
 
 const ws = new WebSocket('ws://127.0.0.1:8000/ws');
 
@@ -14,16 +15,21 @@ interface Provider {
     type: JSX.Element;
 }
 
+interface MyObj {
+    [propName: string]: {}
+};
+
 const VerticallyCenteredModal = (props: any) => {
     const [user, setUser] = useState(Object);
     const [showUsers, setShowUsers] = useState<Provider>();
     const [allowedUsers, setAllowedUsers] = useState([]);
+    const [hasError, setHasError] = useState(false);
 
-    CurrentLoggedUser(setUser);
-
-    interface MyObj {
-        [propName: string]: {}
-    };
+    try {
+        CurrentLoggedUser(setUser);
+    } catch (error) {
+        setHasError(true);
+    }
 
     const projectArray: string[] = ["selected", "progress", "review", "done"];
     const meetingArray: string[] = ["selected", "progress", "done"];
@@ -47,11 +53,13 @@ const VerticallyCenteredModal = (props: any) => {
             const userGeneratedProcess = { userGeneratorName: user.userName, userGeneratorId: user.id, userGeneratorRole: user.role };
             const wsText = JSON.stringify({ main: props.data, action: checkValue, allowedList: allowedUsers, generator: userGeneratedProcess });
 
+
             const result = await axios.post(url, queryData);
 
             if (result.status === 200) {
                 ws.send(wsText);
-                window.location.reload();
+            } else {
+                setHasError(true);
             }
         }
     };
@@ -82,7 +90,7 @@ const VerticallyCenteredModal = (props: any) => {
                 setShowUsers(NamesList);
                 setAllowedUsers(allowedUsersList);
             })
-            .catch(err => console.log(err));
+            .catch(err => setHasError(true));
     }
 
     const changeTaskStatus = (e: any) => {
@@ -96,12 +104,21 @@ const VerticallyCenteredModal = (props: any) => {
                 taskProgress: checkValue
             };
 
-            getData(checkValue);
+            try {
+                getData(checkValue);
+            } catch (error) {
+                setHasError(true);
+            }
         }
     };
 
     const showRelatedUsers = (props: number) => {
-        getUsers(props);
+
+        try {
+            getUsers(props);
+        } catch (error) {
+            setHasError(true);
+        }
 
         return showUsers;
     }
@@ -113,68 +130,73 @@ const VerticallyCenteredModal = (props: any) => {
             return <Dropdown.Item as="button" key={'bbd' + k}>{element}</Dropdown.Item>
         });
 
-    return (
-        <Modal
-            id="myModalId"
-            {...props}
-            size="lg"
-            aria-labelledby="contained-modal-title-vcenter"
-            centered
-            onShow={() => showRelatedUsers(props.data.taskId ? props.data.taskId : props.data.id)}
-        >
-            <Modal.Header>
-                <Modal.Title id="contained-modal-title-vcenter">
-                    {props.data.taskName}
-                </Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <h4>{props.data.taskProgress}</h4>
-                <p>
-                    {props.data.taskType}
-                </p>
-                <div>
-                    <p>Users related to this {props.data.taskType}:</p>
-                    {showUsers}
-                </div>
+    if (!hasError) {
 
-                <Container>
-                    <Row>
-                        <Col sm={9} className="mt-3">
-                            <Form>
-                                <DropdownButton id="dropdown-item-button" title="Select status" variant="secondary" onClick={e => { changeTaskStatus(e) }}>
-                                    {dropdownButtonsArray}
-                                </DropdownButton>
-                            </Form>
-                        </Col>
+        return (
+            <Modal
+                id="myModalId"
+                {...props}
+                size="lg"
+                aria-labelledby="contained-modal-title-vcenter"
+                centered
+                onShow={() => showRelatedUsers(props.data.taskId ? props.data.taskId : props.data.id)}
+            >
+                <Modal.Header>
+                    <Modal.Title id="contained-modal-title-vcenter">
+                        {props.data.taskName}
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <h4>{props.data.taskProgress}</h4>
+                    <p>
+                        {props.data.taskType}
+                    </p>
+                    <div>
+                        <p>Users related to this {props.data.taskType}:</p>
+                        {showUsers}
+                    </div>
 
-                        <Col sm="auto" className=" mt-3 delete-button-group">
-                            {user && user.role === 'admin' ? <DeleteTaskModalApp {...props.data} onClick={()=>{console.log(props.show)}} /> : null}
-                        </Col>
+                    <Container>
+                        <Row>
+                            <Col sm={9} className="mt-3">
+                                <Form>
+                                    <DropdownButton id="dropdown-item-button" title="Select status" variant="secondary" onClick={e => { changeTaskStatus(e) }}>
+                                        {dropdownButtonsArray}
+                                    </DropdownButton>
+                                </Form>
+                            </Col>
 
-                    </Row>
-                    <MultiSelector {...props.data} />
-                </Container>
-            </Modal.Body>
+                            <Col sm="auto" className=" mt-3 delete-button-group">
+                                {user && user.role === 'admin' ? <DeleteTaskModalApp {...props.data} /> : null}
+                            </Col>
 
-            <Modal.Footer>
-                <Container fluid>
-                    <Row className="mb-3">
-                        <Col sm={9} className="close-button-group">
+                        </Row>
+                        <MultiSelector {...props.data} />
+                    </Container>
+                </Modal.Body>
 
-                        </Col>
-                        <Col sm="auto" className="close-button-group">
-                            <Button onClick={props.onHide}>Close</Button>
-                        </Col>
-                    </Row>
-                </Container>
-            </Modal.Footer>
-        </Modal >
-    );
+                <Modal.Footer>
+                    <Container fluid>
+                        <Row className="mb-3">
+                            <Col sm={9} className="close-button-group">
+
+                            </Col>
+                            <Col sm="auto" className="close-button-group">
+                                <Button onClick={props.onHide}>Close</Button>
+                            </Col>
+                        </Row>
+                    </Container>
+                </Modal.Footer>
+            </Modal >
+        );
+    } else {
+        return <ErrorComponent />
+    }
 }
 
 const ModalApp = (props: any[]) => {
     const [modalShow, setModalShow] = useState(false);
-    
+
 
     return (
         <Row>

@@ -80,8 +80,10 @@ const WebsocketData = () => {
         }
       }
 
-      const MessagesList = () => (
 
+      const MessagesList = () => (
+        
+        
         <Row className='sidebar-row'>
           {messageList.length > 0 ?
             <ul>{messageList.map((message: any) =>

@@ -14,7 +14,7 @@ const AxiosSpecialFunction = async (requestLocation: string, query: {}, action: 
                 const allowedUsersList = () => (
                     currentData.map((name: any) => name.id)
                 );
-
+debugger;
                 if (setImportedValue) setImportedValue(allowedUsersList);
             })
             .catch(err => console.log(err));

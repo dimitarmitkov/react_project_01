@@ -26,7 +26,11 @@ function App() {
 
   const [user, setUser] = useState(Object);
 
-  CurrentLoggedUser(setUser);
+  try {
+    CurrentLoggedUser(setUser);
+  } catch (error) {
+    console.log('no user logged');
+  }
 
   return (
     <Container fluid>

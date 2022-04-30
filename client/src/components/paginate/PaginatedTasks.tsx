@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import './DropdownButton.css';
 import './paginate.css';
 import 'primereact/resources/themes/my-buttons/theme.css';
+import ErrorComponent from '../error/ErrorComponent';
 
 let meeting = false;
 let project = false;
@@ -22,7 +23,7 @@ const PaginatedTasks = () => {
 
     interface Provider {
         type: JSX.Element[];
-      }
+    }
 
     const [offset, setOffset] = useState(0);
     const [data, setData] = useState<Provider[]>([]);
@@ -33,6 +34,7 @@ const PaginatedTasks = () => {
     const [startValue, setStartValue] = useState(0);
     const [checkedProject, setCheckedProject] = useState(false);
     const [checkedMeeting, setCheckedMeeting] = useState(false);
+    const [hasError, setHasError] = useState(false);
 
     const valuesArray = ['2', '5', '7', 'All'];
     const progressArray: string[] = ["initial", "selected", "progress", "review", "done"];
@@ -51,14 +53,14 @@ const PaginatedTasks = () => {
             limitData: endValue
         };
 
-        let res = meeting || project ? 
-        await axios.patch(url, selectedQuery) 
-        : await axios.post(url, commonQuery);
-       
+        let res = meeting || project ?
+            await axios.patch(url, selectedQuery)
+            : await axios.post(url, commonQuery);
+
         const slice = res.data.responseData;
 
         rowsNumber = +(res.data.count)[0].max;
-        
+
         function tasksFunction(value: string) {
             return slice.filter(function (obj: any) {
                 return obj.taskProgress === value;
@@ -68,31 +70,35 @@ const PaginatedTasks = () => {
         }
 
         const postData = progressArray.map((element: string, elKey: number) =>
-        <Col sm={2} className="padding-0 mt-3" key={element + elKey + 1}>
-            <Card
-                bg={''}
-                key={element + elKey + 2}
-                text={'dark'}
-                style={{ height: '100%' }}
-                className="padding-0"
-            >
-                <Card.Header key={element + elKey + 3}>{capitalizeFirstLetter(element)}</Card.Header>
-                <Card.Body key={element + elKey + 4}>
-                    {tasksFunction(element)}
-                </Card.Body>
-            </Card>
-        </Col>
-    )
+            <Col sm={2} className="padding-0 mt-3" key={element + elKey + 1}>
+                <Card
+                    bg={''}
+                    key={element + elKey + 2}
+                    text={'dark'}
+                    style={{ height: '100%' }}
+                    className="padding-0"
+                >
+                    <Card.Header key={element + elKey + 3}>{capitalizeFirstLetter(element)}</Card.Header>
+                    <Card.Body key={element + elKey + 4}>
+                        {tasksFunction(element)}
+                    </Card.Body>
+                </Card>
+            </Col>
+        )
 
-        setData(postData);
-        setPageCount(Math.ceil(rowsNumber / perPage));
+        try {
+            setData(postData);
+            setPageCount(Math.ceil(rowsNumber / perPage));
+        } catch (error) {
+            setHasError(true);
+        }
     }
 
     const handlePageClick = (e: any) => {
         selectedPage = e.selected;
-        setOffset(1 + selectedPage*perPage);
-        setEndValue(perPage+selectedPage*perPage);
-        setStartValue(1 + selectedPage*perPage);
+        setOffset(1 + selectedPage * perPage);
+        setEndValue(perPage + selectedPage * perPage);
+        setStartValue(1 + selectedPage * perPage);
     };
 
     const onValuesChange = (e: any) => {
@@ -107,14 +113,14 @@ const PaginatedTasks = () => {
     }, [offset, endValue, meeting, project, rowsNumber]);
 
     const navigate = useNavigate();
-    const redirectToCreateTask = () =>{
+    const redirectToCreateTask = () => {
         navigate('/createTask');
     }
 
     const nextElement = <div className="App">
         <Row className='selector' key={"selectorTop1"}>
 
-        <Col sm={2}>
+            <Col sm={2}>
 
                 <div className="field-checkbox-label">
                     <label htmlFor="projectsShow">Show projects</label>
@@ -126,7 +132,7 @@ const PaginatedTasks = () => {
                         setCheckedProject(e.checked);
                         getData(offset, perPage);
                     }
-                } disabled={checkedMeeting}/>
+                    } disabled={checkedMeeting} />
                 </div>
             </Col>
 
@@ -137,18 +143,18 @@ const PaginatedTasks = () => {
                 </div>
 
                 <div className="field-checkbox">
-                    <Checkbox inputId="meetingsShow" checked={meeting} onChange={(e) =>{ 
+                    <Checkbox inputId="meetingsShow" checked={meeting} onChange={(e) => {
                         meeting = e.checked;
                         setCheckedMeeting(e.checked);
                         getData(offset, perPage);
-                        }
-                        } disabled={checkedProject}/>
+                    }
+                    } disabled={checkedProject} />
                 </div>
             </Col>
 
             <Col sm={4}>
 
-            <Button icon="pi pi-plus" label="Create Task" className="p-button-outlined p-button-secondary paginate-p-button" onClick={redirectToCreateTask}/>
+                <Button icon="pi pi-plus" label="Create Task" className="p-button-outlined p-button-secondary paginate-p-button" onClick={redirectToCreateTask} />
             </Col>
 
             <Col sm={4} className="dropdown-demo" key={'paginateDropDown'}>
@@ -177,10 +183,14 @@ const PaginatedTasks = () => {
                     activeClassName={"active"} />
             </Col>
         </Row>
-        
-    </div>
 
-    return nextElement
+    </div>
+    
+    if (!hasError) {
+        return nextElement
+    } else {
+        return <ErrorComponent />
+    }
 }
 
 export default PaginatedTasks;

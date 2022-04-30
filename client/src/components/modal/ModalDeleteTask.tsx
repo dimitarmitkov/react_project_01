@@ -6,23 +6,15 @@ import AxiosSpecialFunction from '../functions/axiosSpecialFunctions';
 import './modalDelete.css';
 import CurrentLoggedUser from '../functions/currentLoggedUser';
 import ErrorComponent from '../error/ErrorComponent';
-
-const GetUsers = (currentTaskId: number) => {
-
-  const [allowedUsers, setAllowedUsers] = useState([]);
-  const usersQuery = { idData: currentTaskId };
-
-  AxiosSpecialFunction('modalDeletePatchAxios', usersQuery, 'patch', setAllowedUsers);
-
-  return allowedUsers;
-}
+import { useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 const DeleteTaskModal = (props: any) => {
   const [user, setUser] = useState(Object);
   const [showDeleteTaskModal, setShowDeleteTaskModal] = useState(true);
   const [hasError, setHasError] = useState(false);
   const currentTaskId = props.data.taskId ? props.data.taskId : props.data.id;
-  const currentAllowedUsersList = GetUsers(currentTaskId);
+
 
   try {
     CurrentLoggedUser(setUser);
@@ -30,7 +22,7 @@ const DeleteTaskModal = (props: any) => {
     setHasError(true);
   }
 
-  const getData = async () => {
+  const getData = (currentAllowedUsersList: never[]) => {
 
     const queryGetData = { idData: currentTaskId };
     const userGeneratedProcess = { userGeneratorName: user.userName, userGeneratorId: user.id, userGeneratorRole: user.role };
@@ -52,10 +44,16 @@ const DeleteTaskModal = (props: any) => {
     }
   }
 
-  const HandleDeleteTask = () => {
+  const HandleDeleteTask = async () => {
+
+    const usersQuery = { idData: currentTaskId };
+    const url = "http://localhost:62000/api/v1/usertasks";
+    const result = await axios.patch(url, usersQuery);
+    const currentData = result.data;
+    const allowedUsers = currentData.map((name: any) => name.id);
 
     try {
-      getData();
+      getData(allowedUsers);
       setShowDeleteTaskModal(false);
     } catch (error) {
       setHasError(true);
@@ -76,7 +74,15 @@ const DeleteTaskModal = (props: any) => {
 
           <Modal.Footer>
 
-            <ButtonBs variant="secondary" onClick={HandleDiscardDeleteTask}>
+            {/* <ButtonBs variant="secondary" onClick={()=>{
+              HandleDiscardDeleteTask();
+              props.onHide();
+            }}>
+              Discard
+            </ButtonBs> */}
+            <ButtonBs variant="secondary" onClick={() => {
+              props.onHide();
+            }}>
               Discard
             </ButtonBs>
 
@@ -95,18 +101,18 @@ const DeleteTaskModal = (props: any) => {
 const DeleteTaskModalApp = (props: any[]) => {
   const [deleteTaskModalShow, setDeleteTaskModalShow] = useState(false);
 
-    const modalElement = document.getElementsByClassName('fade modal show')[0] as HTMLElement;
 
   return (
     <>
       <ButtonBs id="delete-task-button" variant="danger" onClick={() => {
         setDeleteTaskModalShow(prevCheck => !prevCheck);
-        modalElement.style.display = 'none';
       }}>
         Delete task
       </ButtonBs>
 
       {deleteTaskModalShow ? <DeleteTaskModal
+        onHide={() => { setDeleteTaskModalShow(prevCheck => !prevCheck) }}
+        //  onHide={() => { setDeleteTaskModalShow(false) }}
         data={props}
       /> : null}
     </>
