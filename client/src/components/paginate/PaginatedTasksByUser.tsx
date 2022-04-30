@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import './DropdownButton.css';
 import './paginate.css';
 import 'primereact/resources/themes/my-buttons/theme.css';
+import ErrorComponent from '../error/ErrorComponent';
 
 let meeting = false;
 let project = false;
@@ -33,6 +34,7 @@ const PaginatedTasksByUser = (props: any) => {
     const [startValue, setStartValue] = useState(0);
     const [checkedProject, setCheckedProject] = useState(false);
     const [checkedMeeting, setCheckedMeeting] = useState(false);
+    const [hasError, setHasError] = useState(false);
 
     const valuesArray = ['2', '5', '7', 'All'];
     const progressArray: string[] = ["initial", "selected", "progress", "review", "done"];
@@ -41,57 +43,60 @@ const PaginatedTasksByUser = (props: any) => {
 
     const getData = (offset: number, perPage: number) => {
 
-        let url = meeting || project ? "http://localhost:62000/api/v1/usertasksmop" :  
-        "http://localhost:62000/api/v1/usertasks";
+        let url = meeting || project ? "http://localhost:62000/api/v1/usertasksmop" :
+            "http://localhost:62000/api/v1/usertasks";
 
-        let callData = meeting || project ? 
-        {
-            offsetData: startValue,
-            limitData: endValue,
-            userId: props.data.id,
-            whereSelector: project ? "project" : "meeting"
-        }: 
-        {
-            offsetData: startValue,
-            limitData: endValue,
-            userId: props.data.id
-        };
+        let callData = meeting || project ?
+            {
+                offsetData: startValue,
+                limitData: endValue,
+                userId: props.data.id,
+                whereSelector: project ? "project" : "meeting"
+            } :
+            {
+                offsetData: startValue,
+                limitData: endValue,
+                userId: props.data.id
+            };
 
         axios.post(url, callData)
-        .then(res => {
+            .then(res => {
 
-            const slice = res.data.responseData ? res.data.responseData : [];
+                const slice = res.data.responseData ? res.data.responseData : [];
 
-            rowsNumber = res.data.count ? +(res.data.count)[0].max : 0;
-        
-            function tasksFunction(value: string) {
-                return slice.filter(function (obj: any) {
-                    return obj.taskProgress === value;
-                }).map((task: JsxElement, k: number) =>
-                    <TasksCard task={task} key={k} />
-                );
-            }
+                rowsNumber = res.data.count ? +(res.data.count)[0].max : 0;
 
-            const postData = progressArray.map((element: string, elKey: number) =>
-                <Col sm={2} className="padding-0 mt-3" key={element + elKey + 1}>
-                    <Card
-                        bg={''}
-                        key={element + elKey + 2}
-                        text={'dark'}
-                        style={{ height: '100%' }}
-                        className="padding-0"
-                    >
-                        <Card.Header key={element + elKey + 3}>{capitalizeFirstLetter(element)}</Card.Header>
-                        <Card.Body key={element + elKey + 4}>
-                            {tasksFunction(element)}
-                        </Card.Body>
-                    </Card>
-                </Col>
-            )
+                function tasksFunction(value: string) {
+                    return slice.filter(function (obj: any) {
+                        return obj.taskProgress === value;
+                    }).map((task: JsxElement, k: number) =>
+                        <TasksCard task={task} key={k} />
+                    );
+                }
 
-            setData(postData);
-            setPageCount(Math.ceil(rowsNumber / perPage));
-        }).catch();
+                const postData = progressArray.map((element: string, elKey: number) =>
+                    <Col sm={2} className="padding-0 mt-3" key={element + elKey + 1}>
+                        <Card
+                            bg={''}
+                            key={element + elKey + 2}
+                            text={'dark'}
+                            style={{ height: '100%' }}
+                            className="padding-0"
+                        >
+                            <Card.Header key={element + elKey + 3}>{capitalizeFirstLetter(element)}</Card.Header>
+                            <Card.Body key={element + elKey + 4}>
+                                {tasksFunction(element)}
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                )
+                try {
+                    setData(postData);
+                    setPageCount(Math.ceil(rowsNumber / perPage));
+                } catch (error) {
+                    setHasError(true);
+                }
+            }).catch();
     }
 
     const handlePageClick = (e: any) => {
@@ -116,7 +121,7 @@ const PaginatedTasksByUser = (props: any) => {
         navigate('/createTask');
     }
 
-    return <div className="App">
+    const nextElement = <div className="App">
 
         <Row className='selector' key={"selectorTop1"}>
 
@@ -132,7 +137,7 @@ const PaginatedTasksByUser = (props: any) => {
                         setCheckedProject(e.checked);
                         getData(offset, perPage);
                     }
-                } disabled={checkedMeeting}/>
+                    } disabled={checkedMeeting} />
                 </div>
             </Col>
 
@@ -143,20 +148,20 @@ const PaginatedTasksByUser = (props: any) => {
                 </div>
 
                 <div className="field-checkbox">
-                    <Checkbox inputId="meetingsShow" checked={meeting} onChange={(e) =>{ 
+                    <Checkbox inputId="meetingsShow" checked={meeting} onChange={(e) => {
                         meeting = e.checked;
                         setCheckedMeeting(e.checked);
                         getData(offset, perPage);
-                        }
-                        } disabled={checkedProject}/>
+                    }
+                    } disabled={checkedProject} />
                 </div>
             </Col>
 
             <Col sm={4}>
 
-            {props.data.role === 'admin' ? 
-                <Button icon="pi pi-plus" label="Create Task" className="p-button-outlined p-button-secondary paginate-p-button" onClick={redirectToCreateTask} />
-                : null }
+                {props.data.role === 'admin' ?
+                    <Button icon="pi pi-plus" label="Create Task" className="p-button-outlined p-button-secondary paginate-p-button" onClick={redirectToCreateTask} />
+                    : null}
             </Col>
 
             <Col sm={4} className="dropdown-demo" key={'paginateDropDown'}>
@@ -167,7 +172,7 @@ const PaginatedTasksByUser = (props: any) => {
         <Row className="paginated-tasks" key={"selectorTop2"}>
             {data}
         </Row>
-        
+
         <Row>
             <Col>
                 <ReactPaginate
@@ -185,6 +190,12 @@ const PaginatedTasksByUser = (props: any) => {
             </Col>
         </Row>
     </div>
+
+    if (!hasError) {
+        return nextElement
+    } else {
+        return <ErrorComponent />
+    }
 }
 
 export default PaginatedTasksByUser;

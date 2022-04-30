@@ -8,6 +8,7 @@ import UsersCard from '../user/UsersCard';
 import { useNavigate } from "react-router-dom";
 import './paginate.css';
 import './DropdownButton.css';
+import ErrorComponent from '../error/ErrorComponent';
 
 function PaginatedUsers() {
 
@@ -17,6 +18,7 @@ function PaginatedUsers() {
     const [pageCount, setPageCount] = useState(0);
     const [selectValues, setSelectValues] = useState(null);
     const [rowsNumber, setRowsNumber] = useState(0);
+    const [hasError, setHasError] = useState(false);
 
     const valuesArray2 = ['5', '10', 'All'];
 
@@ -36,9 +38,12 @@ function PaginatedUsers() {
             </div>
 
         })
-
-        setData(postData)
-        setPageCount(Math.ceil(data.count / perPage))
+        try {
+            setData(postData);
+            setPageCount(Math.ceil(data.count / perPage))
+        } catch (error) {
+            setHasError(true);
+        }
     }
 
     const handlePageClick = (e: any) => {
@@ -61,43 +66,49 @@ function PaginatedUsers() {
         navigate('/signup');
     }
 
-    return (
-        <div className="App">
+    if (!hasError) {
 
-            <Row className='selector' key={"selectorTop1"}>
-                <Col sm={4}></Col>
+        return (
+            <div className="App">
 
-                <Col sm={4} className="create-user"><Button icon="pi pi-plus" label="Create User" className="p-button-outlined p-button-secondary paginate-p-button" onClick={redirectToCreateUser} /></Col>
+                <Row className='selector' key={"selectorTop1"}>
+                    <Col sm={4}></Col>
 
-                <Col sm={4} className="dropdown-demo" key={'paginateDropDown'}>
-                    <Dropdown id={'dropDownButton'} value={selectValues} options={valuesArray2} onChange={onPageNumbersChange} placeholder="5" editable />
-                </Col>
-            </Row>
+                    <Col sm={4} className="create-user"><Button icon="pi pi-plus" label="Create User" className="p-button-outlined p-button-secondary paginate-p-button" onClick={redirectToCreateUser} /></Col>
 
-            <Row className="paginated-users" key={"selectorTop2"}>
+                    <Col sm={4} className="dropdown-demo" key={'paginateDropDown'}>
+                        <Dropdown id={'dropDownButton'} value={selectValues} options={valuesArray2} onChange={onPageNumbersChange} placeholder="5" editable />
+                    </Col>
+                </Row>
 
-                <Col key={"selectorTopCol2"}>
-                    
-                    {/* <div key={"selectorTopColDiv2"}> */}
+                <Row className="paginated-users" key={"selectorTop2"}>
+
+                    <Col key={"selectorTopCol2"}>
+
+                        {/* <div key={"selectorTopColDiv2"}> */}
                         {data}
-                    {/* </div> */}
+                        {/* </div> */}
 
-                    <ReactPaginate
-                        key={"reactPaginateKey1"}
-                        previousLabel={"prev"}
-                        nextLabel={"next"}
-                        breakLabel={"..."}
-                        breakClassName={"break-me"}
-                        pageCount={pageCount}
-                        marginPagesDisplayed={2}
-                        pageRangeDisplayed={5}
-                        onPageChange={handlePageClick}
-                        containerClassName={"pagination"}
-                        activeClassName={"active"} />
-                </Col>
-            </Row>
-        </div>
-    );
+                        <ReactPaginate
+                            key={"reactPaginateKey1"}
+                            previousLabel={"prev"}
+                            nextLabel={"next"}
+                            breakLabel={"..."}
+                            breakClassName={"break-me"}
+                            pageCount={pageCount}
+                            marginPagesDisplayed={2}
+                            pageRangeDisplayed={5}
+                            onPageChange={handlePageClick}
+                            containerClassName={"pagination"}
+                            activeClassName={"active"} />
+                    </Col>
+                </Row>
+            </div>
+        );
+    } else {
+       return  <ErrorComponent /> 
+    }
+
 }
 
 export default PaginatedUsers;
