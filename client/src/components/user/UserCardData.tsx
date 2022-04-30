@@ -6,8 +6,7 @@ import { useNavigate } from "react-router-dom";
 import CurrentUserCardData from './currentUserData';
 import UserElement from './UserCardDataMain';
 import axiosFunction from '../functions/axiosFunctions';
-
-
+import ErrorComponent from "../error/ErrorComponent";
 
 interface MyObj {
     [propName: string]: string;
@@ -34,11 +33,16 @@ const UserCard = () => {
     const [pictureName, setPictureName] = useState<any | null>(null);
     const [pictureType, setPictureType] = useState<any | null>(null);
     const navigate = useNavigate();
-
-    CurrentLoggedUser(setCurrentUser);
-
+    const [hasError, setHasError] = useState(false);
     const { id } = useParams();
     const user: MyObj = CurrentUserCardData(id);
+
+    try {
+        CurrentLoggedUser(setCurrentUser);
+    } catch (error) {
+        setHasError(true);
+    }
+
 
     const onImageChange = (props: any) => {
 
@@ -46,12 +50,20 @@ const UserCard = () => {
         reader.readAsDataURL(props);
         reader.onload = () => {
 
-            setSrcPicture(reader.result);
-            setPictureName(props.name);
-            setPictureType(props.type);
+            try {
+                setSrcPicture(reader.result);
+                setPictureName(props.name);
+                setPictureType(props.type);
+            } catch (error) {
+                setHasError(true);
+            }
         };
 
-        setCurrentUserPicture(props.name);
+        try {
+            setCurrentUserPicture(props.name);
+        } catch (error) {
+            setHasError(true);
+        }
     }
 
     useEffect(() => {
@@ -98,12 +110,17 @@ const UserCard = () => {
         }
     };
 
-    return (
-        <>
-            {UserElement(user, handleSubmit, onSubmit, onImageChange, allowPasswordChange, changePasswordSelected, setChangePasswordSelected, passwordValue,
-                setPasswordValue, errors, currentUserPicture, editUserRoute)}
-        </>
-    )
+    if (!hasError) {
+
+        return (
+            <>
+                {UserElement(user, handleSubmit, onSubmit, onImageChange, allowPasswordChange, changePasswordSelected, setChangePasswordSelected, passwordValue,
+                    setPasswordValue, errors, currentUserPicture, editUserRoute)}
+            </>
+        );
+    } else {
+       return <ErrorComponent />
+    }
 }
 
 export default UserCard;

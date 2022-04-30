@@ -18,7 +18,6 @@ const NavbarMenu: React.FunctionComponent = (props: any) => {
     const [user, setUser] = useState(Object);
     const [hasError, setHasError] = useState(false);
 
-
     try {
         CurrentLoggedUser(setUser);
     } catch (error) {

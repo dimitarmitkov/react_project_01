@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { Row, Col, Container } from 'react-bootstrap';
 import './signUpForm.css';
 import axiosFunction from '../functions/axiosFunctions';
+import ErrorComponent from '../error/ErrorComponent';
 
 type FormValues = {
     firstName: string;
@@ -25,6 +26,7 @@ const SignUpGroup = () => {
     const { register, formState: { errors }, handleSubmit } = useForm<FormValues>();
     const [passwordValue, setPasswordValue] = useState('');
     const [checked, setChecked] = useState(false);
+    const [hasError, setHasError] = useState(false);
 
     const onSubmit: SubmitHandler<FormValues> = data => {
 
@@ -36,8 +38,12 @@ const SignUpGroup = () => {
             role: checked ? 'user' : 'admin',
             picture: data.picture ? data.picture : ""
         };
-
-        axiosFunction('signUpForm', queryData, 'post', 201, undefined, '/users');
+        
+        try {
+            axiosFunction('signUpForm', queryData, 'post', 201, undefined, '/users');
+        } catch (error) {
+            return <ErrorComponent />
+        }
     };
 
     return (
