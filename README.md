@@ -39,7 +39,7 @@ postgres dialect is a must, because postgres db is used in this project.
 
 **Starting project:**
 
-From main directory you need to type npm start. Enjoy it :) 
+From main directory you need to type `npm start`. Enjoy it :) 
 
 
 
