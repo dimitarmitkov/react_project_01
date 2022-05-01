@@ -53,7 +53,6 @@ const VerticallyCenteredModal = (props: any) => {
             const userGeneratedProcess = { userGeneratorName: user.userName, userGeneratorId: user.id, userGeneratorRole: user.role };
             const wsText = JSON.stringify({ main: props.data, action: checkValue, allowedList: allowedUsers, generator: userGeneratedProcess });
 
-
             const result = await axios.post(url, queryData);
 
             if (result.status === 200) {
@@ -76,10 +75,12 @@ const VerticallyCenteredModal = (props: any) => {
 
                 const NamesList = () => (
                     <div>
-                        <ul>{currentData.map((name: any) => <li key={name.id}>
-                            {user && user.role === 'admin' ? <Link to={`/users/${name.id}`}>{name.firstName} {name.lastName} </Link> :
-                                <div>{name.firstName} {name.lastName} </div>}
-                        </li>)}</ul>
+                        <ul>{currentData.map((name: any) =>
+                            <li key={name.id}>
+                                {user && user.role === 'admin' ? <Link to={`/users/${name.id}`}>{name.firstName} {name.lastName} </Link> :
+                                    <div>{name.firstName} {name.lastName} </div>}
+                            </li>)}
+                        </ul>
                     </div>
                 );
 
