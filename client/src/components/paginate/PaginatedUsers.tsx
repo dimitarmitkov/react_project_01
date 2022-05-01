@@ -85,9 +85,7 @@ function PaginatedUsers() {
 
                     <Col key={"selectorTopCol2"}>
 
-                        {/* <div key={"selectorTopColDiv2"}> */}
                         {data}
-                        {/* </div> */}
 
                         <ReactPaginate
                             key={"reactPaginateKey1"}

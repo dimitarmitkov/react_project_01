@@ -76,6 +76,7 @@ const PaginatedTasksByUser = (props: any) => {
 
                 const postData = progressArray.map((element: string, elKey: number) =>
                     <Col sm={2} className="padding-0 mt-3" key={element + elKey + 1}>
+
                         <Card
                             bg={''}
                             key={element + elKey + 2}
@@ -84,6 +85,7 @@ const PaginatedTasksByUser = (props: any) => {
                             className="padding-0"
                         >
                             <Card.Header key={element + elKey + 3}>{capitalizeFirstLetter(element)}</Card.Header>
+
                             <Card.Body key={element + elKey + 4}>
                                 {tasksFunction(element)}
                             </Card.Body>
@@ -158,7 +160,6 @@ const PaginatedTasksByUser = (props: any) => {
             </Col>
 
             <Col sm={4}>
-
                 {props.data.role === 'admin' ?
                     <Button icon="pi pi-plus" label="Create Task" className="p-button-outlined p-button-secondary paginate-p-button" onClick={redirectToCreateTask} />
                     : null}

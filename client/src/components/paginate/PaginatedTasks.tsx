@@ -118,6 +118,7 @@ const PaginatedTasks = () => {
     }
 
     const nextElement = <div className="App">
+
         <Row className='selector' key={"selectorTop1"}>
 
             <Col sm={2}>
@@ -137,7 +138,6 @@ const PaginatedTasks = () => {
             </Col>
 
             <Col sm={2}>
-
                 <div className="field-checkbox-label">
                     <label htmlFor="meetingsShow">Show meetings</label>
                 </div>
@@ -153,7 +153,6 @@ const PaginatedTasks = () => {
             </Col>
 
             <Col sm={4}>
-
                 <Button icon="pi pi-plus" label="Create Task" className="p-button-outlined p-button-secondary paginate-p-button" onClick={redirectToCreateTask} />
             </Col>
 

@@ -107,6 +107,7 @@ const EditUserGroup = (props: any) => {
                             </div>
                         </Col>
                     </Row>
+
                     {changePasswordSelected ? <Row className="mt-3 justify-content-md-center" >
                         <Col>
                             <div className="p-inputgroup">
@@ -119,6 +120,7 @@ const EditUserGroup = (props: any) => {
                         </Col>
                     </Row>
                         : ''}
+
                     <Row className="mt-3 justify-content-md-center">
                         <Col>
 
@@ -133,6 +135,7 @@ const EditUserGroup = (props: any) => {
                             </div>
                         </Col>
                     </Row>
+                    
                     <Row className="mt-3 mb-3 justify-content-md-center">
                         <Col>
                             <Button label="Submit" className="p-button-primary" disabled={false} />

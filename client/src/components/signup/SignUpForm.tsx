@@ -26,7 +26,6 @@ const SignUpGroup = () => {
     const { register, formState: { errors }, handleSubmit } = useForm<FormValues>();
     const [passwordValue, setPasswordValue] = useState('');
     const [checked, setChecked] = useState(false);
-    const [hasError, setHasError] = useState(false);
 
     const onSubmit: SubmitHandler<FormValues> = data => {
 

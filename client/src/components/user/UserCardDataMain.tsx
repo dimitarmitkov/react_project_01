@@ -9,18 +9,25 @@ const UserElement = (user: any, handleSubmit: any, onSubmit: any, onImageChange:
         return (
             <>
                 <Container >
+                    
                     <Row className="mt-3">
+
                         <Row>
+
                             <Col sm={2} className="border rounded">
                                 <Image id="user-picture" fluid src={user.picture} alt="pic" />
                             </Col>
+
                             <Col sm={3} className="ml-3">
+
                                 <Row>
                                     <h3>{user.firstName ? user.firstName : null} {user.lastName ? user.lastName : null}</h3>
                                 </Row>
+
                                 <Row>
                                     <h5>role: {user.role}</h5>
                                 </Row>
+
                                 <Row>
                                     <h5>email: {user.email}</h5>
                                 </Row>
@@ -28,7 +35,9 @@ const UserElement = (user: any, handleSubmit: any, onSubmit: any, onImageChange:
                         </Row>
 
                         <Row className="mt-3">
+
                             <Col sm={12}>
+
                                 <form onSubmit={handleSubmit(onSubmit)}>
 
                                     <Row>
