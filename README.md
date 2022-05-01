@@ -9,6 +9,7 @@ It contains API, global error handler, models, migrations, seeders
 config.json file will appear after installing sequelize-cli dependency.
 
 All db connection data have to be added into config.json, like that:
+```
 {
   "development": {
     "username": [username],
@@ -32,12 +33,13 @@ All db connection data have to be added into config.json, like that:
     "dialect": "postgres"
   }
 }
+```
 
 postgres dialect is a must, because postgres db is used in this project.
 
 **Starting project:**
 
-From main directory you need to type npm start. Enjoy it :) 
+From main directory you need to type `npm start`. Enjoy it :) 
 
 
 
