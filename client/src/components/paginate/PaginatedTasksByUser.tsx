@@ -96,7 +96,7 @@ const PaginatedTasksByUser = (props: any) => {
                 } catch (error) {
                     setHasError(true);
                 }
-            }).catch();
+            }).catch(error=> setHasError(true));
     }
 
     const handlePageClick = (e: any) => {

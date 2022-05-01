@@ -58,16 +58,13 @@ const MultiSelector = (props: any) => {
         }
     }
 
-    const getUsers = () => {
+    const getUsers = async () => {
 
         const urlGet = "http://localhost:62000/api/v1/users";
 
-        axios.get(urlGet)
-            .then(result => {
+        const result = await axios.get(urlGet);
 
-                setUsers(result.data.map((el: any) => ({ value: el.id, label: el.firstName + ' ' + el.lastName })));
-            })
-            .catch(err => console.log(err));
+        setUsers(result.data.map((el: any) => ({ value: el.id, label: el.firstName + ' ' + el.lastName })));
     }
 
     useEffect(() => {
@@ -116,15 +113,15 @@ const MultiSelector = (props: any) => {
                 data-trigger="focus"
                 data-content="Please select account(s)"
             >
-                    <Row> 
-                        <Col sm={9} className="mt-3">
-                            <ReactSelect options={users} isMulti closeMenuOnSelect={false} hideSelectedOptions={false} components={{ Option }} onChange={handleChange} value={optionSelected} />
-                        </Col>
+                <Row>
+                    <Col sm={9} className="mt-3">
+                        <ReactSelect options={users} isMulti closeMenuOnSelect={false} hideSelectedOptions={false} components={{ Option }} onChange={handleChange} value={optionSelected} />
+                    </Col>
 
-                        <Col sm="auto" className="mt-3 button-danger-multi">
-                            <Button variant="secondary" type="submit" onClick={() => logData(optionSelected)}>Submit user</Button>
-                        </Col>
-                    </Row>
+                    <Col sm="auto" className="mt-3 button-danger-multi">
+                        <Button variant="secondary" type="submit" onClick={() => logData(optionSelected)}>Submit user</Button>
+                    </Col>
+                </Row>
             </span>
         );
     } else {

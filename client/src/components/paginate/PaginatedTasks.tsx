@@ -27,10 +27,10 @@ const PaginatedTasks = () => {
 
     const [offset, setOffset] = useState(0);
     const [data, setData] = useState<Provider[]>([]);
-    const [perPage, setPerPage] = useState(10);
+    const [perPage, setPerPage] = useState(2);
     const [pageCount, setPageCount] = useState(0);
     const [selectValues, setSelectValues] = useState(null);
-    const [endValue, setEndValue] = useState(10);
+    const [endValue, setEndValue] = useState(2);
     const [startValue, setStartValue] = useState(0);
     const [checkedProject, setCheckedProject] = useState(false);
     const [checkedMeeting, setCheckedMeeting] = useState(false);
@@ -158,7 +158,7 @@ const PaginatedTasks = () => {
             </Col>
 
             <Col sm={4} className="dropdown-demo" key={'paginateDropDown'}>
-                <Dropdown id={'dropDownButton'} value={selectValues} options={valuesArray} onChange={onValuesChange} placeholder="All" editable />
+                <Dropdown id={'dropDownButton'} value={selectValues} options={valuesArray} onChange={onValuesChange} placeholder="2" editable />
             </Col>
         </Row>
 

@@ -32,7 +32,6 @@ const CreateTaskGroup = () => {
         setHasError(true);
     }
 
-
     const taskTypeArray = [{ name: 'Project', value: 'project' }, { name: 'Meeting', value: 'meeting' }];
 
     const onTypeSelectorChange = (e: any) => {
@@ -43,7 +42,7 @@ const CreateTaskGroup = () => {
         }
     };
 
-    const onSubmit: SubmitHandler<FormValues> = data => {
+    const onSubmit: SubmitHandler<FormValues> = async data => {
 
         const url = "http://localhost:62000/api/v1/createTask";
         const query = {
@@ -53,16 +52,14 @@ const CreateTaskGroup = () => {
             initiatedByUserId: user.id
         };
 
-        axios.post(url, query)
-            .then(result => {
-                if (result.status === 201) {
-                    navigate('/tasks');
-                }
-            })
-            .catch(err => {
-                setHasError(true);
-            });
+        const result = await axios.post(url, query);
+
+        if (result.status === 201) {
+            navigate('/tasks');
+        }
+
     };
+    
     if (!hasError) {
 
         return (
@@ -102,7 +99,7 @@ const CreateTaskGroup = () => {
             </form>
         );
     } else {
-        return <ErrorComponent/>
+        return <ErrorComponent />
     }
 }
 
