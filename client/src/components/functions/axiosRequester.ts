@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import axios from 'axios';
 
 const AxiosRequester = (setImportedValue: React.Dispatch<React.SetStateAction<never[]>>, url: string) => {
+    
     function axiosFunction() {
         
         axios.get(url, {withCredentials: true})
