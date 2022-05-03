@@ -15,7 +15,7 @@ interface Provider {
     type: JSX.Element;
 }
 
-interface MyObj {
+interface Props {
     [propName: string]: {}
 };
 
@@ -37,7 +37,7 @@ const VerticallyCenteredModal = (props: any) => {
 
     let queryData = {};
 
-    const actionDataObject: MyObj = {
+    const actionDataObject: Props = {
         initial: { initiatedAt: currentDate, initiatedByUserId: props.data.userId ? props.data.userId : user.id },
         selected: { selectedAt: currentDate, selectedByUserId: props.data.userId ? props.data.userId : user.id },
         progress: { progressAt: currentDate, progressByUserId: props.data.userId ? props.data.userId : user.id },
@@ -198,22 +198,32 @@ const VerticallyCenteredModal = (props: any) => {
 const ModalApp = (props: any[]) => {
     const [modalShow, setModalShow] = useState(false);
 
+    const handleClick = (ev: any) => {
+        
+       if(ev.target.id === "multi-user-submit-button"){
+        setModalShow(false);
+       } 
+    }
 
-    return (
-        <Row>
-            <Col className="edit-task-button">
-                <Button variant="danger" onClick={() => setModalShow(prevCheck => !prevCheck)}>
-                    Edit task
-                </Button>
+    document.addEventListener('click', handleClick);
 
-                <VerticallyCenteredModal
-                    show={modalShow}
-                    onHide={() => { setModalShow(prevCheck => !prevCheck) }}
-                    data={props}
-                />
-            </Col>
-        </Row>
-    );
+return (
+    <Row>
+        <Col className="edit-task-button">
+            <Button variant="danger" onClick={() => {
+                setModalShow(prevCheck => !prevCheck);
+            }}>
+                Edit task
+            </Button>
+
+            <VerticallyCenteredModal
+                show={modalShow}
+                onHide={() => { setModalShow(prevCheck => !prevCheck) }}
+                data={props}
+            />
+        </Col>
+    </Row>
+);
 }
 
 export default ModalApp;

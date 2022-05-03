@@ -10,7 +10,7 @@ import axiosFunction from '../functions/axiosFunctions';
 import ErrorComponent from "../error/ErrorComponent";
 
 
-interface MyObj {
+interface Props  {
     [propName: string]: string;
 };
 
@@ -36,7 +36,7 @@ const CurrentUserCard = () => {
     const navigate = useNavigate();
     const [hasError, setHasError] = useState(false);
     const { id } = useParams();
-    const user: MyObj = CurrentUserCardData(id);
+    const user: Props = CurrentUserCardData(id);
 
     try {
         CurrentLoggedUser(setCurrentUser);

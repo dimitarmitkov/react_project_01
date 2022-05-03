@@ -52,10 +52,7 @@ const MultiSelector = (props: any) => {
             );
 
             setAllowedUsers(allowedUsersList);
-        } else {
-            toast.configure();
-            toast('No users attached to this task.');
-        }
+        } 
     }
 
     const getUsers = async () => {
@@ -81,10 +78,16 @@ const MultiSelector = (props: any) => {
 
         const logData = async (props: any) => {
 
-            const resArray = props.map((e: any) => ({ userId: e.value, taskId: taskIdGlobal }));
+            let resArray = [];
+            
+            try {
+                resArray = props.map((e: any) => ({ userId: e.value, taskId: taskIdGlobal }));
+            } catch (error) {
+                console.log('some error');
+            }
+            
             const urlLogData = "http://localhost:62000/api/v1/usertasks";
-            const queryLogData = { userIdArray: resArray, taskId: taskIdGlobal }
-
+            const queryLogData = { userIdArray: resArray, taskId: taskIdGlobal };
 
             const result = await axios.put(urlLogData, queryLogData);
             if (result.status === 200) {
@@ -92,38 +95,39 @@ const MultiSelector = (props: any) => {
                 const idArray = result.data.map((r: any) => r.userId);
                 const resultAllowedUsersArray = [...allowedUsers, ...idArray];
 
-                users.forEach((user: any) => {
-                    if (idArray.includes(user.value)) {
-                        main['firstName'] = user.label;
-                        ws.send(JSON.stringify({ main, action: 'added', allowedList: resultAllowedUsersArray }));
-                    }
-                })
-
-                window.location.reload();
+                try {
+                    users.forEach((user: any) => {
+                        if (idArray.includes(user.value)) {
+                            main['firstName'] = user.label;
+                            ws.send(JSON.stringify({ main, action: 'added', allowedList: resultAllowedUsersArray }));
+                        }
+                    });
+                } catch (error) {
+                    console.log('error');
+                }
+                
             } else {
                 toast.configure();
                 toast('Something went wrong, you are not allowed.');
             }
         }
+        const multiSelectorComponent = <span
+            className="d-inline-block"
+            data-toggle="popover"
+            data-trigger="focus"
+            data-content="Please select account(s)"
+        >
+            <Row>
+                <Col sm={9} className="mt-3">
+                    <ReactSelect options={users} isMulti closeMenuOnSelect={false} hideSelectedOptions={false} components={{ Option }} onChange={handleChange} value={optionSelected} />
+                </Col>
 
-        return (
-            <span
-                className="d-inline-block"
-                data-toggle="popover"
-                data-trigger="focus"
-                data-content="Please select account(s)"
-            >
-                <Row>
-                    <Col sm={9} className="mt-3">
-                        <ReactSelect options={users} isMulti closeMenuOnSelect={false} hideSelectedOptions={false} components={{ Option }} onChange={handleChange} value={optionSelected} />
-                    </Col>
-
-                    <Col sm="auto" className="mt-3 button-danger-multi">
-                        <Button variant="secondary" type="submit" onClick={() => logData(optionSelected)}>Submit user</Button>
-                    </Col>
-                </Row>
-            </span>
-        );
+                <Col sm="auto" className="mt-3 button-danger-multi">
+                    <Button id="multi-user-submit-button" variant="secondary" type="submit" onClick={() => logData(optionSelected)}>Submit user</Button>
+                </Col>
+            </Row>
+        </span>
+        return (multiSelectorComponent);
     } else {
         return null;
     }
