@@ -11,25 +11,26 @@ import ErrorComponent from '../error/ErrorComponent';
 
 const ws = new WebSocket('ws://127.0.0.1:8000/ws');
 
-interface Provider {
+interface PropsShowUsers {
     type: JSX.Element;
 }
 
-interface Props {
+interface PropsActionDataObj {
     [propName: string]: {}
 };
 
+interface PropsCurrentUser {
+    id?: number;
+    role?: string;
+    userName?: string;
+}
+
 const VerticallyCenteredModal = (props: any) => {
-    const [user, setUser] = useState(Object);
-    const [showUsers, setShowUsers] = useState<Provider>();
+    const [showUsers, setShowUsers] = useState<PropsShowUsers>();
     const [allowedUsers, setAllowedUsers] = useState([]);
     const [hasError, setHasError] = useState(false);
 
-    try {
-        CurrentLoggedUser(setUser);
-    } catch (error) {
-        setHasError(true);
-    }
+    const user: PropsCurrentUser = CurrentLoggedUser()!;
 
     const projectArray: string[] = ["selected", "progress", "review", "done"];
     const meetingArray: string[] = ["selected", "progress", "done"];
@@ -37,13 +38,13 @@ const VerticallyCenteredModal = (props: any) => {
 
     let queryData = {};
 
-    const actionDataObject: Props = {
+    const actionDataObject: PropsActionDataObj = user ? {
         initial: { initiatedAt: currentDate, initiatedByUserId: props.data.userId ? props.data.userId : user.id },
         selected: { selectedAt: currentDate, selectedByUserId: props.data.userId ? props.data.userId : user.id },
         progress: { progressAt: currentDate, progressByUserId: props.data.userId ? props.data.userId : user.id },
         review: { reviewAt: currentDate, reviewByUserId: props.data.userId ? props.data.userId : user.id },
         done: { doneAt: currentDate, doneByUserId: props.data.userId ? props.data.userId : user.id }
-    };
+    } : {};
 
     const getData = async (checkValue: any) => {
 

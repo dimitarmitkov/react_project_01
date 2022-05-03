@@ -2,25 +2,23 @@ import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import ButtonBs from 'react-bootstrap/Button';
 import axiosFunction from '../functions/axiosFunctions';
-import AxiosSpecialFunction from '../functions/axiosSpecialFunctions';
 import './modalDelete.css';
 import CurrentLoggedUser from '../functions/currentLoggedUser';
 import ErrorComponent from '../error/ErrorComponent';
-import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
+interface PropsCurrentUser {
+  id?: number;
+  role?: string;
+  userName?: string;
+}
+
 const DeleteTaskModal = (props: any) => {
-  const [user, setUser] = useState(Object);
   const [showDeleteTaskModal, setShowDeleteTaskModal] = useState(true);
   const [hasError, setHasError] = useState(false);
   const currentTaskId = props.data.taskId ? props.data.taskId : props.data.id;
 
-
-  try {
-    CurrentLoggedUser(setUser);
-  } catch (error) {
-    setHasError(true);
-  }
+  const user: PropsCurrentUser = CurrentLoggedUser()!;
 
   const getData = (currentAllowedUsersList: never[]) => {
 

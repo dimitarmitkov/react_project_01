@@ -10,8 +10,14 @@ interface IncomingMessage {
   main: {}
 };
 
-interface ElementProvider {
+interface PropsElement {
   type: JSX.Element;
+}
+
+interface PropsCurrentUser {
+    id?: number;
+    role?: string;
+    userName?: string;
 }
 
 let storedNames: any[] = [];
@@ -21,15 +27,10 @@ const ws = new WebSocket('ws://127.0.0.1:8000/ws');
 const WebsocketData = () => {
 
   const [messageList, setMessageList] = useState<IncomingMessage[]>([]);
-  const [user, setUser] = useState(Object);
-  const [messageListElement, setMessageListElement] = useState<ElementProvider>();
+  const [messageListElement, setMessageListElement] = useState<PropsElement>();
   const [hasError, setHasError] = useState(false);
 
-  try {
-    CurrentLoggedUser(setUser);
-  } catch (error) {
-    setHasError(true);
-  }
+  const user: PropsCurrentUser = CurrentLoggedUser()!;
 
   const handleChange = (props: string) => {
 

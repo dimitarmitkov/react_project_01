@@ -1,19 +1,17 @@
-import { useState } from "react";
 import CurrentLoggedUser from '../functions/currentLoggedUser';
 import ErrorComponent from '../error/ErrorComponent';
 
+interface PropsCurrentUser {
+    id?: number;
+    role?: string;
+    userName?: string;
+}
+
 const Hello = () => {
 
-    const [user, setUser] = useState(Object);
-    const [hasError, setHasError] = useState(false);
+    const user: PropsCurrentUser = CurrentLoggedUser()!;
 
-    try {
-        CurrentLoggedUser(setUser);
-    } catch (error) {
-        setHasError(true);
-    }
-  
-    if (Object.keys(user).length > 0 && !hasError) {
+    if (user) {
 
         return <h1>Hello, {user.userName}</h1>
     } else {

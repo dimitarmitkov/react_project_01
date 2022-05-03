@@ -11,26 +11,27 @@ import ErrorComponent from '../error/ErrorComponent';
 
 
 
-type FormValues = {
+type PropsFormValues = {
     taskType: string;
     taskName: string;
     taskProgress: string;
     initiatedByUserId: string;
 };
 
+interface PropsCurrentUser {
+    id?: number;
+    role?: string;
+    userName?: string;
+}
+
 const CreateTaskGroup = () => {
 
-    const [user, setUser] = useState(Object);
-    const { register, handleSubmit } = useForm<FormValues>();
+    const { register, handleSubmit } = useForm<PropsFormValues>();
     const [selectValues, setSelectValues] = useState(undefined);
     const [hasError, setHasError] = useState(false);
     const navigate = useNavigate();
 
-    try {
-        CurrentLoggedUser(setUser);
-    } catch (error) {
-        setHasError(true);
-    }
+    const user: PropsCurrentUser = CurrentLoggedUser()!;
 
     const taskTypeArray = [{ name: 'Project', value: 'project' }, { name: 'Meeting', value: 'meeting' }];
 
@@ -42,7 +43,7 @@ const CreateTaskGroup = () => {
         }
     };
 
-    const onSubmit: SubmitHandler<FormValues> = async data => {
+    const onSubmit: SubmitHandler<PropsFormValues> = async data => {
 
         const url = "http://localhost:62000/api/v1/createTask";
         const query = {
@@ -92,7 +93,6 @@ const CreateTaskGroup = () => {
                     <Row className="mb-3 justify-content-md-center">
                         <Col sm={3}>
                             <Button label="Submit" className="p-button-danger" disabled={false} />
-                            {/* <input className="btn btn-danger" type="submit" value="Create Task" /> */}
                         </Col>
                     </Row>
                 </Container>

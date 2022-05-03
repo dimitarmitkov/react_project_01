@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Button, Container, Row, Col } from "react-bootstrap";
+import { Button, Row, Col } from "react-bootstrap";
 import { default as ReactSelect } from "react-select";
 import { components } from "react-select";
 import './multiSelector.css';

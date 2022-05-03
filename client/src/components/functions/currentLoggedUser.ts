@@ -1,7 +1,9 @@
 import axios from 'axios';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-const CurrentLoggedUser = (setImportedValue: React.Dispatch<React.SetStateAction<never[]>>) => {
+const CurrentLoggedUser = () => {
+
+    const [user, setUser] = useState();
     
     const url = "http://localhost:62000/api/v1/currentLoggedUser";
     
@@ -10,15 +12,17 @@ const CurrentLoggedUser = (setImportedValue: React.Dispatch<React.SetStateAction
         axios.get(url, {withCredentials: true})
             .then(response => {
 
-                setImportedValue(response.data)})
+                setUser(response.data)})
             .catch(err => {
                 console.log('No user logged');
             });
     }
 
-    return useEffect(() => {
+    useEffect(() => {
         axiosFunction()
     }, []);
+
+    return user;
 }
 
 export default CurrentLoggedUser;

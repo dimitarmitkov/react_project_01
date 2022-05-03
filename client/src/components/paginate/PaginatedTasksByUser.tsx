@@ -19,11 +19,11 @@ let project = false;
 let selectedPage = 0;
 let rowsNumber = 0;
 
-const PaginatedTasksByUser = (props: any) => {
+interface Provider {
+    type: JSX.Element[];
+}
 
-    interface Provider {
-        type: JSX.Element[];
-    }
+const PaginatedTasksByUser = (props: any) => {
 
     const [offset, setOffset] = useState(0);
     const [data, setData] = useState<Provider[]>([]);
@@ -35,6 +35,8 @@ const PaginatedTasksByUser = (props: any) => {
     const [checkedProject, setCheckedProject] = useState(false);
     const [checkedMeeting, setCheckedMeeting] = useState(false);
     const [hasError, setHasError] = useState(false);
+    const dataId = props.data ? props.data.id : null;
+    const isAdmin  = props.data && props.data.role === 'admin';
 
     const valuesArray = ['2', '5', '7', 'All'];
     const progressArray: string[] = ["initial", "selected", "progress", "review", "done"];
@@ -50,13 +52,13 @@ const PaginatedTasksByUser = (props: any) => {
             {
                 offsetData: startValue,
                 limitData: endValue,
-                userId: props.data.id,
+                userId: dataId,
                 whereSelector: project ? "project" : "meeting"
             } :
             {
                 offsetData: startValue,
                 limitData: endValue,
-                userId: props.data.id
+                userId: dataId
             };
 
         axios.post(url, callData)
@@ -115,9 +117,11 @@ const PaginatedTasksByUser = (props: any) => {
         setEndValue(incomingValue);
     }
 
+    
+
     useEffect(() => {
         getData(offset, perPage)
-    }, [offset, endValue, props.data.id, meeting, project]);
+    }, [offset, endValue, dataId, meeting, project]);
 
     const redirectToCreateTask = () => {
         navigate('/createTask');
@@ -160,7 +164,7 @@ const PaginatedTasksByUser = (props: any) => {
             </Col>
 
             <Col sm={4}>
-                {props.data.role === 'admin' ?
+                {isAdmin ?
                     <Button icon="pi pi-plus" label="Create Task" className="p-button-outlined p-button-secondary paginate-p-button" onClick={redirectToCreateTask} />
                     : null}
             </Col>

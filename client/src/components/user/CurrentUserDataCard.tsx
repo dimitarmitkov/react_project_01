@@ -10,11 +10,17 @@ import axiosFunction from '../functions/axiosFunctions';
 import ErrorComponent from "../error/ErrorComponent";
 
 
-interface Props {
+interface PropsUser {
     [propName: string]: string;
 };
 
-type FormValues = {
+interface PropsCurrentUser {
+    id?: string;
+    role?: string;
+    userName?: string;
+}
+
+type PropsFormValues = {
     firstName: string;
     userName: string;
     lastName: string;
@@ -25,9 +31,8 @@ type FormValues = {
 };
 
 const CurrentUserCard = () => {
-    const [currentUser, setCurrentUser] = useState(Object);
     const [changePasswordSelected, setChangePasswordSelected] = useState(false);
-    const { register, watch, formState: { errors }, handleSubmit } = useForm<FormValues>();
+    const { register, watch, formState: { errors }, handleSubmit } = useForm<PropsFormValues>();
     const [passwordValue, setPasswordValue] = useState('');
     const [currentUserPicture, setCurrentUserPicture] = useState('');
     const [srcPicture, setSrcPicture] = useState<any | null>(null);
@@ -36,13 +41,9 @@ const CurrentUserCard = () => {
     const navigate = useNavigate();
     const [hasError, setHasError] = useState(false);
     const { id } = useParams();
-    const user: Props = CurrentUserCardData(id);
+    const user: PropsUser = CurrentUserCardData(id);
 
-    try {
-        CurrentLoggedUser(setCurrentUser);
-    } catch (error) {
-        setHasError(true);
-    }
+    const currentUser: PropsCurrentUser = CurrentLoggedUser()!;
 
     const onImageChange = (props: any) => {
 
@@ -80,7 +81,7 @@ const CurrentUserCard = () => {
 
     const allowPasswordChange = id == currentUser.id ? true : false;
 
-    const onSubmit: SubmitHandler<FormValues> = async () => {
+    const onSubmit: SubmitHandler<PropsFormValues> = async () => {
 
         if (changePasswordSelected) {
 

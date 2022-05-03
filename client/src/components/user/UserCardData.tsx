@@ -8,7 +8,7 @@ import UserElement from './UserCardDataMain';
 import axiosFunction from '../functions/axiosFunctions';
 import ErrorComponent from "../error/ErrorComponent";
 
-interface Props {
+interface PropsUser {
     [propName: string]: string;
 };
 
@@ -22,9 +22,14 @@ type FormValues = {
     picture: string;
 };
 
+interface PropsCurrentUser {
+    id?: string;
+    role?: string;
+    userName?: string;
+}
+
 const UserCard = () => {
 
-    const [currentUser, setCurrentUser] = useState(Object);
     const [changePasswordSelected, setChangePasswordSelected] = useState(false);
     const { register, watch, formState: { errors }, handleSubmit } = useForm<FormValues>();
     const [passwordValue, setPasswordValue] = useState('');
@@ -35,13 +40,9 @@ const UserCard = () => {
     const navigate = useNavigate();
     const [hasError, setHasError] = useState(false);
     const { id } = useParams();
-    const user: Props = CurrentUserCardData(id);
+    const user: PropsUser = CurrentUserCardData(id);
 
-    try {
-        CurrentLoggedUser(setCurrentUser);
-    } catch (error) {
-        setHasError(true);
-    }
+    const currentUser : PropsCurrentUser = CurrentLoggedUser()!;
 
 
     const onImageChange = (props: any) => {

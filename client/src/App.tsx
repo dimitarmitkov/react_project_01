@@ -24,13 +24,7 @@ import ScrollButton from './components/scrollButton/ScrollButton';
 
 function App() {
 
-  const [user, setUser] = useState(Object);
-
-  try {
-    CurrentLoggedUser(setUser);
-  } catch (error) {
-    console.log('no user logged');
-  }
+  const user = CurrentLoggedUser()!;
 
   return (
     <Container fluid>
