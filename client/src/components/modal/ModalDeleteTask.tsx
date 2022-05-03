@@ -5,6 +5,7 @@ import axiosFunction from '../functions/axiosFunctions';
 import AxiosSpecialFunction from '../functions/axiosSpecialFunctions';
 import './modalDelete.css';
 
+// @change request in general function names should start with lowercase, uppercase are only used for Component functions
 const GetUsers = (currentTaskId: number) => {
 
   const [allowedUsers, setAllowedUsers] = useState([]);

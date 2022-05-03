@@ -31,6 +31,7 @@ const VerticallyCenteredModal = (props: any) => {
 
     let queryData = {};
 
+    // @change-request myObj is not a good name
     const actionDataObject: MyObj = {
         initial: { initiatedAt: currentDate, initiatedByUserId: props.data.userId ? props.data.userId : user.id },
         selected: { selectedAt: currentDate, selectedByUserId: props.data.userId ? props.data.userId : user.id },
@@ -75,6 +76,7 @@ const VerticallyCenteredModal = (props: any) => {
                     </div>
                 );
 
+                // @change-request why is there a function ?
                 const allowedUsersList = () => (
                     currentData.map((name: any) => name.id)
                 );
@@ -106,6 +108,7 @@ const VerticallyCenteredModal = (props: any) => {
         return showUsers;
     }
 
+    // @change-request const ?
     let dropdownButtonsArray = props.data.taskType === 'project' ? projectArray.map((element: string, k: number) => {
         return <Dropdown.Item as="button" key={'bbd' + k}>{element}</Dropdown.Item>
     }) :

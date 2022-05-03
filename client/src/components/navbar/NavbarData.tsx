@@ -17,7 +17,8 @@ const NavbarMenu: React.FunctionComponent = (props: any) => {
     const [user, setUser] = useState(Object);
 
     CurrentLoggedUser(setUser);
-
+    
+    // @change-request make enum/const with all routes
     const clickHandler = (data: string) => {
         data === 'tasks' ? navigate('/tasks') : navigate(`/users`);
         switch (data) {

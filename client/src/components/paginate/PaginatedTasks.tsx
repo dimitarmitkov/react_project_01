@@ -33,8 +33,10 @@ const PaginatedTasks = () => {
     const [startValue, setStartValue] = useState(0);
     const [checkedProject, setCheckedProject] = useState(false);
     const [checkedMeeting, setCheckedMeeting] = useState(false);
-
+    
+    // @change-request you can make them constats or enums
     const valuesArray = ['2', '5', '7', 'All'];
+    // @change-request you can make them constats or enums
     const progressArray: string[] = ["initial", "selected", "progress", "review", "done"];
 
     const getData = async (offset: number, perPage: number) => {

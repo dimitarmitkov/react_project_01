@@ -22,18 +22,22 @@ const CreateTaskGroup = () => {
     const { register, handleSubmit } = useForm<FormValues>();
     const [selectValues, setSelectValues] = useState(undefined);
 
+    // @change-request custom hooks should be named like a hook (useCurrentLoggedUser), also file name
+    // also its good to set all other hooks in the custom hook, check here https://www.w3schools.com/react/react_customhooks.asp
     CurrentLoggedUser(setUser);
     const navigate = useNavigate();
 
 
     const taskTypeArray = [{ name: 'Project', value: 'project' }, { name: 'Meeting', value: 'meeting' }];
 
+    // @change-request try not to use any
     const onTypeSelectorChange = (e: any) => {
         setSelectValues(e.value);
     };
 
     const onSubmit: SubmitHandler<FormValues> = data => {
-
+        // @change-request move base url path for backend to .env/config file
+        // @change-request move request to separate file 
         const url= "http://localhost:62000/api/v1/createTask";
         const query = {
             taskType: selectValues,
@@ -42,9 +46,11 @@ const CreateTaskGroup = () => {
             initiatedByUserId: user.id
         };
 
+        
         axios.post(url, query)
             .then(result => {
                 if (result.status === 201) {
+                    // @change-request make enum/const with all routes
                     navigate('/tasks');
                 }
             })

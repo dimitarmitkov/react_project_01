@@ -2,14 +2,17 @@ import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const axiosFunction = async (requestLocation: string, query: {}, action: string, resultValue: number, wsText: string | undefined = undefined, locationReload: string | undefined = 'reload') => {
+// @change-request in general this type of functions should be in util files and util directory
+// also hooks should be in hooks directory
 
+const axiosFunction = async (requestLocation: string, query: {}, action: string, resultValue: number, wsText: string | undefined = undefined, locationReload: string | undefined = 'reload') => {
+    // @change-request move all base url paths for backend to .env/config file
     toast.configure();
     const toastMessage = 'Something went wrong, you are not allowed.';
     let url: string = '';
     const ws = new WebSocket('ws://127.0.0.1:8000/ws');
 
-
+    // @change-request hmm!?
     if (requestLocation === 'currentUserCurrentPicture') {
 
         url = "http://localhost:62000/api/v1/photos/upload";
