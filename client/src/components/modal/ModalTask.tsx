@@ -15,7 +15,7 @@ interface Provider {
     type: JSX.Element;
 }
 
-interface MyObj {
+interface Props {
     [propName: string]: {}
 };
 
@@ -37,7 +37,7 @@ const VerticallyCenteredModal = (props: any) => {
 
     let queryData = {};
 
-    const actionDataObject: MyObj = {
+    const actionDataObject: Props = {
         initial: { initiatedAt: currentDate, initiatedByUserId: props.data.userId ? props.data.userId : user.id },
         selected: { selectedAt: currentDate, selectedByUserId: props.data.userId ? props.data.userId : user.id },
         progress: { progressAt: currentDate, progressByUserId: props.data.userId ? props.data.userId : user.id },
