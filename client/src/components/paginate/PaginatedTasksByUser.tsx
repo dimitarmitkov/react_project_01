@@ -13,6 +13,9 @@ import './DropdownButton.css';
 import './paginate.css';
 import 'primereact/resources/themes/my-buttons/theme.css';
 import ErrorComponent from '../error/ErrorComponent';
+import { valuesLinks, valuesPages, valuesProgress, valuesTaskType, valuesUsersTypes } from '../../enumerators';
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 let meeting = false;
 let project = false;
@@ -36,24 +39,21 @@ const PaginatedTasksByUser = (props: any) => {
     const [checkedMeeting, setCheckedMeeting] = useState(false);
     const [hasError, setHasError] = useState(false);
     const dataId = props.data ? props.data.id : null;
-    const isAdmin  = props.data && props.data.role === 'admin';
+    const isAdmin = props.data && props.data.role === valuesUsersTypes.Admin;
 
-    const valuesArray = ['2', '5', '7', 'All'];
-    const progressArray: string[] = ["initial", "selected", "progress", "review", "done"];
     const navigate = useNavigate();
 
 
     const getData = (offset: number, perPage: number) => {
 
-        let url = meeting || project ? "http://localhost:62000/api/v1/usertasksmop" :
-            "http://localhost:62000/api/v1/usertasks";
+        let url = meeting || project ? SERVER_URL + valuesLinks.UsersTasksMop : SERVER_URL + valuesLinks.UserTasks;
 
         let callData = meeting || project ?
             {
                 offsetData: startValue,
                 limitData: endValue,
                 userId: dataId,
-                whereSelector: project ? "project" : "meeting"
+                whereSelector: project ? valuesTaskType.Project : valuesTaskType.Meeting
             } :
             {
                 offsetData: startValue,
@@ -76,7 +76,7 @@ const PaginatedTasksByUser = (props: any) => {
                     );
                 }
 
-                const postData = progressArray.map((element: string, elKey: number) =>
+                const postData = valuesProgress.map((element: string, elKey: number) =>
                     <Col sm={2} className="padding-0 mt-3" key={element + elKey + 1}>
 
                         <Card
@@ -100,7 +100,7 @@ const PaginatedTasksByUser = (props: any) => {
                 } catch (error) {
                     setHasError(true);
                 }
-            }).catch(error=> setHasError(true));
+            }).catch(error => setHasError(true));
     }
 
     const handlePageClick = (e: any) => {
@@ -112,12 +112,12 @@ const PaginatedTasksByUser = (props: any) => {
 
     const onValuesChange = (e: any) => {
         setSelectValues(e.value);
-        const incomingValue = e.value === 'All' ? rowsNumber : parseInt(e.value);
+        const incomingValue = e.value === valuesPages[valuesPages.length - 1] ? rowsNumber : parseInt(e.value);
         setPerPage(incomingValue);
         setEndValue(incomingValue);
     }
 
-    
+
 
     useEffect(() => {
         getData(offset, perPage)
@@ -170,7 +170,7 @@ const PaginatedTasksByUser = (props: any) => {
             </Col>
 
             <Col sm={4} className="dropdown-demo" key={'paginateDropDown'}>
-                <Dropdown id={'dropDownButton'} value={selectValues} options={valuesArray} onChange={onValuesChange} placeholder="All" editable />
+                <Dropdown id={'dropDownButton'} value={selectValues} options={valuesPages} onChange={onValuesChange} placeholder={valuesPages[valuesPages.length - 1]} editable />
             </Col>
         </Row>
 

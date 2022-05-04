@@ -13,6 +13,10 @@ import './DropdownButton.css';
 import './paginate.css';
 import 'primereact/resources/themes/my-buttons/theme.css';
 import ErrorComponent from '../error/ErrorComponent';
+import { valuesPages, valuesProgress, valuesTaskType, valuesLinks } from '../../enumerators';
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+
 
 let meeting = false;
 let project = false;
@@ -36,16 +40,13 @@ const PaginatedTasks = () => {
     const [checkedMeeting, setCheckedMeeting] = useState(false);
     const [hasError, setHasError] = useState(false);
 
-    const valuesArray = ['2', '5', '7', 'All'];
-    const progressArray: string[] = ["initial", "selected", "progress", "review", "done"];
-
     const getData = async (offset: number, perPage: number) => {
 
-        const url = "http://localhost:62000/api/v1/tasksPage";
+        const url = SERVER_URL + valuesLinks.TasksPage;
         const selectedQuery = {
             offsetData: startValue,
             limitData: endValue,
-            whereSelector: project ? "project" : "meeting"
+            whereSelector: project ? valuesTaskType.Project : valuesTaskType.Meeting
         };
 
         const commonQuery = {
@@ -69,7 +70,7 @@ const PaginatedTasks = () => {
             );
         }
 
-        const postData = progressArray.map((element: string, elKey: number) =>
+        const postData = valuesProgress.map((element: string, elKey: number) =>
             <Col sm={2} className="padding-0 mt-3" key={element + elKey + 1}>
                 <Card
                     bg={''}
@@ -103,7 +104,7 @@ const PaginatedTasks = () => {
 
     const onValuesChange = (e: any) => {
         setSelectValues(e.value);
-        const incomingValue = e.value === 'All' ? rowsNumber : parseInt(e.value);
+        const incomingValue = e.value === valuesPages[valuesPages.length - 1] ? rowsNumber : parseInt(e.value);
         setPerPage(incomingValue);
         setEndValue(incomingValue);
     }
@@ -114,7 +115,7 @@ const PaginatedTasks = () => {
 
     const navigate = useNavigate();
     const redirectToCreateTask = () => {
-        navigate('/createTask');
+        navigate(valuesLinks.CreateTask);
     }
 
     const nextElement = <div className="App">
@@ -157,7 +158,7 @@ const PaginatedTasks = () => {
             </Col>
 
             <Col sm={4} className="dropdown-demo" key={'paginateDropDown'}>
-                <Dropdown id={'dropDownButton'} value={selectValues} options={valuesArray} onChange={onValuesChange} placeholder="2" editable />
+                <Dropdown id={'dropDownButton'} value={selectValues} options={valuesPages} onChange={onValuesChange} placeholder="2" editable />
             </Col>
         </Row>
 
@@ -184,7 +185,7 @@ const PaginatedTasks = () => {
         </Row>
 
     </div>
-    
+
     if (!hasError) {
         return nextElement
     } else {

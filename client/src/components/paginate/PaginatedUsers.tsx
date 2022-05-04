@@ -9,6 +9,9 @@ import { useNavigate } from "react-router-dom";
 import './paginate.css';
 import './DropdownButton.css';
 import ErrorComponent from '../error/ErrorComponent';
+import { valuesLinks, valuesPages } from '../../enumerators';
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 function PaginatedUsers() {
 
@@ -20,11 +23,9 @@ function PaginatedUsers() {
     const [rowsNumber, setRowsNumber] = useState(0);
     const [hasError, setHasError] = useState(false);
 
-    const valuesArray2 = ['5', '10', 'All'];
-
     const getData = async (offset: number, perPage: number) => {
 
-        const url = "http://localhost:62000/api/v1/usersPage";
+        const url = SERVER_URL + valuesLinks.UsersPage;
         const query = { offsetData: offset, limitData: perPage }
         const res = await axios.post(url, query);
         const data = res.data;
@@ -53,7 +54,7 @@ function PaginatedUsers() {
 
     const onPageNumbersChange = (e: any) => {
         setSelectValues(e.value);
-        const incomingValue = e.value === 'All' ? rowsNumber : parseInt(e.value);
+        const incomingValue = e.value === valuesPages[valuesPages.length - 1] ? rowsNumber : parseInt(e.value);
         setPerPage(incomingValue);
     }
 
@@ -63,7 +64,7 @@ function PaginatedUsers() {
 
     const navigate = useNavigate();
     const redirectToCreateUser = () => {
-        navigate('/signup');
+        navigate(valuesLinks.SignUp);
     }
 
     if (!hasError) {
@@ -77,7 +78,7 @@ function PaginatedUsers() {
                     <Col sm={4} className="create-user"><Button icon="pi pi-plus" label="Create User" className="p-button-outlined p-button-secondary paginate-p-button" onClick={redirectToCreateUser} /></Col>
 
                     <Col sm={4} className="dropdown-demo" key={'paginateDropDown'}>
-                        <Dropdown id={'dropDownButton'} value={selectValues} options={valuesArray2} onChange={onPageNumbersChange} placeholder="5" editable />
+                        <Dropdown id={'dropDownButton'} value={selectValues} options={valuesPages} onChange={onPageNumbersChange} placeholder="5" editable />
                     </Col>
                 </Row>
 
@@ -104,7 +105,7 @@ function PaginatedUsers() {
             </div>
         );
     } else {
-       return  <ErrorComponent /> 
+        return <ErrorComponent />
     }
 
 }

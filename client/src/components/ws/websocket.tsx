@@ -3,6 +3,7 @@ import CurrentLoggedUser from '../functions/currentLoggedUser';
 import { FormCheck, Row } from 'react-bootstrap';
 import './websocket.css';
 import ErrorComponent from '../error/ErrorComponent';
+import configData from '../../config.json';
 
 interface IncomingMessage {
   action: string;
@@ -22,7 +23,7 @@ interface PropsCurrentUser {
 
 let storedNames: any[] = [];
 
-const ws = new WebSocket('ws://127.0.0.1:8000/ws');
+const ws = new WebSocket(configData.WEBSOCKET_URL);
 
 const WebsocketData = () => {
 
@@ -81,27 +82,29 @@ const WebsocketData = () => {
         }
       }
 
+      const hasUserId = user ? user.id : null;
+      const hasUserName = user ? user.userName : null;
 
       const MessagesList = () => (
 
         <Row className='sidebar-row'>
           {messageList.length > 0 ?
             <ul>{messageList.map((message: any) =>
-              ((message.allowedList).includes(user.id) && message.action !== 'added') && (!storedNames.includes(`${Date.parse(message.main.createdAt)}_${message.action}_${user.userName}`)) ?
-                <div key={message.main.taskName + message.main.createdAt + message.action} id={`task_${Date.parse(message.main.createdAt)}_${message.action}_${user.userName}`} className='websocket-show'>
+              ((message.allowedList).includes(hasUserId) && message.action !== 'added') && (!storedNames.includes(`${Date.parse(message.main.createdAt)}_${message.action}_${hasUserName}`)) ?
+                <div key={message.main.taskName + message.main.createdAt + message.action} id={`task_${Date.parse(message.main.createdAt)}_${message.action}_${hasUserName}`} className='websocket-show'>
                   <li>
                     <div>
                       <span id="task-span">{message.main.taskType}</span>
                       &nbsp;'{message.main.taskName}'&nbsp;was changed by&nbsp;
-                      <span id="user-span">{message.generator.userGeneratorName ? message.generator.userGeneratorName : user.userName}</span>
+                      <span id="user-span">{message.generator.userGeneratorName ? message.generator.userGeneratorName : hasUserName}</span>
                       ,&nbsp;new status:&nbsp;
                       <span id="message-span">{message.action}</span>
-                      <FormCheck type='checkbox' id={`default-${message.main.taskId}`} label={`dismiss`} onChange={() => handleChange(`${Date.parse(message.main.createdAt)}_${message.action}_${user.userName}`)} />
+                      <FormCheck type='checkbox' id={`default-${message.main.taskId}`} label={`dismiss`} onChange={() => handleChange(`${Date.parse(message.main.createdAt)}_${message.action}_${hasUserName}`)} />
                     </div>
                   </li>
                 </div>
                 :
-                ((message.allowedList).includes(user.id) && message.action === 'added') && (!storedNames.includes(`${Date.parse(message.main.createdAt)}_${message.action}_${message.main.firstName}`)) ?
+                ((message.allowedList).includes(hasUserId) && message.action === 'added') && (!storedNames.includes(`${Date.parse(message.main.createdAt)}_${message.action}_${message.main.firstName}`)) ?
                   <div key={message.main.taskName + message.main.createdAt + message.action + message.main.firstName.replace(/\s/g, '')}
                     id={`task_${Date.parse(message.main.createdAt)}_${message.action}_${message.main.firstName}`} className='websocket-show'> 
                     <li>

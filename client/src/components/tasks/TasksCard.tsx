@@ -1,6 +1,7 @@
 import { Card } from 'react-bootstrap';
 import ModalApp from '../modal/ModalTask';
 import './tasks.css';
+import { valuesTaskType } from '../../enumerators';
 
 const TasksCard = (props: any) => {
 
@@ -9,7 +10,7 @@ const TasksCard = (props: any) => {
     return (
         <div className="card-container">
 
-            <Card className={task.taskType === 'project' ? "mt-3 mb-3 card text-white bg-warning" : "mt-3 mb-3 card text-white bg-info"} >
+            <Card className={task.taskType === valuesTaskType.Project ? "mt-3 mb-3 card text-white bg-warning" : "mt-3 mb-3 card text-white bg-info"} >
 
                 <Card.Body>
 
@@ -22,7 +23,7 @@ const TasksCard = (props: any) => {
                     </Card.Text>
 
                     <span>task id: &nbsp;<Card.Link href="#">{task.taskId ? task.taskId : task.id}</Card.Link></span>
-                    <Card.Link href="#"></Card.Link>
+                    <Card.Link href="/"></Card.Link>
                 </Card.Body>
 
                 <Card.Body className="mt-2 edit-buttons edit">

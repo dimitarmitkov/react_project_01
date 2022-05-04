@@ -4,7 +4,7 @@ import CurrentLoggedUser from '../functions/currentLoggedUser';
 import './sidebarFive.css';
 import WebsocketData from '../ws/websocket';
 import { useNavigate } from "react-router-dom";
-import ErrorComponent from '../error/ErrorComponent';
+import { valuesLinks, valuesUsersTypes } from '../../enumerators';
 
 interface PropsCurrentUser {
     id?: number;
@@ -20,33 +20,21 @@ const SidebarFive = () => {
 
     const clickHandler = (data: string) => {
 
-        switch (data) {
-            case 'tasks': navigate('/tasks');
-                break;
-            case 'users': navigate('/users');
-                break;
-            case 'usertasks': navigate('/usertasks');
-                break;
-            case 'helloMitko': navigate('/helloMitko');
-                break;
-
-            default: navigate('/helloMitko');
-                break;
-        }
+        navigate(data);
     }
 
     const TaskUsersElement = () => {
-        if (user && user.role === 'admin') {
+        if (user && user.role === valuesUsersTypes.Admin) {
             return (
                 <>
                     <Row className='sidebar-row sidebar-messages sidebar-pointer'>
 
-                        <div onClick={() => clickHandler('tasks')}><i className="pi pi-folder"></i>&nbsp; Tasks</div>
+                        <div onClick={() => clickHandler(valuesLinks.Tasks)}><i className="pi pi-folder"></i>&nbsp; Tasks</div>
                     </Row>
 
                     <Row className='sidebar-row sidebar-messages sidebar-pointer'>
 
-                        <div onClick={() => clickHandler('users')}><i className="pi pi-users"></i>&nbsp; Users</div>
+                        <div onClick={() => clickHandler(valuesLinks.Users)}><i className="pi pi-users"></i>&nbsp; Users</div>
                     </Row>
                 </>
             );
@@ -61,18 +49,14 @@ const SidebarFive = () => {
 
                 <TaskUsersElement />
 
-                {/* {user.role && user.role === 'admin' ?
-                            
-                            : null} */}
-
                 <Row className='sidebar-row sidebar-messages sidebar-pointer'>
 
-                    <div onClick={() => clickHandler('usertasks')}><i className="pi pi-folder-open"></i>&nbsp; User tasks</div>
+                    <div onClick={() => clickHandler(valuesLinks.UserTasks)}><i className="pi pi-folder-open"></i>&nbsp; User tasks</div>
                 </Row>
 
                 <Row className='sidebar-row sidebar-messages sidebar-pointer'>
 
-                    <div onClick={() => clickHandler('helloMitko')}><i className="pi pi-home"></i>&nbsp; Dashboard</div>
+                    <div onClick={() => clickHandler(valuesLinks.DashBoard)}><i className="pi pi-home"></i>&nbsp; Dashboard</div>
                 </Row>
 
                 <Row className='sidebar-row sidebar-messages'>

@@ -80,12 +80,7 @@ const NavbarMenu: React.FunctionComponent = (props: any) => {
                             <Row>
 
                                 <Col sm={6} >
-                                    {/* {user.role === 'admin' ?
-                                       
-
-                                        : null} */}
                                     < TaskUsersElement />
-
                                 </Col>
 
                                 <Col sm={3} className="parent-logged-user">

@@ -10,6 +10,7 @@ import { Row, Col, Container } from 'react-bootstrap';
 import './signUpForm.css';
 import axiosFunction from '../functions/axiosFunctions';
 import ErrorComponent from '../error/ErrorComponent';
+import { valuesLinks, valuesUsersTypes } from '../../enumerators';
 
 type FormValues = {
     firstName: string;
@@ -34,12 +35,12 @@ const SignUpGroup = () => {
             insertPassword: passwordValue,
             firstName: data.firstName,
             lastName: data.lastName,
-            role: checked ? 'user' : 'admin',
+            role: checked ? valuesUsersTypes.User : valuesUsersTypes.Admin,
             picture: data.picture ? data.picture : ""
         };
         
         try {
-            axiosFunction('signUpForm', queryData, 'post', 201, undefined, '/users');
+            axiosFunction('signUpForm', queryData, 'post', 201, undefined, valuesLinks.Users);
         } catch (error) {
             return <ErrorComponent />
         }
@@ -132,7 +133,7 @@ const SignUpGroup = () => {
 
                         <Button label="Submit" className="p-button-danger" disabled={false} />
 
-                        <div className="mt-2">If you already have an account please <Link to={`/login`} className="active-task-link">SignIn</Link></div>
+                        <div className="mt-2">If you already have an account please <Link to={valuesLinks.LogIn} className="active-task-link">SignIn</Link></div>
                     </Col>
                 </Row>
             </Container>

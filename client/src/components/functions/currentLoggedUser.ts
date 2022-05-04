@@ -1,11 +1,13 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+
 const CurrentLoggedUser = () => {
 
     const [user, setUser] = useState();
     
-    const url = "http://localhost:62000/api/v1/currentLoggedUser";
+    const url = SERVER_URL+"/currentLoggedUser";
     
     function axiosFunction() {
 

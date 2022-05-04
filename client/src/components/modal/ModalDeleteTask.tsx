@@ -6,6 +6,9 @@ import './modalDelete.css';
 import CurrentLoggedUser from '../functions/currentLoggedUser';
 import ErrorComponent from '../error/ErrorComponent';
 import axios from 'axios';
+import { valuesLinks } from '../../enumerators';
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 interface PropsCurrentUser {
   id?: number;
@@ -45,7 +48,7 @@ const DeleteTaskModal = (props: any) => {
   const HandleDeleteTask = async () => {
 
     const usersQuery = { idData: currentTaskId };
-    const url = "http://localhost:62000/api/v1/usertasks";
+    const url = SERVER_URL+ valuesLinks.UserTasks;
     const result = await axios.patch(url, usersQuery);
     const currentData = result.data;
     const allowedUsers = currentData.map((name: any) => name.id);
@@ -71,13 +74,7 @@ const DeleteTaskModal = (props: any) => {
           <Modal.Body>You're about to delete this Task. Are you sure?</Modal.Body>
 
           <Modal.Footer>
-
-            {/* <ButtonBs variant="secondary" onClick={()=>{
-              HandleDiscardDeleteTask();
-              props.onHide();
-            }}>
-              Discard
-            </ButtonBs> */}
+            
             <ButtonBs variant="secondary" onClick={() => {
               props.onHide();
             }}>
@@ -110,7 +107,6 @@ const DeleteTaskModalApp = (props: any[]) => {
 
       {deleteTaskModalShow ? <DeleteTaskModal
         onHide={() => { setDeleteTaskModalShow(prevCheck => !prevCheck) }}
-        //  onHide={() => { setDeleteTaskModalShow(false) }}
         data={props}
       /> : null}
     </>

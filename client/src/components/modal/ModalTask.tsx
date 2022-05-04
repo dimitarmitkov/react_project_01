@@ -8,8 +8,12 @@ import DeleteTaskModalApp from './ModalDeleteTask';
 import { Link } from 'react-router-dom';
 import MultiSelector from './MultiSelector';
 import ErrorComponent from '../error/ErrorComponent';
+import configData from '../../config.json';
+import { valuesProjectProgress, valuesMeetingProgress, valuesLinks, valuesTaskType, valuesUsersTypes } from '../../enumerators';
 
-const ws = new WebSocket('ws://127.0.0.1:8000/ws');
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+
+const ws = new WebSocket(configData.WEBSOCKET_URL);
 
 interface PropsShowUsers {
     type: JSX.Element;
@@ -31,9 +35,6 @@ const VerticallyCenteredModal = (props: any) => {
     const [hasError, setHasError] = useState(false);
 
     const user: PropsCurrentUser = CurrentLoggedUser()!;
-
-    const projectArray: string[] = ["selected", "progress", "review", "done"];
-    const meetingArray: string[] = ["selected", "progress", "done"];
     const currentDate = new Date(Date.now()).toISOString();
 
     let queryData = {};
@@ -50,7 +51,7 @@ const VerticallyCenteredModal = (props: any) => {
 
         if (Object.keys(queryData).length > 0) {
 
-            const url = "http://localhost:62000/api/v1/tasks";
+            const url = SERVER_URL + valuesLinks.Tasks;
             const userGeneratedProcess = { userGeneratorName: user.userName, userGeneratorId: user.id, userGeneratorRole: user.role };
             const wsText = JSON.stringify({ main: props.data, action: checkValue, allowedList: allowedUsers, generator: userGeneratedProcess });
 
@@ -66,7 +67,7 @@ const VerticallyCenteredModal = (props: any) => {
 
     const getUsers = (props: number) => {
 
-        const url = "http://localhost:62000/api/v1/usertasks";
+        const url = SERVER_URL + valuesLinks.UserTasks;
         const usersQuery = { idData: props };
 
         axios.patch(url, usersQuery)
@@ -78,7 +79,7 @@ const VerticallyCenteredModal = (props: any) => {
                     <div>
                         <ul>{currentData.map((name: any) =>
                             <li key={name.id}>
-                                {user && user.role === 'admin' ? <Link to={`/users/${name.id}`}>{name.firstName} {name.lastName} </Link> :
+                                {user && user.role === valuesUsersTypes.Admin ? <Link to={`${valuesLinks.Users}/${name.id}`}>{name.firstName} {name.lastName} </Link> :
                                     <div>{name.firstName} {name.lastName} </div>}
                             </li>)}
                         </ul>
@@ -98,7 +99,7 @@ const VerticallyCenteredModal = (props: any) => {
     const changeTaskStatus = (e: any) => {
 
         const checkValue = e.target.innerText;
-        if (projectArray.includes(checkValue) || meetingArray.includes(checkValue)) {
+        if (valuesProjectProgress.includes(checkValue) || valuesMeetingProgress.includes(checkValue)) {
 
             queryData = {
                 changeData: actionDataObject[checkValue],
@@ -125,10 +126,10 @@ const VerticallyCenteredModal = (props: any) => {
         return showUsers;
     }
 
-    let dropdownButtonsArray = props.data.taskType === 'project' ? projectArray.map((element: string, k: number) => {
+    let dropdownButtonsArray = props.data.taskType === valuesTaskType.Project ? valuesProjectProgress.map((element: string, k: number) => {
         return <Dropdown.Item as="button" key={'bbd' + k}>{element}</Dropdown.Item>
     }) :
-        meetingArray.map((element: string, k: number) => {
+        valuesMeetingProgress.map((element: string, k: number) => {
             return <Dropdown.Item as="button" key={'bbd' + k}>{element}</Dropdown.Item>
         });
 

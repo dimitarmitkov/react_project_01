@@ -1,5 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { valuesLinks } from '../../enumerators';
+
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 const CurrentUserCardData = (id: string | undefined) => {
 
@@ -7,7 +10,7 @@ const CurrentUserCardData = (id: string | undefined) => {
 
     const getUser = () => {
 
-        const urlUser = "http://localhost:62000/api/v1/users";
+        const urlUser = SERVER_URL + valuesLinks.Users;
         const queryData = { id: id };
         const headersData = { 'Content-Type': 'application/json' };
 

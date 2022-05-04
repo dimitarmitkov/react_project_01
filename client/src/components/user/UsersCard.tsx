@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom';
 import './userCard.css';
 import { Row, Col, Container } from 'react-bootstrap';
-import { useState } from 'react';
 import EditUserApp from './EditUser';
 import DeleteUserModalApp from '../modal/ModalDeleteUser';
 import CurrentLoggedUser from '../functions/currentLoggedUser';
+import { valuesLinks, valuesUsersTypes } from '../../enumerators';
 
 interface PropsCurrentUser {
     id?: number;
@@ -16,7 +16,7 @@ const UsersCard = (props: any) => {
     const user = props.user;
 
     const userLogged: PropsCurrentUser = CurrentLoggedUser()!;
-    const isAdmin = userLogged && userLogged.role === 'admin';
+    const isAdmin = userLogged && userLogged.role === valuesUsersTypes.Admin;
 
     return (
         <Container fluid key={user.id + 5 + 'userId'}>
@@ -27,7 +27,7 @@ const UsersCard = (props: any) => {
 
                     <Col sm={6}>
                         <h2>
-                            <Link to={`/users/${user.id}`}>
+                            <Link to={`${valuesLinks.Users}/${user.id}`}>
                                 {user.firstName}
                             </Link>
                         </h2>

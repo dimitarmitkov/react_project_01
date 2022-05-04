@@ -8,7 +8,7 @@ import UserElement from './UserCardDataMain';
 import './userCard.css';
 import axiosFunction from '../functions/axiosFunctions';
 import ErrorComponent from "../error/ErrorComponent";
-
+import { valuesLinks } from '../../enumerators';
 
 interface PropsUser {
     [propName: string]: string;
@@ -75,11 +75,12 @@ const CurrentUserCard = () => {
 
     const editUserRoute = () => {
 
-        const path = `/users`;
-        navigate(path);
+        navigate(valuesLinks.Users);
     }
 
-    const allowPasswordChange = id == currentUser.id ? true : false;
+    const currentUserId = currentUser ? currentUser.id : '';
+
+    const allowPasswordChange = id == currentUserId ? true : false;
 
     const onSubmit: SubmitHandler<PropsFormValues> = async () => {
 

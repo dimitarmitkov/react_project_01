@@ -6,8 +6,10 @@ import { components } from "react-select";
 import './multiSelector.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import configData from '../../config.json';
 
-const ws = new WebSocket('ws://127.0.0.1:8000/ws');
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+const ws = new WebSocket(configData.WEBSOCKET_URL);
 
 const Option = (props: any) => {
     return (
@@ -40,7 +42,7 @@ const MultiSelector = (props: any) => {
 
     const getAllowedUsers = async (currentTaskId: number) => {
 
-        const usersUrl = "http://localhost:62000/api/v1/usertasks";
+        const usersUrl = SERVER_URL+"/usertasks";
         const usersQuery = { idData: currentTaskId };
 
         const result = await axios.patch(usersUrl, usersQuery)
@@ -60,7 +62,7 @@ const MultiSelector = (props: any) => {
 
     const getUsers = async () => {
 
-        const urlGet = "http://localhost:62000/api/v1/users";
+        const urlGet = SERVER_URL+"/users";
 
         const result = await axios.get(urlGet);
 
@@ -82,7 +84,7 @@ const MultiSelector = (props: any) => {
         const logData = async (props: any) => {
 
             const resArray = props.map((e: any) => ({ userId: e.value, taskId: taskIdGlobal }));
-            const urlLogData = "http://localhost:62000/api/v1/usertasks";
+            const urlLogData = SERVER_URL+"/usertasks";
             const queryLogData = { userIdArray: resArray, taskId: taskIdGlobal }
 
 

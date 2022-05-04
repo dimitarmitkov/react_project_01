@@ -8,6 +8,7 @@ import { Row, Col, Container } from 'react-bootstrap';
 import './editUser.css';
 import axiosFunction from '../functions/axiosFunctions';
 import ErrorComponent from "../error/ErrorComponent";
+import { valuesUsersTypes } from '../../enumerators';
 
 type FormValues = {
     firstName: string;
@@ -34,7 +35,7 @@ const EditUserGroup = (props: any) => {
             insertPassword: passwordValue ? passwordValue : null,
             firstName: data.firstName ? data.firstName : props.data.firstName,
             lastName: data.lastName ? data.lastName : props.data.lastName,
-            role: checked ? 'user' : 'admin',
+            role: checked ? valuesUsersTypes.User : valuesUsersTypes.Admin,
             picture: data.picture ? data.picture : props.data.picture,
             id: props.data.id
         };
@@ -135,7 +136,7 @@ const EditUserGroup = (props: any) => {
                             </div>
                         </Col>
                     </Row>
-                    
+
                     <Row className="mt-3 mb-3 justify-content-md-center">
                         <Col>
                             <Button label="Submit" className="p-button-primary" disabled={false} />
