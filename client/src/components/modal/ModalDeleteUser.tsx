@@ -4,6 +4,7 @@ import ButtonBs from 'react-bootstrap/Button';
 import { Button } from 'primereact/button';
 import axiosFunction from '../functions/axiosFunctions';
 import ErrorComponent from '../error/ErrorComponent';
+import { valuesLinks } from '../../enumerators';
 
 const DeleteUserModal = (props: any) => {
   const [show, setShow] = useState(true);
@@ -14,7 +15,7 @@ const DeleteUserModal = (props: any) => {
     const query = { idData: props.data.id }
 
     try {
-      await axiosFunction('modalDeleteUser', query, 'post', 200);
+      await axiosFunction(valuesLinks.UsersDelete, query, 'post', 200);
     } catch (error) {
       setHasError(true);
     }

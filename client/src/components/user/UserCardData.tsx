@@ -96,7 +96,8 @@ const UserCard = () => {
                 id: user.id,
             };
 
-            await axiosFunction('currentUserCurrentPassword', queryDataPassword, 'post', 200);
+            // await axiosFunction('currentUserCurrentPassword', queryDataPassword, 'post', 200);
+            await axiosFunction(valuesLinks.UsersEdit, queryDataPassword, 'post', 200);
         }
 
         if (currentUserPicture.length > 0) {
@@ -109,7 +110,8 @@ const UserCard = () => {
                 picType: pictureType
             };
 
-            await axiosFunction('currentUserCurrentPicture', queryDataPicture, 'post', 201);
+            // await axiosFunction('currentUserCurrentPicture', queryDataPicture, 'post', 201);
+            await axiosFunction(valuesLinks.PhotosUpload, queryDataPicture, 'post', 201);
         }
     };
 

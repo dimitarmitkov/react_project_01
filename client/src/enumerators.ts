@@ -19,6 +19,13 @@ export const valuesLinks = {
     SignUp: "/signup",
     DashBoard:"/helloMitko",
     LogIn: "/login",
+    PhotosUpload: "/photos/upload",
+    UsersEdit: "/usersEdit",
+    UsersDelete: "/usersDelete",
+    TasksDelete: "/tasksDelete",
+    UserLogin: "/userLogin",
+    UserLogout: "/userLogout",
+    UserCreate: "/createUser"
 };
 
 export const valuesUsersTypes = { Admin: "admin", User: "user" };

@@ -6,6 +6,7 @@ import './loginForm.css';
 import axiosFunction from '../functions/axiosFunctions';
 import { useState } from 'react';
 import ErrorComponent from '../error/ErrorComponent';
+import { valuesLinks } from '../../enumerators';
 
 type FormValues = {
 };
@@ -20,7 +21,7 @@ const LogoutGroup = () => {
         const query = { withCredentials: true };
 
         try {
-            axiosFunction('logoutForm', query, 'get', 200, undefined, '/login');
+            axiosFunction(valuesLinks.UserLogout, query, 'get', 200, undefined, '/login');
         } catch (error) {
             setHasError(true);
         }

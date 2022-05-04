@@ -8,6 +8,7 @@ import { Row, Col, Container } from 'react-bootstrap';
 import { useState } from "react";
 import axiosFunction from '../functions/axiosFunctions';
 import ErrorComponent from '../error/ErrorComponent';
+import { valuesLinks } from '../../enumerators';
 
 type FormValues = {
     firstName: string;
@@ -30,7 +31,7 @@ const LoginGroup = () => {
             insertPassword: passwordValue
         };
         try {
-            axiosFunction('loginForm', query, 'post', 200, undefined, '/helloMitko');
+            axiosFunction(valuesLinks.UserLogin, query, 'post', 200, undefined, '/helloMitko');
         } catch (error) {
             setHasError(true);
         }

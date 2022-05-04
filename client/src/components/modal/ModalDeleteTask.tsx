@@ -30,7 +30,7 @@ const DeleteTaskModal = (props: any) => {
     const jsonStringGetData = JSON.stringify({ main: props.data, action: 'delete', allowedList: currentAllowedUsersList, generator: userGeneratedProcess });
 
     try {
-      axiosFunction('modalDeleteTask', queryGetData, 'post', 200, jsonStringGetData)
+      axiosFunction(valuesLinks.TasksDelete, queryGetData, 'post', 200, jsonStringGetData);
     } catch (error) {
       setHasError(true);
     }
@@ -48,7 +48,7 @@ const DeleteTaskModal = (props: any) => {
   const HandleDeleteTask = async () => {
 
     const usersQuery = { idData: currentTaskId };
-    const url = SERVER_URL+ valuesLinks.UserTasks;
+    const url = SERVER_URL + valuesLinks.UserTasks;
     const result = await axios.patch(url, usersQuery);
     const currentData = result.data;
     const allowedUsers = currentData.map((name: any) => name.id);
@@ -74,7 +74,7 @@ const DeleteTaskModal = (props: any) => {
           <Modal.Body>You're about to delete this Task. Are you sure?</Modal.Body>
 
           <Modal.Footer>
-            
+
             <ButtonBs variant="secondary" onClick={() => {
               props.onHide();
             }}>
