@@ -30,8 +30,6 @@ try {
     console.log(error);;
 }
 
-
-
 module.exports = function serviceFactory(model) {
 
     function getAll(req, res, next, attributesArray) {
@@ -653,19 +651,6 @@ module.exports = function serviceFactory(model) {
 
 
     }
-
-    // function picturesGet(req, res, next, attributesArray) {
-
-    //     const { userId } = req.body;
-
-    //     model.findOne({
-    //         where: { userId: userId },
-    //         attributes: attributesArray
-    //     }).then(result => {
-    //         res.send(result);
-    //     }).catch(err => res.send('error', err));
-
-    // }
 
     function matchUserTasks(req, res, next, attributesArray) {
 
