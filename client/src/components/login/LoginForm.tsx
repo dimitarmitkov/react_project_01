@@ -81,7 +81,7 @@ const LoginGroup = () => {
                     <Row className="mt-3 justify-content-md-center">
                         <Col sm={3}>
                             <Button label="Submit" className="p-button-danger" disabled={false} />
-                            <div className="mt-2">If you don't have an account please <Link to={`/signup`} className="active-task-link">SingUp</Link></div>
+                            <div className="mt-2">If you don't have an account please <Link to={valuesLinks.SignUp} className="active-task-link">SingUp</Link></div>
                         </Col>
                     </Row>
                 </Container>
