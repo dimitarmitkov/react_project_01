@@ -31,7 +31,7 @@ const LoginGroup = () => {
             insertPassword: passwordValue
         };
         try {
-            axiosFunction(valuesLinks.UserLogin, query, 'post', 200, undefined, '/helloMitko');
+            axiosFunction(valuesLinks.UserLogin, query, 'post', 200);
         } catch (error) {
             setHasError(true);
         }

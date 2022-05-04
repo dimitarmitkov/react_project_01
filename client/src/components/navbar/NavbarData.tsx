@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faCheckSquare, faCoffee, faBarcode } from '@fortawesome/free-solid-svg-icons';
+import { valuesLinks, valuesUsersTypes } from '../../enumerators';
 
 library.add(faCheckSquare, faCoffee, faBarcode);
 
@@ -24,36 +25,22 @@ const NavbarMenu: React.FunctionComponent = (props: any) => {
     const user: PropsCurrentUser = CurrentLoggedUser()!;
 
     const clickHandler = (data: string) => {
-        data === 'tasks' ? navigate('/tasks') : navigate(`/users`);
-        switch (data) {
-            case 'tasks': navigate('/tasks');
-                break;
-            case 'users': navigate('/users');
-                break;
-            case 'login': navigate('/login');
-                break;
-            case 'logout': navigate('/logout');
-                break;
-            case 'currentuser': navigate(`/currentuser/${user.id}`);
-                break;
 
-            default: navigate('/helloMitko');
-                break;
-        }
+        navigate(data);
     }
 
 
     const TaskUsersElement = () => {
 
-        if (user && user.role === 'admin') {
+        if (user && user.role === valuesUsersTypes.Admin) {
             return (
                 <Row >
                     <Col sm="auto" className='navbar-link-group'>
-                        <Button label="Tasks Link" className="p-button-secondary" onClick={() => clickHandler('tasks')} />
+                        <Button label="Tasks Link" className="p-button-secondary" onClick={() => clickHandler(valuesLinks.Tasks)} />
                     </Col>
 
                     <Col sm="auto" className='navbar-link-group'>
-                        <Button label="Users Link" className="p-button-secondary" onClick={() => clickHandler('users')} />
+                        <Button label="Users Link" className="p-button-secondary" onClick={() => clickHandler(valuesLinks.Users)} />
                     </Col>
                 </Row>
             )
@@ -61,7 +48,6 @@ const NavbarMenu: React.FunctionComponent = (props: any) => {
             return (null)
         }
     }
-
 
     return (
         <>
@@ -92,12 +78,12 @@ const NavbarMenu: React.FunctionComponent = (props: any) => {
                                 <Col sm={3}>
                                     <Row className='navbar-link-group'>
                                         <Col sm="auto">
-                                            {user ? <Button label="LogOut" onClick={() => clickHandler('logout')} /> : <Button label="Login" onClick={() => clickHandler('login')} />}
+                                            {user ? <Button label="LogOut" onClick={() => clickHandler(valuesLinks.LogOut)} /> : <Button label="Login" onClick={() => clickHandler(valuesLinks.LogIn)} />}
                                         </Col>
 
                                         <Col sm="auto" className='navbar-link-group'>
                                             {user ?
-                                                <Button icon="pi pi-user" className="p-button-rounded" disabled={user ? false : true} onClick={() => clickHandler('currentuser')} />
+                                                <Button icon="pi pi-user" className="p-button-rounded" disabled={user ? false : true} onClick={() => clickHandler(valuesLinks.CurrentUser + user.id)} />
                                                 : null}
                                         </Col>
                                     </Row>

@@ -7,6 +7,7 @@ import './multiSelector.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import configData from '../../config.json';
+import { valuesLinks } from '../../enumerators';
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 const ws = new WebSocket(configData.WEBSOCKET_URL);
@@ -42,7 +43,7 @@ const MultiSelector = (props: any) => {
 
     const getAllowedUsers = async (currentTaskId: number) => {
 
-        const usersUrl = SERVER_URL+"/usertasks";
+        const usersUrl = SERVER_URL+ valuesLinks.UserTasks;
         const usersQuery = { idData: currentTaskId };
 
         const result = await axios.patch(usersUrl, usersQuery)
@@ -62,7 +63,7 @@ const MultiSelector = (props: any) => {
 
     const getUsers = async () => {
 
-        const urlGet = SERVER_URL+"/users";
+        const urlGet = SERVER_URL+ valuesLinks.Users;
 
         const result = await axios.get(urlGet);
 
@@ -84,7 +85,7 @@ const MultiSelector = (props: any) => {
         const logData = async (props: any) => {
 
             const resArray = props.map((e: any) => ({ userId: e.value, taskId: taskIdGlobal }));
-            const urlLogData = SERVER_URL+"/usertasks";
+            const urlLogData = SERVER_URL+ valuesLinks.UserTasks;
             const queryLogData = { userIdArray: resArray, taskId: taskIdGlobal }
 
 

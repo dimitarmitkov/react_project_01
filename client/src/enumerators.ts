@@ -11,8 +11,10 @@ export const valuesTaskType = { Project: "project", Meeting: "meeting" };
 export const valuesLinks = {
     CreateTask: "/createTask",
     CurrentLoggedUser: "/currentLoggedUser",
+    CurrentUser:"/currentuser/",
     DashBoard:"/helloMitko",
     LogIn: "/login",
+    LogOut: "/logout",
     PhotosUpload: "/photos/upload",
     SignUp: "/signup",
     Tasks: "/tasks",

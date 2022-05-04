@@ -47,11 +47,11 @@ const axiosFunction = async (url: string, query: {}, action: string, resultValue
                 break;
             case valuesLinks.UsersDelete: toasterReload('User deleted successful.');
                 break;
-            case valuesLinks.UserLogin: toasterHref('Successful login.', '/helloMitko');
+            case valuesLinks.UserLogin: toasterHref('Successful login.', valuesLinks.DashBoard);
                 break;
-            case valuesLinks.UserLogout: toasterHref('Successful logout.', '/login');
+            case valuesLinks.UserLogout: toasterHref('Successful logout.', valuesLinks.LogIn);
                 break;
-            case valuesLinks.UserCreate: toasterHref('User created successful.', '/users');
+            case valuesLinks.UserCreate: toasterHref('User created successful.', valuesLinks.Users);
                 break;
 
             default: toast(toastMessage);

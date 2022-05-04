@@ -124,7 +124,7 @@ const PaginatedTasksByUser = (props: any) => {
     }, [offset, endValue, dataId, meeting, project]);
 
     const redirectToCreateTask = () => {
-        navigate('/createTask');
+        navigate(valuesLinks.CreateTask);
     }
 
     const nextElement = <div className="App">
