@@ -35,9 +35,6 @@ module.exports.connect = function(path, app) {
     router.route("/usersDelete")
         .post(authMiddleware.auth, authMiddleware.isAdmin, tasksController.deleteOneUser);
 
-    // router.route("/tasks/:id")
-    //     .get(authMiddleware.auth, tasksController.getOneTask);
-
     router.route("/tasksDelete")
         .get(authMiddleware.auth, authMiddleware.isAdmin, tasksController.deleteOneTask)
         .post(authMiddleware.auth, authMiddleware.isAdmin, tasksController.deleteOneTask);
@@ -51,9 +48,6 @@ module.exports.connect = function(path, app) {
 
     router.route("/usersEdit")
         .post(authMiddleware.auth, tasksController.editOneUser);
-
-    // router.route("/userLog/:insertEmail,:insertPassword")
-    //     .get(authMiddleware.auth, tasksController.userLogin);
 
     router.route("/authorization")
         .get(tasksController.authorization);
@@ -69,13 +63,6 @@ module.exports.connect = function(path, app) {
 
     router.route("/photos/upload")
         .post(authMiddleware.auth, tasksController.photos);
-
-    // router.route("/pictures")
-    //     .get(authMiddleware.auth, tasksController.picturesGet)
-    //     .post(authMiddleware.auth, tasksController.pictures);
-
-    // router.route("/picturesgetone")
-    //     .post(authMiddleware.auth, tasksController.picturesGet);
 
     app.use(path, router);
 };
