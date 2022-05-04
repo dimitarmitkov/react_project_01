@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import configData from '../../config.json';
@@ -17,7 +17,7 @@ const axiosFunction = async (url: string, query: {}, action: string, resultValue
             onClick: () => window.location.reload(),
             position: toast.POSITION.TOP_CENTER,
             autoClose: 2000,
-            theme: "colored",
+            theme: 'colored',
             onClose: () => window.location.reload(),
         });
 
@@ -26,7 +26,7 @@ const axiosFunction = async (url: string, query: {}, action: string, resultValue
             onClick: () => window.location.href = location,
             position: toast.POSITION.TOP_CENTER,
             autoClose: 2000,
-            theme: "colored",
+            theme: 'colored',
             onClose: () => window.location.href = location,
         });
 

@@ -2,6 +2,7 @@ import { Button } from 'primereact/button';
 import { Password } from 'primereact/password';
 import { Row, Col, Container, Image, Form } from 'react-bootstrap';
 import { Checkbox } from 'primereact/checkbox';
+import { valuesUsersTypes } from '../../enumerators';
 
 const UserElement = (user: any, handleSubmit: any, onSubmit: any, onImageChange: any, allowPasswordChange: any, changePasswordSelected: any, setChangePasswordSelected: any, passwordValue : any,
     setPasswordValue: any, errors: any, currentUserPicture: any, editUserRoute: any) => {
@@ -61,7 +62,7 @@ const UserElement = (user: any, handleSubmit: any, onSubmit: any, onImageChange:
                                                         <Checkbox inputId="passwordChecker" checked={changePasswordSelected} onChange={e => setChangePasswordSelected(e.checked)} />
                                                     </div>
                                                     <div className="field-checkbox-label">
-                                                        <label htmlFor="passwordChecker">{changePasswordSelected ? 'Change password selected' : 'Change password?'}</label>
+                                                        <label htmlFor="passwordChecker">{changePasswordSelected ? "Change password selected" : "Change password?"}</label>
 
                                                     </div>
                                                 </div>
@@ -94,7 +95,7 @@ const UserElement = (user: any, handleSubmit: any, onSubmit: any, onImageChange:
 
                                 <Row className="mt-3 mb-3 justify-content-md-center">
                                     <Col>
-                                        {user.role === 'admin' ? <Button label="Back to users" className="p-button-primary" disabled={false} onClick={editUserRoute} /> : null}
+                                        {user.role === valuesUsersTypes.Admin ? <Button label="Back to users" className="p-button-primary" disabled={false} onClick={editUserRoute} /> : null}
                                     </Col>
                                 </Row>
                             </Col>

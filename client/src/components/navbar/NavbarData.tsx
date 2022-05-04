@@ -4,7 +4,7 @@ import { Button } from 'primereact/button';
 import { Container, Navbar, Nav, Row, Col } from 'react-bootstrap';
 import './navbarData.css';
 import CurrentLoggedUser from '../functions/currentLoggedUser';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faCheckSquare, faCoffee, faBarcode } from '@fortawesome/free-solid-svg-icons';

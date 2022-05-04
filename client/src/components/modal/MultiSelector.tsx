@@ -1,8 +1,8 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { Button, Row, Col } from "react-bootstrap";
-import { default as ReactSelect } from "react-select";
-import { components } from "react-select";
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { Button, Row, Col } from 'react-bootstrap';
+import { default as ReactSelect } from 'react-select';
+import { components } from 'react-select';
 import './multiSelector.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -17,10 +17,10 @@ const Option = (props: any) => {
         <div>
             <components.Option {...props}>
                 <input
-                    type="checkbox"
+                    type='checkbox'
                     checked={props.isSelected}
                     onChange={() => null}
-                />{" "}
+                />{' '}
                 <label>{props.label}</label>
             </components.Option>
         </div>

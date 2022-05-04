@@ -1,5 +1,5 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import { valuesLinks } from '../../enumerators';
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;

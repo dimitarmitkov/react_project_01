@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import React, { useState } from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
@@ -7,7 +7,7 @@ import { Checkbox } from 'primereact/checkbox';
 import { Row, Col, Container } from 'react-bootstrap';
 import './editUser.css';
 import axiosFunction from '../functions/axiosFunctions';
-import ErrorComponent from "../error/ErrorComponent";
+import ErrorComponent from '../error/ErrorComponent';
 import { valuesUsersTypes } from '../../enumerators';
 
 type FormValues = {
@@ -102,7 +102,7 @@ const EditUserGroup = (props: any) => {
                                     <Checkbox inputId="passwordChecker" checked={changePasswordSelected} onChange={e => setChangePasswordSelected(e.checked)} />
                                 </div>
                                 <div className="field-checkbox-label">
-                                    <label htmlFor="passwordChecker">{changePasswordSelected ? 'Change password selected' : 'Change password?'}</label>
+                                    <label htmlFor="passwordChecker">{changePasswordSelected ? "Change password selected" : "Change password?"}</label>
 
                                 </div>
                             </div>
@@ -130,7 +130,7 @@ const EditUserGroup = (props: any) => {
                                     <Checkbox inputId="binary" checked={checked} onChange={e => setChecked(e.checked)} disabled={false} />
                                 </div>
                                 <div className="field-checkbox-label">
-                                    <label htmlFor="binary">{checked ? 'User role selected' : 'Please check for User role'}</label>
+                                    <label htmlFor="binary">{checked ? "User role selected" : "Please check for User role"}</label>
 
                                 </div>
                             </div>

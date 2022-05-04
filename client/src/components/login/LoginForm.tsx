@@ -3,12 +3,12 @@ import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { Password } from 'primereact/password';
 import { Link } from "react-router-dom";
-import './loginForm.css';
 import { Row, Col, Container } from 'react-bootstrap';
 import { useState } from "react";
 import axiosFunction from '../functions/axiosFunctions';
 import ErrorComponent from '../error/ErrorComponent';
 import { valuesLinks } from '../../enumerators';
+import './loginForm.css';
 
 type FormValues = {
     firstName: string;

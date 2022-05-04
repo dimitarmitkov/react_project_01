@@ -8,7 +8,7 @@ import ReactPaginate from 'react-paginate';
 import { Checkbox } from 'primereact/checkbox';
 import TasksCard from '../tasks/TasksCard';
 import { useState, useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import './DropdownButton.css';
 import './paginate.css';
 import 'primereact/resources/themes/my-buttons/theme.css';
@@ -120,7 +120,7 @@ const PaginatedTasks = () => {
 
     const nextElement = <div className="App">
 
-        <Row className='selector' key={"selectorTop1"}>
+        <Row className="selector" key={"selectorTop1"}>
 
             <Col sm={2}>
 
@@ -157,8 +157,8 @@ const PaginatedTasks = () => {
                 <Button icon="pi pi-plus" label="Create Task" className="p-button-outlined p-button-secondary paginate-p-button" onClick={redirectToCreateTask} />
             </Col>
 
-            <Col sm={4} className="dropdown-demo" key={'paginateDropDown'}>
-                <Dropdown id={'dropDownButton'} value={selectValues} options={valuesPages} onChange={onValuesChange} placeholder="2" editable />
+            <Col sm={4} className="dropdown-demo" key={"paginateDropDown"}>
+                <Dropdown id={"dropDownButton"} value={selectValues} options={valuesPages} onChange={onValuesChange} placeholder="2" editable />
             </Col>
         </Row>
 

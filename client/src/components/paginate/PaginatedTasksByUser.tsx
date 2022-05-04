@@ -8,7 +8,7 @@ import ReactPaginate from 'react-paginate';
 import TasksCard from '../tasks/TasksCard';
 import { Checkbox } from 'primereact/checkbox';
 import { useState, useEffect } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import './DropdownButton.css';
 import './paginate.css';
 import 'primereact/resources/themes/my-buttons/theme.css';
@@ -80,10 +80,10 @@ const PaginatedTasksByUser = (props: any) => {
                     <Col sm={2} className="padding-0 mt-3" key={element + elKey + 1}>
 
                         <Card
-                            bg={''}
+                            bg={""}
                             key={element + elKey + 2}
-                            text={'dark'}
-                            style={{ height: '100%' }}
+                            text={"dark"}
+                            style={{ height: "100%" }}
                             className="padding-0"
                         >
                             <Card.Header key={element + elKey + 3}>{capitalizeFirstLetter(element)}</Card.Header>
@@ -129,7 +129,7 @@ const PaginatedTasksByUser = (props: any) => {
 
     const nextElement = <div className="App">
 
-        <Row className='selector' key={"selectorTop1"}>
+        <Row className="selector" key={"selectorTop1"}>
 
             <Col sm={2}>
 
@@ -169,8 +169,8 @@ const PaginatedTasksByUser = (props: any) => {
                     : null}
             </Col>
 
-            <Col sm={4} className="dropdown-demo" key={'paginateDropDown'}>
-                <Dropdown id={'dropDownButton'} value={selectValues} options={valuesPages} onChange={onValuesChange} placeholder={valuesPages[valuesPages.length - 1]} editable />
+            <Col sm={4} className="dropdown-demo" key={"paginateDropDown"}>
+                <Dropdown id={"dropDownButton"} value={selectValues} options={valuesPages} onChange={onValuesChange} placeholder={valuesPages[valuesPages.length - 1]} editable />
             </Col>
         </Row>
 

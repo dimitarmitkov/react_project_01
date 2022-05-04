@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import React, { useState } from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
 import { Checkbox } from 'primereact/checkbox';
-import axios from "axios";
-import { Link } from "react-router-dom";
+import axios from 'axios';
+import { Link } from 'react-router-dom';
 import { Row, Col, Container } from 'react-bootstrap';
 import './signUpForm.css';
 import axiosFunction from '../functions/axiosFunctions';
@@ -36,7 +36,7 @@ const SignUpGroup = () => {
             firstName: data.firstName,
             lastName: data.lastName,
             role: checked ? valuesUsersTypes.User : valuesUsersTypes.Admin,
-            picture: data.picture ? data.picture : ""
+            picture: data.picture ? data.picture : ''
         };
         
         try {
@@ -121,7 +121,7 @@ const SignUpGroup = () => {
                                 <Checkbox inputId="binary" checked={checked} onChange={e => setChecked(e.checked)} disabled={false} />
                             </div>
                             <div className="field-checkbox-label">
-                                <label htmlFor="binary">{checked ? 'User role selected' : 'Please check for User role'}</label>
+                                <label htmlFor="binary">{checked ? "User role selected" : "Please check for User role"}</label>
                             </div>
                         </div>
                     </Col>

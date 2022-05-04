@@ -45,13 +45,13 @@ const WebsocketData = () => {
       // hide element, re-set local storage with new dismissed message
       element.className = 'websocket-hide';
       storedNames.push(value);
-      localStorage.setItem("dismissed", JSON.stringify(storedNames));
+      localStorage.setItem('dismissed', JSON.stringify(storedNames));
 
     }
   }
 
   // set local storage
-  let transferArray = localStorage.getItem("dismissed");
+  let transferArray = localStorage.getItem('dismissed');
   storedNames = transferArray !== null ? JSON.parse(transferArray) : [];
 
   useEffect(() => {
@@ -87,11 +87,11 @@ const WebsocketData = () => {
 
       const MessagesList = () => (
 
-        <Row className='sidebar-row'>
+        <Row className="sidebar-row">
           {messageList.length > 0 ?
             <ul>{messageList.map((message: any) =>
-              ((message.allowedList).includes(hasUserId) && message.action !== 'added') && (!storedNames.includes(`${Date.parse(message.main.createdAt)}_${message.action}_${hasUserName}`)) ?
-                <div key={message.main.taskName + message.main.createdAt + message.action} id={`task_${Date.parse(message.main.createdAt)}_${message.action}_${hasUserName}`} className='websocket-show'>
+              ((message.allowedList).includes(hasUserId) && message.action !== "added") && (!storedNames.includes(`${Date.parse(message.main.createdAt)}_${message.action}_${hasUserName}`)) ?
+                <div key={message.main.taskName + message.main.createdAt + message.action} id={`task_${Date.parse(message.main.createdAt)}_${message.action}_${hasUserName}`} className="websocket-show">
                   <li>
                     <div>
                       <span id="task-span">{message.main.taskType}</span>
@@ -99,14 +99,14 @@ const WebsocketData = () => {
                       <span id="user-span">{message.generator.userGeneratorName ? message.generator.userGeneratorName : hasUserName}</span>
                       ,&nbsp;new status:&nbsp;
                       <span id="message-span">{message.action}</span>
-                      <FormCheck type='checkbox' id={`default-${message.main.taskId}`} label={`dismiss`} onChange={() => handleChange(`${Date.parse(message.main.createdAt)}_${message.action}_${hasUserName}`)} />
+                      <FormCheck type="checkbox" id={`default-${message.main.taskId}`} label={`dismiss`} onChange={() => handleChange(`${Date.parse(message.main.createdAt)}_${message.action}_${hasUserName}`)} />
                     </div>
                   </li>
                 </div>
                 :
-                ((message.allowedList).includes(hasUserId) && message.action === 'added') && (!storedNames.includes(`${Date.parse(message.main.createdAt)}_${message.action}_${message.main.firstName}`)) ?
-                  <div key={message.main.taskName + message.main.createdAt + message.action + message.main.firstName.replace(/\s/g, '')}
-                    id={`task_${Date.parse(message.main.createdAt)}_${message.action}_${message.main.firstName}`} className='websocket-show'> 
+                ((message.allowedList).includes(hasUserId) && message.action === "added") && (!storedNames.includes(`${Date.parse(message.main.createdAt)}_${message.action}_${message.main.firstName}`)) ?
+                  <div key={message.main.taskName + message.main.createdAt + message.action + message.main.firstName.replace(/\s/g, "")}
+                    id={`task_${Date.parse(message.main.createdAt)}_${message.action}_${message.main.firstName}`} className="websocket-show"> 
                     <li>
                       <div>
                         <span id="task-span">{message.main.taskType}</span>
@@ -114,7 +114,7 @@ const WebsocketData = () => {
                         <span id="user-span">{message.main.firstName}</span>
                         , was&nbsp;
                         <span id="message-span">{message.action}</span>
-                        <FormCheck type='checkbox' id={`default-${message.main.taskId}`} label={`dismiss`} onChange={() => handleChange(`${Date.parse(message.main.createdAt)}_${message.action}_${message.main.firstName}`)} />
+                        <FormCheck type="checkbox" id={`default-${message.main.taskId}`} label={`dismiss`} onChange={() => handleChange(`${Date.parse(message.main.createdAt)}_${message.action}_${message.main.firstName}`)} />
                       </div>
                     </li>
                   </div>

@@ -1,12 +1,12 @@
-import { useForm, SubmitHandler } from "react-hook-form";
-import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import CurrentLoggedUser from '../functions/currentLoggedUser';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import CurrentUserCardData from './currentUserData';
 import UserElement from './UserCardDataMain';
 import axiosFunction from '../functions/axiosFunctions';
-import ErrorComponent from "../error/ErrorComponent";
+import ErrorComponent from '../error/ErrorComponent';
 import { valuesLinks } from '../../enumerators';
 
 interface PropsUser {
