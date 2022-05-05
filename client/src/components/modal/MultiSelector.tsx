@@ -12,6 +12,33 @@ import { valuesLinks } from '../../enumerators';
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 const ws = new WebSocket(configData.WEBSOCKET_URL);
 
+interface MultiSelectorProps {
+    createdAt: string;
+    taskName: string;
+    taskType: string;
+    taskId: number;
+    id: number;
+};
+
+interface IdArrayResultProps {
+    userId: number;
+};
+
+interface ElementResultDataProps {
+    id: number;
+    firstName: string;
+    lastName: string;
+};
+
+interface LogDataProps {
+    value: number;
+};
+
+interface UserOfUsersProps {
+    value: number;
+    label: string;
+};
+
 const Option = (props: any) => {
     return (
         <div>
@@ -27,7 +54,13 @@ const Option = (props: any) => {
     );
 };
 
-const MultiSelector = (props: any) => {
+
+
+interface UserOfAllowedUsersList {
+    id: number;
+}
+
+const MultiSelector = (props: MultiSelectorProps) => {
 
     let main = {
         createdAt: props.createdAt,
@@ -43,7 +76,7 @@ const MultiSelector = (props: any) => {
 
     const getAllowedUsers = async (currentTaskId: number) => {
 
-        const usersUrl = SERVER_URL+ valuesLinks.UserTasks;
+        const usersUrl = SERVER_URL + valuesLinks.UserTasks;
         const usersQuery = { idData: currentTaskId };
 
         const result = await axios.patch(usersUrl, usersQuery)
@@ -51,7 +84,7 @@ const MultiSelector = (props: any) => {
 
         if (currentData.length > 0) {
             const allowedUsersList = () => (
-                currentData.map((name: any) => name.id)
+                currentData.map((user: UserOfAllowedUsersList) => user.id)
             );
 
             setAllowedUsers(allowedUsersList);
@@ -61,13 +94,15 @@ const MultiSelector = (props: any) => {
         }
     }
 
+
+
     const getUsers = async () => {
 
-        const urlGet = SERVER_URL+ valuesLinks.Users;
+        const urlGet = SERVER_URL + valuesLinks.Users;
 
         const result = await axios.get(urlGet);
 
-        setUsers(result.data.map((el: any) => ({ value: el.id, label: el.firstName + ' ' + el.lastName })));
+        setUsers(result.data.map((el: ElementResultDataProps) => ({ value: el.id, label: el.firstName + ' ' + el.lastName })));
     }
 
     useEffect(() => {
@@ -78,24 +113,28 @@ const MultiSelector = (props: any) => {
 
     if (users.length > 0) {
 
+        
+
         const handleChange = (selected: any) => {
             setOptionSelected(selected);
         };
 
-        const logData = async (props: any) => {
+        const logData = async (props: [] | null) => {
 
-            const resArray = props.map((e: any) => ({ userId: e.value, taskId: taskIdGlobal }));
-            const urlLogData = SERVER_URL+ valuesLinks.UserTasks;
+            const resArray = props ? props.map((e: LogDataProps) => ({ userId: e.value, taskId: taskIdGlobal })) : [];
+            const urlLogData = SERVER_URL + valuesLinks.UserTasks;
             const queryLogData = { userIdArray: resArray, taskId: taskIdGlobal }
 
 
             const result = await axios.put(urlLogData, queryLogData);
             if (result.status === 200) {
 
-                const idArray = result.data.map((r: any) => r.userId);
+
+
+                const idArray = result.data.map((r: IdArrayResultProps) => r.userId);
                 const resultAllowedUsersArray = [...allowedUsers, ...idArray];
 
-                users.forEach((user: any) => {
+                users.forEach((user: UserOfUsersProps) => {
                     if (idArray.includes(user.value)) {
                         main['firstName'] = user.label;
                         ws.send(JSON.stringify({ main, action: 'added', allowedList: resultAllowedUsersArray }));

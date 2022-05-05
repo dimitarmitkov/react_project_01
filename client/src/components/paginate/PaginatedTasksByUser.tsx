@@ -26,7 +26,28 @@ interface Provider {
     type: JSX.Element[];
 }
 
-const PaginatedTasksByUser = (props: any) => {
+interface FilteredObjectProps{
+    taskProgress: string;
+};
+
+interface OnValuesChangeProps{
+    target: {
+        value: React.SetStateAction<null>;
+    };
+};
+
+interface HandlePageClickParams{
+    selected: number;
+};
+
+interface PaginateTasksByUserProps{
+    data:{
+        role: string;
+        id: number;
+    }
+}
+
+const PaginatedTasksByUser = (props: PaginateTasksByUserProps) => {
 
     const [offset, setOffset] = useState(0);
     const [data, setData] = useState<Provider[]>([]);
@@ -69,7 +90,7 @@ const PaginatedTasksByUser = (props: any) => {
                 rowsNumber = res.data.count ? +(res.data.count)[0].max : 0;
 
                 function tasksFunction(value: string) {
-                    return slice.filter(function (obj: any) {
+                    return slice.filter(function (obj: FilteredObjectProps) {
                         return obj.taskProgress === value;
                     }).map((task: JsxElement, k: number) =>
                         <TasksCard task={task} key={k} />
@@ -103,21 +124,31 @@ const PaginatedTasksByUser = (props: any) => {
             }).catch(error => setHasError(true));
     }
 
-    const handlePageClick = (e: any) => {
+    const handlePageClick = (e: HandlePageClickParams) => {
         selectedPage = e.selected;
         setOffset(1 + selectedPage * perPage);
         setEndValue(perPage + selectedPage * perPage);
         setStartValue(1 + selectedPage * perPage);
     };
 
-    const onValuesChange = (e: any) => {
-        setSelectValues(e.value);
-        const incomingValue = e.value === valuesPages[valuesPages.length - 1] ? rowsNumber : parseInt(e.value);
-        setPerPage(incomingValue);
-        setEndValue(incomingValue);
+    // const onValuesChange = (e: any) => {
+    //     setSelectValues(e.value);
+    //     const incomingValue = e.value === valuesPages[valuesPages.length - 1] ? rowsNumber : parseInt(e.value);
+    //     setPerPage(incomingValue);
+    //     setEndValue(incomingValue);
+    // }
+
+    const onValuesChange = (e: OnValuesChangeProps) => {
+
+        const currentEventValue = e.target.value?.toString();
+
+        if(currentEventValue){
+            setSelectValues(e.target.value);
+            const incomingValue = currentEventValue === valuesPages[valuesPages.length - 1] ? rowsNumber : parseInt(currentEventValue!);
+            setPerPage(incomingValue);
+            setEndValue(incomingValue);
+        }
     }
-
-
 
     useEffect(() => {
         getData(offset, perPage)

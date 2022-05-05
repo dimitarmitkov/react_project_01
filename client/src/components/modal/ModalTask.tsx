@@ -37,6 +37,7 @@ interface Props {
         taskType: string;
         taskName: string;
         taskProgress: string;
+        createdAt: string;
     };
 
     onHide: () => void;

@@ -18,7 +18,7 @@ interface PropsCurrentUser {
     userName?: string;
 }
 
-const NavbarMenu: React.FunctionComponent = (props: any) => {
+const NavbarMenu: React.FunctionComponent = () => {
 
     const navigate = useNavigate();
 

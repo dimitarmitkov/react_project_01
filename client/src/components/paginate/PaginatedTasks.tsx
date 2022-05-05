@@ -7,7 +7,7 @@ import { JsxElement } from 'typescript';
 import ReactPaginate from 'react-paginate';
 import { Checkbox } from 'primereact/checkbox';
 import TasksCard from '../tasks/TasksCard';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './DropdownButton.css';
 import './paginate.css';
@@ -17,6 +17,23 @@ import { valuesPages, valuesProgress, valuesTaskType, valuesLinks } from '../../
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
+interface Provider {
+    type: JSX.Element[];
+};
+
+interface FilteredObjectProps{
+    taskProgress: string;
+};
+
+interface OnValuesChangeProps{
+    target: {
+        value: React.SetStateAction<null>;
+    };
+};
+
+interface HandlePageClickParams{
+    selected: number;
+};
 
 let meeting = false;
 let project = false;
@@ -24,10 +41,6 @@ let selectedPage = 0;
 let rowsNumber = 0;
 
 const PaginatedTasks = () => {
-
-    interface Provider {
-        type: JSX.Element[];
-    }
 
     const [offset, setOffset] = useState(0);
     const [data, setData] = useState<Provider[]>([]);
@@ -63,7 +76,7 @@ const PaginatedTasks = () => {
         rowsNumber = +(res.data.count)[0].max;
 
         function tasksFunction(value: string) {
-            return slice.filter(function (obj: any) {
+            return slice.filter(function (obj: FilteredObjectProps) {
                 return obj.taskProgress === value;
             }).map((task: JsxElement, k: number) =>
                 <TasksCard task={task} key={k} />
@@ -94,19 +107,24 @@ const PaginatedTasks = () => {
             setHasError(true);
         }
     }
-
-    const handlePageClick = (e: any) => {
+    
+    const handlePageClick = (e: HandlePageClickParams) => {
         selectedPage = e.selected;
         setOffset(1 + selectedPage * perPage);
         setEndValue(perPage + selectedPage * perPage);
         setStartValue(1 + selectedPage * perPage);
     };
 
-    const onValuesChange = (e: any) => {
-        setSelectValues(e.value);
-        const incomingValue = e.value === valuesPages[valuesPages.length - 1] ? rowsNumber : parseInt(e.value);
-        setPerPage(incomingValue);
-        setEndValue(incomingValue);
+    const onValuesChange = (e: OnValuesChangeProps) => {
+
+        const currentEventValue = e.target.value?.toString();
+
+        if(currentEventValue){
+            setSelectValues(e.target.value);
+            const incomingValue = currentEventValue === valuesPages[valuesPages.length - 1] ? rowsNumber : parseInt(currentEventValue!);
+            setPerPage(incomingValue);
+            setEndValue(incomingValue);
+        }
     }
 
     useEffect(() => {
