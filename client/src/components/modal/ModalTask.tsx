@@ -170,7 +170,7 @@ const VerticallyCenteredModal = (props: any) => {
                             </Col>
 
                             <Col sm="auto" className=" mt-3 delete-button-group">
-                                {user && user.role === 'admin' ? <DeleteTaskModalApp {...props.data} /> : null}
+                                {user && user.role === valuesUsersTypes.Admin  ? <DeleteTaskModalApp {...props.data} /> : null}
                             </Col>
 
                         </Row>

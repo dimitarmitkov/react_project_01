@@ -28,8 +28,8 @@ export const valuesLinks = {
     UsersDelete: "/usersDelete",
     UsersEdit: "/usersEdit",
     UsersPage: "/usersPage",
-    UsersTasksMop: "/usertasksmop"
-
+    UsersTasksMop: "/usertasksmop",
+    WebSocket: "/websocket"
 };
 
 export const valuesUsersTypes = { Admin: "admin", User: "user" };

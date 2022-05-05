@@ -7,15 +7,12 @@ import { useState } from 'react';
 import ErrorComponent from '../error/ErrorComponent';
 import { valuesLinks } from '../../enumerators';
 
-type FormValues = {
-};
-
 const LogoutGroup = () => {
     const [hasError, setHasError] = useState(false);
 
-    const { handleSubmit } = useForm<FormValues>();
+    const { handleSubmit } = useForm();
 
-    const onSubmit: SubmitHandler<FormValues> = data => {
+    const onSubmit = () => {
 
         const query = { withCredentials: true };
 
