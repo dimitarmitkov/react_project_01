@@ -53,6 +53,8 @@ const axiosFunction = async (url: string, query: {}, action: string, resultValue
                 break;
             case valuesLinks.UserCreate: toasterHref('User created successful.', valuesLinks.Users);
                 break;
+            case valuesLinks.CreateTask: toasterHref('Created successful.', valuesLinks.Tasks);
+                break;
 
             default: toast(toastMessage);
                 break;

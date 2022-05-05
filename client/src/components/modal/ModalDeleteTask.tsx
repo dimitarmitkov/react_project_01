@@ -14,12 +14,29 @@ interface PropsCurrentUser {
   id?: number;
   role?: string;
   userName?: string;
+  any: [];
 }
 
-const DeleteTaskModal = (props: any) => {
+interface Props {
+  data: {
+    taskId: number;
+    id: number;
+    firstName: string;
+  };
+  onHide: () => void;
+};
+
+interface UserOfAllowedUsers{
+  id: number;
+}; 
+
+const DeleteTaskModal = (props: Props) => {
   const [showDeleteTaskModal, setShowDeleteTaskModal] = useState(true);
   const [hasError, setHasError] = useState(false);
   const currentTaskId = props.data.taskId ? props.data.taskId : props.data.id;
+
+  console.log(props);
+
 
   const user: PropsCurrentUser = CurrentLoggedUser()!;
 
@@ -45,13 +62,15 @@ const DeleteTaskModal = (props: any) => {
     }
   }
 
+  
+
   const HandleDeleteTask = async () => {
 
     const usersQuery = { idData: currentTaskId };
     const url = SERVER_URL + valuesLinks.UserTasks;
     const result = await axios.patch(url, usersQuery);
     const currentData = result.data;
-    const allowedUsers = currentData.map((name: any) => name.id);
+    const allowedUsers = currentData.map((user: UserOfAllowedUsers) => user.id);
 
     try {
       getData(allowedUsers);
@@ -93,7 +112,7 @@ const DeleteTaskModal = (props: any) => {
   }
 }
 
-const DeleteTaskModalApp = (props: any[]) => {
+const DeleteTaskModalApp = (props: any) => {
   const [deleteTaskModalShow, setDeleteTaskModalShow] = useState(false);
 
 

@@ -17,7 +17,7 @@ const ws = new WebSocket(configData.WEBSOCKET_URL);
 
 interface PropsShowUsers {
     type: JSX.Element;
-}
+};
 
 interface PropsActionDataObj {
     [propName: string]: {}
@@ -27,9 +27,33 @@ interface PropsCurrentUser {
     id?: number;
     role?: string;
     userName?: string;
+};
+
+interface Props {
+    data: {
+        userId: number;
+        taskId: number;
+        id: number;
+        taskType: string;
+        taskName: string;
+        taskProgress: string;
+    };
+
+    onHide: () => void;
+    show: boolean;
+};
+
+interface NameOfNameList{
+    id: number;
+    firstName: string;
+    lastName: string;
+};
+
+interface UserOfAllowedUsersList{
+    id: number;
 }
 
-const VerticallyCenteredModal = (props: any) => {
+const VerticallyCenteredModal = (props: Props) => {
     const [showUsers, setShowUsers] = useState<PropsShowUsers>();
     const [allowedUsers, setAllowedUsers] = useState([]);
     const [hasError, setHasError] = useState(false);
@@ -47,7 +71,7 @@ const VerticallyCenteredModal = (props: any) => {
         done: { doneAt: currentDate, doneByUserId: props.data.userId ? props.data.userId : user.id }
     } : {};
 
-    const getData = async (checkValue: any) => {
+    const getData = async (checkValue: string) => {
 
         if (Object.keys(queryData).length > 0) {
 
@@ -73,11 +97,13 @@ const VerticallyCenteredModal = (props: any) => {
         axios.patch(url, usersQuery)
             .then(result => {
 
+                
+
                 const currentData = result.data;
 
                 const NamesList = () => (
                     <div>
-                        <ul>{currentData.map((name: any) =>
+                        <ul>{currentData.map((name: NameOfNameList) =>
                             <li key={name.id}>
                                 {user && user.role === valuesUsersTypes.Admin ? <Link to={`${valuesLinks.Users}/${name.id}`}>{name.firstName} {name.lastName} </Link> :
                                     <div>{name.firstName} {name.lastName} </div>}
@@ -87,7 +113,7 @@ const VerticallyCenteredModal = (props: any) => {
                 );
 
                 const allowedUsersList = () => (
-                    currentData.map((name: any) => name.id)
+                    currentData.map((user: UserOfAllowedUsersList) => user.id)
                 );
 
                 setShowUsers(NamesList);
@@ -170,7 +196,7 @@ const VerticallyCenteredModal = (props: any) => {
                             </Col>
 
                             <Col sm="auto" className=" mt-3 delete-button-group">
-                                {user && user.role === valuesUsersTypes.Admin  ? <DeleteTaskModalApp {...props.data} /> : null}
+                                {user && user.role === valuesUsersTypes.Admin ? <DeleteTaskModalApp {...props.data} /> : null}
                             </Col>
 
                         </Row>
@@ -197,7 +223,7 @@ const VerticallyCenteredModal = (props: any) => {
     }
 }
 
-const ModalApp = (props: any[]) => {
+const ModalApp = (props: any) => {
     const [modalShow, setModalShow] = useState(false);
 
 

@@ -9,6 +9,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import ErrorComponent from '../error/ErrorComponent';
 import { valuesProgress, valuesTaskType, valuesLinks } from '../../enumerators';
+import axiosFunction from '../functions/axiosFunctions';
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -51,7 +52,6 @@ const CreateTaskGroup = () => {
 
     const onSubmit: SubmitHandler<PropsFormValues> = async data => {
 
-        const url = SERVER_URL + valuesLinks.CreateTask;
         const query = {
             taskType: selectValues,
             taskName: data.taskName,
@@ -59,12 +59,7 @@ const CreateTaskGroup = () => {
             initiatedByUserId: user.id
         };
 
-        const result = await axios.post(url, query);
-
-        if (result.status === 201) {
-            navigate(valuesLinks.Tasks);
-        }
-
+        axiosFunction(valuesLinks.CreateTask, query, 'post', 201);
     };
 
     if (!hasError) {
