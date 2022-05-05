@@ -5,13 +5,9 @@ import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
 import CurrentLoggedUser from '../functions/currentLoggedUser';
 import { Button } from "primereact/button";
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import ErrorComponent from '../error/ErrorComponent';
 import { valuesProgress, valuesTaskType, valuesLinks } from '../../enumerators';
 import axiosFunction from '../functions/axiosFunctions';
-
-const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 type PropsFormValues = {
     taskType: string;
@@ -31,7 +27,6 @@ const CreateTaskGroup = () => {
     const { register, handleSubmit } = useForm<PropsFormValues>();
     const [selectValues, setSelectValues] = useState(undefined);
     const [hasError, setHasError] = useState(false);
-    const navigate = useNavigate();
 
     const user: PropsCurrentUser = CurrentLoggedUser()!;
     const nameValues = Object.keys(valuesTaskType);
