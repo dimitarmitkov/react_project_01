@@ -10,9 +10,18 @@ interface PropsCurrentUser {
     id?: number;
     role?: string;
     userName?: string;
-}
+};
 
-const UsersCard = (props: any) => {
+interface EntryProps{
+    user:{
+        id: number;
+        role: string;
+        firstName: string;
+        email: string;
+    }
+};
+
+const UsersCard = (props: EntryProps) => {
     const user = props.user;
 
     const userLogged: PropsCurrentUser = CurrentLoggedUser()!;
