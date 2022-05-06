@@ -67,7 +67,7 @@ const UserElement = (user: PropsUser, handleSubmit: any, onSubmit: SubmitHandler
                                                 <Form.Label>Please select picture file</Form.Label>
                                                 <Form.Control type="file" name="avatar" accept="image/png, image/jpeg" onChange={(e: React.ChangeEvent) => {
                                                     const targetEl = e.target as HTMLInputElement;
-                                                    const file: any = targetEl.files![0];
+                                                    const file: File = targetEl.files![0];
                                                     onImageChange(file);
                                                 }} />
                                             </Form.Group>
