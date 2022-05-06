@@ -3,9 +3,17 @@ import ModalApp from '../modal/ModalTask';
 import './tasks.css';
 import { valuesTaskType } from '../../enumerators';
 
-const TasksCard = (props: any) => {
+interface TaskCardProp {
+        taskType: string;
+        taskProgress: string;
+        id: number;
+        taskId: number;
+        taskName: string;
+};
 
-    const task = props.task;
+const TasksCard = (props: TaskCardProp) => {
+
+    const task = props;
 
     return (
         <div className="card-container">

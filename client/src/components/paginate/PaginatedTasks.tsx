@@ -3,7 +3,6 @@ import capitalizeFirstLetter from '../functions/capitalizeFirstLetter';
 import { Button } from 'primereact/button';
 import { Card, Col, Row } from 'react-bootstrap';
 import { Dropdown } from 'primereact/dropdown';
-import { JsxElement } from 'typescript';
 import ReactPaginate from 'react-paginate';
 import { Checkbox } from 'primereact/checkbox';
 import TasksCard from '../tasks/TasksCard';
@@ -21,18 +20,26 @@ interface Provider {
     type: JSX.Element[];
 };
 
-interface FilteredObjectProps{
+interface FilteredObjectProps {
     taskProgress: string;
 };
 
-interface OnValuesChangeProps{
+interface OnValuesChangeProps {
     target: {
         value: React.SetStateAction<null>;
     };
 };
 
-interface HandlePageClickParams{
+interface HandlePageClickParams {
     selected: number;
+};
+
+interface TaskCardProp {
+    taskType: string;
+    taskProgress: string;
+    id: number;
+    taskId: number;
+    taskName: string;
 };
 
 let meeting = false;
@@ -75,11 +82,13 @@ const PaginatedTasks = () => {
 
         rowsNumber = +(res.data.count)[0].max;
 
+
+
         function tasksFunction(value: string) {
             return slice.filter(function (obj: FilteredObjectProps) {
                 return obj.taskProgress === value;
-            }).map((task: JsxElement, k: number) =>
-                <TasksCard task={task} key={k} />
+            }).map((task: TaskCardProp, k: number) =>
+                <TasksCard {...task} key={k} />
             );
         }
 
@@ -107,7 +116,7 @@ const PaginatedTasks = () => {
             setHasError(true);
         }
     }
-    
+
     const handlePageClick = (e: HandlePageClickParams) => {
         selectedPage = e.selected;
         setOffset(1 + selectedPage * perPage);
@@ -119,7 +128,7 @@ const PaginatedTasks = () => {
 
         const currentEventValue = e.target.value?.toString();
 
-        if(currentEventValue){
+        if (currentEventValue) {
             setSelectValues(e.target.value);
             const incomingValue = currentEventValue === valuesPages[valuesPages.length - 1] ? rowsNumber : parseInt(currentEventValue!);
             setPerPage(incomingValue);
