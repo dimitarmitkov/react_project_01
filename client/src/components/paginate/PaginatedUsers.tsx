@@ -13,20 +13,24 @@ import { valuesLinks, valuesPages } from '../../enumerators';
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
-interface PostDataProps{
-    id: number;
-    role: string;
+interface PostDataProps {
     firstName: string;
+    userName: string;
+    lastName: string;
+    password: string;
     email: string;
+    role: string;
+    picture: string;
+    id: number;
 };
 
-interface OnPageNumbersChangeProps{
+interface OnPageNumbersChangeProps {
     target: {
         value: React.SetStateAction<null>;
     };
 };
 
-interface HandlePageClickParams{
+interface HandlePageClickParams {
     selected: number;
 };
 
@@ -74,10 +78,10 @@ function PaginatedUsers() {
 
         const currentEventValue = e.target.value?.toString();
 
-        if(currentEventValue){
-        setSelectValues(e.target.value);
-        const incomingValue = currentEventValue === valuesPages[valuesPages.length - 1] ? rowsNumber : parseInt(currentEventValue);
-        setPerPage(incomingValue);
+        if (currentEventValue) {
+            setSelectValues(e.target.value);
+            const incomingValue = currentEventValue === valuesPages[valuesPages.length - 1] ? rowsNumber : parseInt(currentEventValue);
+            setPerPage(incomingValue);
         }
     }
 

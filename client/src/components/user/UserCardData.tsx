@@ -35,9 +35,9 @@ const UserCard = () => {
     const { register, watch, formState: { errors }, handleSubmit } = useForm<FormValues>();
     const [passwordValue, setPasswordValue] = useState('');
     const [currentUserPicture, setCurrentUserPicture] = useState('');
-    const [srcPicture, setSrcPicture] = useState<any | null>(null);
-    const [pictureName, setPictureName] = useState<any | null>(null);
-    const [pictureType, setPictureType] = useState<any | null>(null);
+    const [srcPicture, setSrcPicture] = useState<string | ArrayBuffer | null>(null);
+    const [pictureName, setPictureName] = useState<string | null>(null);
+    const [pictureType, setPictureType] = useState<string | null>(null);
     const navigate = useNavigate();
     const [hasError, setHasError] = useState(false);
     const { id } = useParams();
@@ -45,8 +45,11 @@ const UserCard = () => {
 
     const currentUser : PropsCurrentUser = CurrentLoggedUser()!;
 
+    interface OnImageChangeProps extends Blob {
+        name:string;
+    }; 
 
-    const onImageChange = (props: any) => {
+    const onImageChange = (props: OnImageChangeProps) => {
 
         let reader = new FileReader();
         reader.readAsDataURL(props);
@@ -96,7 +99,6 @@ const UserCard = () => {
                 id: user.id,
             };
 
-            // await axiosFunction('currentUserCurrentPassword', queryDataPassword, 'post', 200);
             await axiosFunction(valuesLinks.UsersEdit, queryDataPassword, 'post', 200);
         }
 
@@ -110,7 +112,6 @@ const UserCard = () => {
                 picType: pictureType
             };
 
-            // await axiosFunction('currentUserCurrentPicture', queryDataPicture, 'post', 201);
             await axiosFunction(valuesLinks.PhotosUpload, queryDataPicture, 'post', 201);
         }
     };

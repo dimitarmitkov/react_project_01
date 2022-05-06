@@ -8,7 +8,8 @@ import { Row, Col, Container } from 'react-bootstrap';
 import './editUser.css';
 import axiosFunction from '../functions/axiosFunctions';
 import ErrorComponent from '../error/ErrorComponent';
-import { valuesUsersTypes } from '../../enumerators';
+import { valuesUsersTypes, valuesLinks } from '../../enumerators';
+
 
 type FormValues = {
     firstName: string;
@@ -18,9 +19,14 @@ type FormValues = {
     email: string;
     role: string;
     picture: string;
+    id: number;
 };
 
-const EditUserGroup = (props: any) => {
+interface EditUserGroupProps{
+    data: FormValues;
+}
+
+const EditUserGroup = (props: EditUserGroupProps) => {
 
     const { register, watch, formState: { errors }, handleSubmit } = useForm<FormValues>();
     const [passwordValue, setPasswordValue] = useState('');
@@ -41,7 +47,7 @@ const EditUserGroup = (props: any) => {
         };
 
         try {
-            await axiosFunction('editUser', query, 'post', 200);
+            await axiosFunction(valuesLinks.UsersEdit, query, 'post', 200);
         } catch (error) {
             setHasError(true);
         }
@@ -150,7 +156,7 @@ const EditUserGroup = (props: any) => {
     }
 }
 
-const EditUserApp = (props: any) => {
+const EditUserApp = (props: FormValues) => {
     const [showElement, setShowElement] = useState(false);
 
     return (

@@ -12,12 +12,16 @@ interface PropsCurrentUser {
     userName?: string;
 };
 
-interface EntryProps{
-    user:{
-        id: number;
-        role: string;
+interface EntryProps {
+    user: {
         firstName: string;
+        userName: string;
+        lastName: string;
+        password: string;
         email: string;
+        role: string;
+        picture: string;
+        id: number;
     }
 };
 
@@ -49,7 +53,7 @@ const UsersCard = (props: EntryProps) => {
                 <Row>
                     <Col sm={6}>
                         <EditUserApp {...user} />
-                        { isAdmin ? <DeleteUserModalApp {...user} /> : null}
+                        {isAdmin ? <DeleteUserModalApp {...user} /> : null}
                     </Col>
                 </Row>
 

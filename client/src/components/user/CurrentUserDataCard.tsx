@@ -35,9 +35,9 @@ const CurrentUserCard = () => {
     const { register, watch, formState: { errors }, handleSubmit } = useForm<PropsFormValues>();
     const [passwordValue, setPasswordValue] = useState('');
     const [currentUserPicture, setCurrentUserPicture] = useState('');
-    const [srcPicture, setSrcPicture] = useState<any | null>(null);
-    const [pictureName, setPictureName] = useState<any | null>(null);
-    const [pictureType, setPictureType] = useState<any | null>(null);
+    const [srcPicture, setSrcPicture] = useState<string | ArrayBuffer | null>(null);
+    const [pictureName, setPictureName] = useState<string | null>(null);
+    const [pictureType, setPictureType] = useState<string | null>(null);
     const navigate = useNavigate();
     const [hasError, setHasError] = useState(false);
     const { id } = useParams();
@@ -45,7 +45,11 @@ const CurrentUserCard = () => {
 
     const currentUser: PropsCurrentUser = CurrentLoggedUser()!;
 
-    const onImageChange = (props: any) => {
+    interface OnImageChangeProps extends Blob {
+        name:string;
+    }; 
+
+    const onImageChange = (props: OnImageChangeProps) => {
 
         const reader = new FileReader();
         reader.readAsDataURL(props);
