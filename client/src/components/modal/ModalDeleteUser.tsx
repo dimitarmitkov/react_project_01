@@ -12,7 +12,18 @@ interface Props{
     firstName: string;
     lastName: string;
   }
-}
+};
+
+interface DeleteUserModalAppProps {
+  firstName: string;
+    userName: string;
+    lastName: string;
+    password: string;
+    email: string;
+    role: string;
+    picture: string;
+    id: number;
+};
 
 const DeleteUserModal = (props: Props) => {
   const [show, setShow] = useState(true);
@@ -78,7 +89,9 @@ const DeleteUserModal = (props: Props) => {
   }
 }
 
-const DeleteUserModalApp = (props: any) => {
+
+
+const DeleteUserModalApp = (props: DeleteUserModalAppProps) => {
   const [modalShow, setModalShow] = useState(false);
 
   return (

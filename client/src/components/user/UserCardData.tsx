@@ -27,7 +27,11 @@ interface PropsCurrentUser {
     id?: string;
     role?: string;
     userName?: string;
-}
+};
+
+interface OnImageChangeProps extends Blob {
+    name:string;
+}; 
 
 const UserCard = () => {
 
@@ -45,9 +49,6 @@ const UserCard = () => {
 
     const currentUser : PropsCurrentUser = CurrentLoggedUser()!;
 
-    interface OnImageChangeProps extends Blob {
-        name:string;
-    }; 
 
     const onImageChange = (props: OnImageChangeProps) => {
 
