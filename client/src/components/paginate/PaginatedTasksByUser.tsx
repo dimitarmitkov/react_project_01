@@ -131,13 +131,6 @@ const PaginatedTasksByUser = (props: PaginateTasksByUserProps) => {
         setStartValue(1 + selectedPage * perPage);
     };
 
-    // const onValuesChange = (e: any) => {
-    //     setSelectValues(e.value);
-    //     const incomingValue = e.value === valuesPages[valuesPages.length - 1] ? rowsNumber : parseInt(e.value);
-    //     setPerPage(incomingValue);
-    //     setEndValue(incomingValue);
-    // }
-
     const onValuesChange = (e: OnValuesChangeProps) => {
 
         const currentEventValue = e.target.value?.toString();

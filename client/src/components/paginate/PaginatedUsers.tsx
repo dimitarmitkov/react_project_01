@@ -13,6 +13,23 @@ import { valuesLinks, valuesPages } from '../../enumerators';
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
+interface PostDataProps{
+    id: number;
+    role: string;
+    firstName: string;
+    email: string;
+};
+
+interface OnPageNumbersChangeProps{
+    target: {
+        value: React.SetStateAction<null>;
+    };
+};
+
+interface HandlePageClickParams{
+    selected: number;
+};
+
 function PaginatedUsers() {
 
     const [offset, setOffset] = useState(0);
@@ -32,7 +49,8 @@ function PaginatedUsers() {
         const slice = data.rows;
         setRowsNumber(data.count);
 
-        const postData = slice.map((pd: any, pdk: number) => {
+
+        const postData = slice.map((pd: PostDataProps, pdk: number) => {
 
             return <div id={'user_' + pd.id} className="ShowUsersList" key={pdk + 101 + 'pdKey'}>
                 <UsersCard user={pd} key={pdk + 100 + 'pdKey'} />
@@ -47,15 +65,20 @@ function PaginatedUsers() {
         }
     }
 
-    const handlePageClick = (e: any) => {
+    const handlePageClick = (e: HandlePageClickParams) => {
         const selectedPage = e.selected;
         setOffset(selectedPage * perPage)
     };
 
-    const onPageNumbersChange = (e: any) => {
-        setSelectValues(e.value);
-        const incomingValue = e.value === valuesPages[valuesPages.length - 1] ? rowsNumber : parseInt(e.value);
+    const onPageNumbersChange = (e: OnPageNumbersChangeProps) => {
+
+        const currentEventValue = e.target.value?.toString();
+
+        if(currentEventValue){
+        setSelectValues(e.target.value);
+        const incomingValue = currentEventValue === valuesPages[valuesPages.length - 1] ? rowsNumber : parseInt(currentEventValue);
         setPerPage(incomingValue);
+        }
     }
 
     useEffect(() => {
