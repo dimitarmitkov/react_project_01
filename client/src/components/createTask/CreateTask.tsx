@@ -47,8 +47,10 @@ const CreateTaskGroup = () => {
 
         const currentEventValue = e.target.value;
 
-        if (currentEventValue) {
+        try {
             setSelectValues(currentEventValue);
+        } catch (error) {
+            setHasError(true);
         }
     };
 
