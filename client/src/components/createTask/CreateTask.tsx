@@ -20,7 +20,13 @@ interface PropsCurrentUser {
     id?: number;
     role?: string;
     userName?: string;
-}
+};
+
+interface OnValuesChangeProps {
+    target: {
+        value: React.SetStateAction<undefined>;
+    };
+};
 
 const CreateTaskGroup = () => {
 
@@ -37,11 +43,12 @@ const CreateTaskGroup = () => {
         { name: nameValues[nameValues.length - 1], value: valuesTaskType.Meeting }
     ];
 
-    const onTypeSelectorChange = (e: any) => {
-        try {
-            setSelectValues(e.value);
-        } catch (error) {
-            setHasError(true);
+    const onTypeSelectorChange = (e: OnValuesChangeProps) => {
+
+        const currentEventValue = e.target.value;
+
+        if (currentEventValue) {
+            setSelectValues(currentEventValue);
         }
     };
 
