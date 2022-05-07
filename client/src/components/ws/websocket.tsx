@@ -4,6 +4,7 @@ import { FormCheck, Row } from 'react-bootstrap';
 import './websocket.css';
 import ErrorComponent from '../error/ErrorComponent';
 import configData from '../../config.json';
+import { isNativeError } from 'util/types';
 
 interface IncomingMessage {
   action: string;
@@ -21,7 +22,7 @@ interface PropsCurrentUser {
     userName?: string;
 }
 
-let storedNames: any[] = [];
+let storedNames: string[] = [];
 
 const ws = new WebSocket(configData.WEBSOCKET_URL);
 
@@ -65,12 +66,12 @@ const WebsocketData = () => {
     };
 
     ws.onmessage = (evt: any) => {
-      const messageReceived = JSON.parse(evt.data);
+      const messageReceived: {type: string, serverMessage: [] } = JSON.parse(evt.data);
 
       if (messageReceived.type === 'fromServer' && (messageReceived.serverMessage).length > 0) {
-        let mappingArray: any[] = [];
-        messageReceived.serverMessage.forEach((l: any) => {
-          let messageParsedValue: any = JSON.parse(l);
+        const mappingArray: IncomingMessage[] = [];
+        messageReceived.serverMessage.forEach((message: string) => {
+          const messageParsedValue = JSON.parse(message);
           if (messageParsedValue.type !== 'userEvent') {
             mappingArray.push(messageParsedValue);
           }
@@ -85,10 +86,19 @@ const WebsocketData = () => {
       const hasUserId = user ? user.id : null;
       const hasUserName = user ? user.userName : null;
 
+      interface MessageListProps extends IncomingMessage{
+          createdAt: string;
+          taskName: string;
+          taskType: string;
+          firstName: string;
+          taskId: number;
+      }
+
       const MessagesList = () => (
 
         <Row className="sidebar-row">
           {messageList.length > 0 ?
+            // <ul>{messageList.map((message: IncomingMessage) =>
             <ul>{messageList.map((message: any) =>
               ((message.allowedList).includes(hasUserId) && message.action !== "added") && (!storedNames.includes(`${Date.parse(message.main.createdAt)}_${message.action}_${hasUserName}`)) ?
                 <div key={message.main.taskName + message.main.createdAt + message.action} id={`task_${Date.parse(message.main.createdAt)}_${message.action}_${hasUserName}`} className="websocket-show">
