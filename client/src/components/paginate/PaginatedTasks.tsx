@@ -40,6 +40,9 @@ interface TaskCardProp {
     id: number;
     taskId: number;
     taskName: string;
+    userId: number;
+    createdAt: string;
+    firstName: string;
 };
 
 let meeting = false;

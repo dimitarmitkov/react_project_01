@@ -38,6 +38,7 @@ interface Props {
         taskName: string;
         taskProgress: string;
         createdAt: string;
+        firstName: string;
     };
 
     onHide: () => void;
@@ -52,7 +53,7 @@ interface NameOfNameList{
 
 interface UserOfAllowedUsersList{
     id: number;
-}
+};
 
 const VerticallyCenteredModal = (props: Props) => {
     const [showUsers, setShowUsers] = useState<PropsShowUsers>();
@@ -123,19 +124,19 @@ const VerticallyCenteredModal = (props: Props) => {
             .catch(err => setHasError(true));
     }
 
-    const changeTaskStatus = (e: any) => {
+    const changeTaskStatus = (e: React.MouseEvent) => {
 
-        const checkValue = e.target.innerText;
-        if (valuesProjectProgress.includes(checkValue) || valuesMeetingProgress.includes(checkValue)) {
+        const checkValue = e.target as HTMLElement;;
+        if (checkValue && (valuesProjectProgress.includes(checkValue.innerText) || valuesMeetingProgress.includes(checkValue.innerText))) {
 
             queryData = {
-                changeData: actionDataObject[checkValue],
+                changeData: actionDataObject[checkValue.innerText],
                 idData: props.data.taskId ? props.data.taskId : props.data.id,
                 taskProgress: checkValue
             };
 
             try {
-                getData(checkValue);
+                getData(checkValue.innerText);
             } catch (error) {
                 setHasError(true);
             }
@@ -190,7 +191,7 @@ const VerticallyCenteredModal = (props: Props) => {
                         <Row>
                             <Col sm={9} className="mt-3">
                                 <Form>
-                                    <DropdownButton id="dropdown-item-button" title="Select status" variant="secondary" onClick={e => { changeTaskStatus(e) }}>
+                                    <DropdownButton id="dropdown-item-button" title="Select status" variant="secondary" onClick={(e: React.MouseEvent) => { changeTaskStatus(e) }}>
                                         {dropdownButtonsArray}
                                     </DropdownButton>
                                 </Form>
@@ -224,7 +225,18 @@ const VerticallyCenteredModal = (props: Props) => {
     }
 }
 
-const ModalApp = (props: any) => {
+interface ModalAppProps {
+    userId: number;
+    taskId: number;
+    id: number;
+    taskType: string;
+    taskName: string;
+    taskProgress: string;
+    createdAt: string;
+    firstName: string;
+}
+
+const ModalApp = (props: ModalAppProps) => {
     const [modalShow, setModalShow] = useState(false);
 
 

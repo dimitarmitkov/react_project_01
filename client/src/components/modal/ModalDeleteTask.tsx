@@ -30,13 +30,21 @@ interface UserOfAllowedUsers{
   id: number;
 }; 
 
+interface DeleteTaskModalAppProps{
+    userId: number;
+    taskId: number;
+    id: number;
+    taskType: string;
+    taskName: string;
+    taskProgress: string;
+    createdAt: string;
+    firstName: string;
+};
+
 const DeleteTaskModal = (props: Props) => {
   const [showDeleteTaskModal, setShowDeleteTaskModal] = useState(true);
   const [hasError, setHasError] = useState(false);
   const currentTaskId = props.data.taskId ? props.data.taskId : props.data.id;
-
-  console.log(props);
-
 
   const user: PropsCurrentUser = CurrentLoggedUser()!;
 
@@ -112,9 +120,8 @@ const DeleteTaskModal = (props: Props) => {
   }
 }
 
-const DeleteTaskModalApp = (props: any) => {
+const DeleteTaskModalApp = (props: DeleteTaskModalAppProps) => {
   const [deleteTaskModalShow, setDeleteTaskModalShow] = useState(false);
-
 
   return (
     <>

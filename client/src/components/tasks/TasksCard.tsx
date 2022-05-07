@@ -4,11 +4,14 @@ import './tasks.css';
 import { valuesTaskType } from '../../enumerators';
 
 interface TaskCardProp {
-        taskType: string;
-        taskProgress: string;
-        id: number;
-        taskId: number;
-        taskName: string;
+    taskType: string;
+    taskProgress: string;
+    id: number;
+    taskId: number;
+    taskName: string;
+    userId: number;
+    createdAt: string;
+    firstName: string;
 };
 
 const TasksCard = (props: TaskCardProp) => {
