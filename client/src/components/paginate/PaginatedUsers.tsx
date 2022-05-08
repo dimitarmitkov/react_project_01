@@ -30,7 +30,7 @@ interface OnPageNumbersChangeProps {
     };
 };
 
-interface HandlePageClickParams {
+interface HandlePageClickProps {
     selected: number;
 };
 
@@ -53,7 +53,6 @@ function PaginatedUsers() {
         const slice = data.rows;
         setRowsNumber(data.count);
 
-
         const postData = slice.map((pd: PostDataProps, pdk: number) => {
 
             return <div id={'user_' + pd.id} className="ShowUsersList" key={pdk + 101 + 'pdKey'}>
@@ -69,7 +68,7 @@ function PaginatedUsers() {
         }
     }
 
-    const handlePageClick = (e: HandlePageClickParams) => {
+    const handlePageClick = (e: HandlePageClickProps) => {
         const selectedPage = e.selected;
         setOffset(selectedPage * perPage)
     };
@@ -134,7 +133,6 @@ function PaginatedUsers() {
     } else {
         return <ErrorComponent />
     }
-
 }
 
 export default PaginatedUsers;
