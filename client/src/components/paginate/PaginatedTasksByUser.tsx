@@ -21,9 +21,9 @@ let project = false;
 let selectedPage = 0;
 let rowsNumber = 0;
 
-interface Provider {
+interface ProviderProps {
     type: JSX.Element[];
-}
+};
 
 interface FilteredObjectProps {
     taskProgress: string;
@@ -35,7 +35,7 @@ interface OnValuesChangeProps {
     };
 };
 
-interface HandlePageClickParams {
+interface HandlePageClickProps {
     selected: number;
 };
 
@@ -46,7 +46,7 @@ interface PaginateTasksByUserProps {
     }
 };
 
-interface TaskCardProp {
+interface TaskCardProps {
     taskType: string;
     taskProgress: string;
     id: number;
@@ -55,12 +55,12 @@ interface TaskCardProp {
     userId: number;
     createdAt: string;
     firstName: string;
-}
+};
 
 const PaginatedTasksByUser = (props: PaginateTasksByUserProps) => {
 
     const [offset, setOffset] = useState(0);
-    const [data, setData] = useState<Provider[]>([]);
+    const [data, setData] = useState<ProviderProps[]>([]);
     const [perPage, setPerPage] = useState(10);
     const [pageCount, setPageCount] = useState(0);
     const [selectValues, setSelectValues] = useState(null);
@@ -73,7 +73,6 @@ const PaginatedTasksByUser = (props: PaginateTasksByUserProps) => {
     const isAdmin = props.data && props.data.role === valuesUsersTypes.Admin;
 
     const navigate = useNavigate();
-
 
     const getData = (offset: number, perPage: number) => {
 
@@ -102,7 +101,7 @@ const PaginatedTasksByUser = (props: PaginateTasksByUserProps) => {
                 function tasksFunction(value: string) {
                     return slice.filter(function (obj: FilteredObjectProps) {
                         return obj.taskProgress === value;
-                    }).map((task: TaskCardProp, k: number) =>
+                    }).map((task: TaskCardProps, k: number) =>
                         <TasksCard {...task} key={k} />
                     );
                 }
@@ -134,7 +133,7 @@ const PaginatedTasksByUser = (props: PaginateTasksByUserProps) => {
             }).catch(error => setHasError(true));
     }
 
-    const handlePageClick = (e: HandlePageClickParams) => {
+    const handlePageClick = (e: HandlePageClickProps) => {
         selectedPage = e.selected;
         setOffset(1 + selectedPage * perPage);
         setEndValue(perPage + selectedPage * perPage);
