@@ -3,13 +3,13 @@ import { Password } from 'primereact/password';
 import { Row, Col, Container, Image, Form } from 'react-bootstrap';
 import { Checkbox } from 'primereact/checkbox';
 import { valuesUsersTypes } from '../../enumerators';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { SubmitHandler } from 'react-hook-form';
 
-interface PropsUser {
+interface UserProps {
     [propName: string]: string;
 };
 
-type FormValues = {
+type FormValuesProps = {
     firstName: string;
     userName: string;
     lastName: string;
@@ -23,7 +23,7 @@ interface OnImageChangeProps extends Blob {
     name:string;
 }; 
 
-const UserElement = (user: PropsUser, handleSubmit: any, onSubmit: SubmitHandler<FormValues>, onImageChange: (props: OnImageChangeProps) => void, allowPasswordChange: boolean, changePasswordSelected: boolean, 
+const UserElement = (user: UserProps, handleSubmit: any, onSubmit: SubmitHandler<FormValuesProps>, onImageChange: (props: OnImageChangeProps) => void, allowPasswordChange: boolean, changePasswordSelected: boolean, 
     setChangePasswordSelected: React.Dispatch<React.SetStateAction<boolean>>, passwordValue : string,
     setPasswordValue: React.Dispatch<React.SetStateAction<string>>, errors: any, currentUserPicture: string, editUserRoute: () => void) => {
     

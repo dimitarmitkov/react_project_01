@@ -6,7 +6,7 @@ import DeleteUserModalApp from '../modal/ModalDeleteUser';
 import useCurrentLoggedUser from '../functions/currentLoggedUser';
 import { valuesLinks, valuesUsersTypes } from '../../enumerators';
 
-interface PropsCurrentUser {
+interface CurrentUserProps {
     id?: number;
     role?: string;
     userName?: string;
@@ -28,7 +28,7 @@ interface EntryProps {
 const UsersCard = (props: EntryProps) => {
     const user = props.user;
 
-    const userLogged: PropsCurrentUser = useCurrentLoggedUser()!;
+    const userLogged: CurrentUserProps = useCurrentLoggedUser()!;
     const isAdmin = userLogged && userLogged.role === valuesUsersTypes.Admin;
 
     return (
