@@ -1,14 +1,13 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
 import { Button } from 'primereact/button';
 import { Container, Navbar, Nav, Row, Col } from 'react-bootstrap';
-import './navbarData.css';
 import useCurrentLoggedUser from '../functions/currentLoggedUser';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faCheckSquare, faCoffee, faBarcode } from '@fortawesome/free-solid-svg-icons';
 import { valuesLinks, valuesUsersTypes } from '../../enumerators';
+import './navbarData.css';
 
 library.add(faCheckSquare, faCoffee, faBarcode);
 
@@ -28,7 +27,6 @@ const NavbarMenu: React.FunctionComponent = () => {
 
         navigate(data);
     }
-
 
     const TaskUsersElement = () => {
 
