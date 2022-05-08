@@ -16,7 +16,7 @@ import { valuesPages, valuesProgress, valuesTaskType, valuesLinks } from '../../
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
-interface Provider {
+interface ProviderProps {
     type: JSX.Element[];
 };
 
@@ -30,11 +30,11 @@ interface OnValuesChangeProps {
     };
 };
 
-interface HandlePageClickParams {
+interface HandlePageClickProps {
     selected: number;
 };
 
-interface TaskCardProp {
+interface TaskCardProps {
     taskType: string;
     taskProgress: string;
     id: number;
@@ -53,7 +53,7 @@ let rowsNumber = 0;
 const PaginatedTasks = () => {
 
     const [offset, setOffset] = useState(0);
-    const [data, setData] = useState<Provider[]>([]);
+    const [data, setData] = useState<ProviderProps[]>([]);
     const [perPage, setPerPage] = useState(2);
     const [pageCount, setPageCount] = useState(0);
     const [selectValues, setSelectValues] = useState(null);
@@ -77,7 +77,7 @@ const PaginatedTasks = () => {
             limitData: endValue
         };
 
-        let res = meeting || project ?
+        const res = meeting || project ?
             await axios.patch(url, selectedQuery)
             : await axios.post(url, commonQuery);
 
@@ -85,12 +85,10 @@ const PaginatedTasks = () => {
 
         rowsNumber = +(res.data.count)[0].max;
 
-
-
         function tasksFunction(value: string) {
             return slice.filter(function (obj: FilteredObjectProps) {
                 return obj.taskProgress === value;
-            }).map((task: TaskCardProp, k: number) =>
+            }).map((task: TaskCardProps, k: number) =>
                 <TasksCard {...task} key={k} />
             );
         }
@@ -120,7 +118,7 @@ const PaginatedTasks = () => {
         }
     }
 
-    const handlePageClick = (e: HandlePageClickParams) => {
+    const handlePageClick = (e: HandlePageClickProps) => {
         selectedPage = e.selected;
         setOffset(1 + selectedPage * perPage);
         setEndValue(perPage + selectedPage * perPage);
