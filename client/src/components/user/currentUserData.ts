@@ -4,7 +4,7 @@ import { valuesLinks } from '../../enumerators';
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
-const CurrentUserCardData = (id: string | undefined) => {
+const useCurrentUserCardData = (id: string | undefined) => {
 
     const [currentUserCardData, setCurrentUserCardData] = useState({});
 
@@ -28,4 +28,4 @@ const CurrentUserCardData = (id: string | undefined) => {
     return currentUserCardData;
 }
 
-export default CurrentUserCardData;
+export default useCurrentUserCardData;

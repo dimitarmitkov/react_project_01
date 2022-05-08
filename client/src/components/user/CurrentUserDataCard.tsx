@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useCurrentLoggedUser from '../functions/currentLoggedUser';
-import CurrentUserCardData from './currentUserData';
+import useCurrentUserCardData from './currentUserData';
 import UserElement from './UserCardDataMain';
 import './userCard.css';
 import axiosFunction from '../functions/axiosFunctions';
@@ -41,7 +41,7 @@ const CurrentUserCard = () => {
     const navigate = useNavigate();
     const [hasError, setHasError] = useState(false);
     const { id } = useParams();
-    const user: PropsUser = CurrentUserCardData(id);
+    const user: PropsUser = useCurrentUserCardData(id);
 
     const currentUser: PropsCurrentUser = useCurrentLoggedUser()!;
 
