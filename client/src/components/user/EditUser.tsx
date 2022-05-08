@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
+import axiosFunction from '../functions/axiosFunctions';
+import ErrorComponent from '../error/ErrorComponent';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
 import { Checkbox } from 'primereact/checkbox';
 import { Row, Col, Container } from 'react-bootstrap';
-import './editUser.css';
-import axiosFunction from '../functions/axiosFunctions';
-import ErrorComponent from '../error/ErrorComponent';
 import { valuesUsersTypes, valuesLinks } from '../../enumerators';
+import './editUser.css';
 
-
-type FormValues = {
+type FormValuesProps = {
     firstName: string;
     userName: string;
     lastName: string;
@@ -23,18 +22,18 @@ type FormValues = {
 };
 
 interface EditUserGroupProps{
-    data: FormValues;
+    data: FormValuesProps;
 }
 
 const EditUserGroup = (props: EditUserGroupProps) => {
 
-    const { register, watch, formState: { errors }, handleSubmit } = useForm<FormValues>();
+    const { register, watch, formState: { errors }, handleSubmit } = useForm<FormValuesProps>();
     const [passwordValue, setPasswordValue] = useState('');
     const [checked, setChecked] = useState(false);
     const [changePasswordSelected, setChangePasswordSelected] = useState(false);
     const [hasError, setHasError] = useState(false);
 
-    const onSubmit: SubmitHandler<FormValues> = async data => {
+    const onSubmit: SubmitHandler<FormValuesProps> = async data => {
 
         const query = {
             email: data.email ? data.email : props.data.email,
@@ -156,7 +155,7 @@ const EditUserGroup = (props: EditUserGroupProps) => {
     }
 }
 
-const EditUserApp = (props: FormValues) => {
+const EditUserApp = (props: FormValuesProps) => {
     const [showElement, setShowElement] = useState(false);
 
     return (

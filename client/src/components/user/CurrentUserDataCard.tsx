@@ -1,26 +1,26 @@
+import useCurrentLoggedUser from '../functions/currentLoggedUser';
+import useCurrentUserCardData from '../functions/currentUserData';
+import UserElement from './UserCardDataMain';
+import axiosFunction from '../functions/axiosFunctions';
+import ErrorComponent from '../error/ErrorComponent';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import useCurrentLoggedUser from '../functions/currentLoggedUser';
-import useCurrentUserCardData from './currentUserData';
-import UserElement from './UserCardDataMain';
-import './userCard.css';
-import axiosFunction from '../functions/axiosFunctions';
-import ErrorComponent from '../error/ErrorComponent';
 import { valuesLinks } from '../../enumerators';
+import './userCard.css';
 
-interface PropsUser {
+interface UserProps {
     [propName: string]: string;
 };
 
-interface PropsCurrentUser {
+interface CurrentUserProps {
     id?: string;
     role?: string;
     userName?: string;
 }
 
-type PropsFormValues = {
+type FormValuesProps = {
     firstName: string;
     userName: string;
     lastName: string;
@@ -32,7 +32,7 @@ type PropsFormValues = {
 
 const CurrentUserCard = () => {
     const [changePasswordSelected, setChangePasswordSelected] = useState(false);
-    const { register, watch, formState: { errors }, handleSubmit } = useForm<PropsFormValues>();
+    const { register, watch, formState: { errors }, handleSubmit } = useForm<FormValuesProps>();
     const [passwordValue, setPasswordValue] = useState('');
     const [currentUserPicture, setCurrentUserPicture] = useState('');
     const [srcPicture, setSrcPicture] = useState<string | ArrayBuffer | null>(null);
@@ -41,9 +41,9 @@ const CurrentUserCard = () => {
     const navigate = useNavigate();
     const [hasError, setHasError] = useState(false);
     const { id } = useParams();
-    const user: PropsUser = useCurrentUserCardData(id);
+    const user: UserProps = useCurrentUserCardData(id);
 
-    const currentUser: PropsCurrentUser = useCurrentLoggedUser()!;
+    const currentUser: CurrentUserProps = useCurrentLoggedUser()!;
 
     interface OnImageChangeProps extends Blob {
         name:string;
@@ -86,7 +86,7 @@ const CurrentUserCard = () => {
 
     const allowPasswordChange = id == currentUserId ? true : false;
 
-    const onSubmit: SubmitHandler<PropsFormValues> = async () => {
+    const onSubmit: SubmitHandler<FormValuesProps> = async () => {
 
         if (changePasswordSelected) {
 

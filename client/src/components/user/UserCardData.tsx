@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import useCurrentLoggedUser from '../functions/currentLoggedUser';
 import { useNavigate } from 'react-router-dom';
-import useCurrentUserCardData from './currentUserData';
+import useCurrentUserCardData from '../functions/currentUserData';
 import UserElement from './UserCardDataMain';
 import axiosFunction from '../functions/axiosFunctions';
 import ErrorComponent from '../error/ErrorComponent';

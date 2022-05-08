@@ -10,7 +10,6 @@ import { Container, Row, Col } from 'react-bootstrap';
 import Hello from './components/test_components/HelloWorld';
 import SidebarFive from './components/sidebar/SidebarFive';
 import LoginGroup from './components/login/LoginForm';
-import SignUpForm from './components/signup/SignUpForm';
 import Logout from './components/login/Logout';
 import PaginatedTasks from './components/paginate/PaginatedTasks';
 import PaginatedUsers from './components/paginate/PaginatedUsers';
@@ -20,7 +19,6 @@ import useCurrentLoggedUser from './components/functions/currentLoggedUser';
 import UserCardData from './components/user/UserCardData';
 import CurrentUserCard from './components/user/CurrentUserDataCard';
 import WebsocketData from './components/ws/websocket';
-import ScrollButton from './components/scrollButton/ScrollButton';
 import { valuesLinks } from './enumerators';
 
 function App() {
@@ -47,7 +45,6 @@ function App() {
               < Route path={valuesLinks.Tasks} element={<PaginatedTasks />} />
               < Route path={valuesLinks.LogIn} element={<LoginGroup />} />
               < Route path={valuesLinks.LogOut} element={<Logout />} />
-              < Route path={valuesLinks.SignUp} element={<SignUpForm />} />
               < Route path={valuesLinks.CreateTask} element={<CreateTask />} />
               < Route path={valuesLinks.UserTasks} element={<PaginatedTasksByUser data={user} />} />
               < Route path={valuesLinks.Users + "/:id"} element={<UserCardData />} />
@@ -58,7 +55,6 @@ function App() {
           </Col>
         </Row>
       </Router>
-      <ScrollButton />
     </Container>
   );
 }
