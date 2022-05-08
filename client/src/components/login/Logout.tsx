@@ -1,5 +1,5 @@
 import { Button } from 'primereact/button';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { Row, Col, Container } from 'react-bootstrap';
 import './loginForm.css';
 import axiosFunction from '../functions/axiosFunctions';

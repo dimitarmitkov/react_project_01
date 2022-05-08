@@ -10,14 +10,14 @@ import { valuesLinks } from '../../enumerators';
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
-interface PropsCurrentUser {
+interface CurrentUserProps {
   id?: number;
   role?: string;
   userName?: string;
   any: [];
 }
 
-interface Props {
+interface DeleteTaskModalProps {
   data: {
     taskId: number;
     id: number;
@@ -26,7 +26,7 @@ interface Props {
   onHide: () => void;
 };
 
-interface UserOfAllowedUsers {
+interface UserOfAllowedUsersProps {
   id: number;
 };
 
@@ -41,12 +41,12 @@ interface DeleteTaskModalAppProps {
   firstName: string;
 };
 
-const DeleteTaskModal = (props: Props) => {
+const DeleteTaskModal = (props: DeleteTaskModalProps) => {
   const [showDeleteTaskModal, setShowDeleteTaskModal] = useState(true);
   const [hasError, setHasError] = useState(false);
   const currentTaskId = props.data.taskId ? props.data.taskId : props.data.id;
 
-  const user: PropsCurrentUser = useCurrentLoggedUser()!;
+  const user: CurrentUserProps = useCurrentLoggedUser()!;
 
   const getData = (currentAllowedUsersList: never[]) => {
 
@@ -78,7 +78,7 @@ const DeleteTaskModal = (props: Props) => {
     const url = SERVER_URL + valuesLinks.UserTasks;
     const result = await axios.patch(url, usersQuery);
     const currentData = result.data;
-    const allowedUsers = currentData.map((user: UserOfAllowedUsers) => user.id);
+    const allowedUsers = currentData.map((user: UserOfAllowedUsersProps) => user.id);
 
     try {
       getData(allowedUsers);

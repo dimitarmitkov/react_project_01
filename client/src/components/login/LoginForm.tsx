@@ -10,7 +10,7 @@ import ErrorComponent from '../error/ErrorComponent';
 import { valuesLinks } from '../../enumerators';
 import './loginForm.css';
 
-type FormValues = {
+type FormValuesProps = {
     firstName: string;
     userName: string;
     lastName: string;
@@ -20,11 +20,11 @@ type FormValues = {
 
 const LoginGroup = () => {
 
-    const { register, formState: { errors }, handleSubmit } = useForm<FormValues>();
+    const { register, formState: { errors }, handleSubmit } = useForm<FormValuesProps>();
     const [passwordValue, setPasswordValue] = useState('');
     const [hasError, setHasError] = useState(false);
 
-    const onSubmit: SubmitHandler<FormValues> = data => {
+    const onSubmit: SubmitHandler<FormValuesProps> = data => {
 
         const query = {
             insertEmail: data.email,
