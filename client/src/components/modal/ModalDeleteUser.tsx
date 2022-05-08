@@ -6,7 +6,7 @@ import axiosFunction from '../functions/axiosFunctions';
 import ErrorComponent from '../error/ErrorComponent';
 import { valuesLinks } from '../../enumerators';
 
-interface Props{
+interface DeleteUserModalProps{
   data:{
     id: number;
     firstName: string;
@@ -25,7 +25,7 @@ interface DeleteUserModalAppProps {
     id: number;
 };
 
-const DeleteUserModal = (props: Props) => {
+const DeleteUserModal = (props: DeleteUserModalProps) => {
   const [show, setShow] = useState(true);
   const [hasError, setHasError] = useState(false);
 
@@ -88,8 +88,6 @@ const DeleteUserModal = (props: Props) => {
     return <ErrorComponent />
   }
 }
-
-
 
 const DeleteUserModalApp = (props: DeleteUserModalAppProps) => {
   const [modalShow, setModalShow] = useState(false);
