@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button } from 'primereact/button';
 import { Container, Navbar, Nav, Row, Col } from 'react-bootstrap';
 import './navbarData.css';
-import CurrentLoggedUser from '../functions/currentLoggedUser';
+import useCurrentLoggedUser from '../functions/currentLoggedUser';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -22,7 +22,7 @@ const NavbarMenu: React.FunctionComponent = () => {
 
     const navigate = useNavigate();
 
-    const user: PropsCurrentUser = CurrentLoggedUser()!;
+    const user: PropsCurrentUser = useCurrentLoggedUser()!;
 
     const clickHandler = (data: string) => {
 

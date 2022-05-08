@@ -2,7 +2,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import CurrentLoggedUser from '../functions/currentLoggedUser';
+import useCurrentLoggedUser from '../functions/currentLoggedUser';
 import CurrentUserCardData from './currentUserData';
 import UserElement from './UserCardDataMain';
 import './userCard.css';
@@ -43,7 +43,7 @@ const CurrentUserCard = () => {
     const { id } = useParams();
     const user: PropsUser = CurrentUserCardData(id);
 
-    const currentUser: PropsCurrentUser = CurrentLoggedUser()!;
+    const currentUser: PropsCurrentUser = useCurrentLoggedUser()!;
 
     interface OnImageChangeProps extends Blob {
         name:string;

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import { Button, DropdownButton, Dropdown, Form, Container, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
-import CurrentLoggedUser from '../functions/currentLoggedUser';
+import useCurrentLoggedUser from '../functions/currentLoggedUser';
 import './modalTask.css';
 import DeleteTaskModalApp from './ModalDeleteTask';
 import { Link } from 'react-router-dom';
@@ -60,7 +60,7 @@ const VerticallyCenteredModal = (props: Props) => {
     const [allowedUsers, setAllowedUsers] = useState([]);
     const [hasError, setHasError] = useState(false);
 
-    const user: CurrentUserProps = CurrentLoggedUser()!;
+    const user: CurrentUserProps = useCurrentLoggedUser()!;
     const currentDate = new Date(Date.now()).toISOString();
 
     let queryData = {};

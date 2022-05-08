@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Container, Row } from 'react-bootstrap';
-import CurrentLoggedUser from '../functions/currentLoggedUser';
+import useCurrentLoggedUser from '../functions/currentLoggedUser';
 import './sidebarFive.css';
 import WebsocketData from '../ws/websocket';
 import { useNavigate } from 'react-router-dom';
@@ -16,7 +16,7 @@ const SidebarFive = () => {
 
     const navigate = useNavigate();
 
-    const user: PropsCurrentUser = CurrentLoggedUser()!;
+    const user: PropsCurrentUser = useCurrentLoggedUser()!;
 
     const clickHandler = (data: string) => {
 

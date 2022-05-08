@@ -1,22 +1,15 @@
 import { useEffect, useState } from 'react';
-import CurrentLoggedUser from '../functions/currentLoggedUser';
+import useCurrentLoggedUser from '../functions/currentLoggedUser';
 import { FormCheck, Row } from 'react-bootstrap';
 import './websocket.css';
 import ErrorComponent from '../error/ErrorComponent';
 import configData from '../../config.json';
-import { isNativeError } from 'util/types';
 
-interface IncomingMessage {
-  action: string;
-  allowedList: [];
-  main: {}
-};
-
-interface PropsElement {
+interface ElementProps {
   type: JSX.Element;
 };
 
-interface PropsCurrentUser {
+interface CurrentUserProps {
   id?: number;
   role?: string;
   userName?: string;
@@ -50,10 +43,10 @@ const ws = new WebSocket(configData.WEBSOCKET_URL);
 const WebsocketData = () => {
 
   const [messageList, setMessageList] = useState<MessageParsedValueProps[]>([]);
-  const [messageListElement, setMessageListElement] = useState<PropsElement>();
+  const [messageListElement, setMessageListElement] = useState<ElementProps>();
   const [hasError, setHasError] = useState(false);
 
-  const user: PropsCurrentUser = CurrentLoggedUser()!;
+  const user: CurrentUserProps = useCurrentLoggedUser()!;
 
   const handleChange = (props: string) => {
 

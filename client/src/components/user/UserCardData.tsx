@@ -1,7 +1,7 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import CurrentLoggedUser from '../functions/currentLoggedUser';
+import useCurrentLoggedUser from '../functions/currentLoggedUser';
 import { useNavigate } from 'react-router-dom';
 import CurrentUserCardData from './currentUserData';
 import UserElement from './UserCardDataMain';
@@ -47,7 +47,7 @@ const UserCard = () => {
     const { id } = useParams();
     const user: PropsUser = CurrentUserCardData(id);
 
-    const currentUser : PropsCurrentUser = CurrentLoggedUser()!;
+    const currentUser : PropsCurrentUser = useCurrentLoggedUser()!;
 
 
     const onImageChange = (props: OnImageChangeProps) => {

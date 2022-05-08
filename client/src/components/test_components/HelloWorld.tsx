@@ -1,4 +1,4 @@
-import CurrentLoggedUser from '../functions/currentLoggedUser';
+import useCurrentLoggedUser from '../functions/currentLoggedUser';
 import ErrorComponent from '../error/ErrorComponent';
 
 interface PropsCurrentUser {
@@ -9,7 +9,7 @@ interface PropsCurrentUser {
 
 const Hello = () => {
 
-    const user: PropsCurrentUser = CurrentLoggedUser()!;
+    const user: PropsCurrentUser = useCurrentLoggedUser()!;
 
     if (user) {
 

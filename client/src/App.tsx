@@ -16,7 +16,7 @@ import PaginatedTasks from './components/paginate/PaginatedTasks';
 import PaginatedUsers from './components/paginate/PaginatedUsers';
 import PaginatedTasksByUser from './components/paginate/PaginatedTasksByUser';
 import CreateTask from './components/createTask/CreateTask';
-import CurrentLoggedUser from './components/functions/currentLoggedUser';
+import useCurrentLoggedUser from './components/functions/currentLoggedUser';
 import UserCardData from './components/user/UserCardData';
 import CurrentUserCard from './components/user/CurrentUserDataCard';
 import WebsocketData from './components/ws/websocket';
@@ -25,7 +25,7 @@ import { valuesLinks } from './enumerators';
 
 function App() {
 
-  const user = CurrentLoggedUser()!;
+  const user = useCurrentLoggedUser()!;
 
   return (
     <Container fluid>

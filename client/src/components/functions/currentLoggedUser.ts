@@ -4,7 +4,7 @@ import { valuesLinks } from '../../enumerators';
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
-const CurrentLoggedUser = () => {
+const useCurrentLoggedUser = () => {
 
     const [user, setUser] = useState();
 
@@ -29,4 +29,4 @@ const CurrentLoggedUser = () => {
     return user;
 }
 
-export default CurrentLoggedUser;
+export default useCurrentLoggedUser;

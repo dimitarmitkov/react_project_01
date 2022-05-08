@@ -3,7 +3,7 @@ import './userCard.css';
 import { Row, Col, Container } from 'react-bootstrap';
 import EditUserApp from './EditUser';
 import DeleteUserModalApp from '../modal/ModalDeleteUser';
-import CurrentLoggedUser from '../functions/currentLoggedUser';
+import useCurrentLoggedUser from '../functions/currentLoggedUser';
 import { valuesLinks, valuesUsersTypes } from '../../enumerators';
 
 interface PropsCurrentUser {
@@ -28,7 +28,7 @@ interface EntryProps {
 const UsersCard = (props: EntryProps) => {
     const user = props.user;
 
-    const userLogged: PropsCurrentUser = CurrentLoggedUser()!;
+    const userLogged: PropsCurrentUser = useCurrentLoggedUser()!;
     const isAdmin = userLogged && userLogged.role === valuesUsersTypes.Admin;
 
     return (

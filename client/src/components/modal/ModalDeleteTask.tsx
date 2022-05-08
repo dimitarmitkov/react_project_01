@@ -3,7 +3,7 @@ import Modal from 'react-bootstrap/Modal';
 import ButtonBs from 'react-bootstrap/Button';
 import axiosFunction from '../functions/axiosFunctions';
 import './modalDelete.css';
-import CurrentLoggedUser from '../functions/currentLoggedUser';
+import useCurrentLoggedUser from '../functions/currentLoggedUser';
 import ErrorComponent from '../error/ErrorComponent';
 import axios from 'axios';
 import { valuesLinks } from '../../enumerators';
@@ -46,7 +46,7 @@ const DeleteTaskModal = (props: Props) => {
   const [hasError, setHasError] = useState(false);
   const currentTaskId = props.data.taskId ? props.data.taskId : props.data.id;
 
-  const user: PropsCurrentUser = CurrentLoggedUser()!;
+  const user: PropsCurrentUser = useCurrentLoggedUser()!;
 
   const getData = (currentAllowedUsersList: never[]) => {
 

@@ -3,7 +3,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
-import CurrentLoggedUser from '../functions/currentLoggedUser';
+import useCurrentLoggedUser from '../functions/currentLoggedUser';
 import { Button } from "primereact/button";
 import ErrorComponent from '../error/ErrorComponent';
 import { valuesProgress, valuesTaskType, valuesLinks } from '../../enumerators';
@@ -34,7 +34,7 @@ const CreateTaskGroup = () => {
     const [selectValues, setSelectValues] = useState(undefined);
     const [hasError, setHasError] = useState(false);
 
-    const user: CurrentUserProps = CurrentLoggedUser()!;
+    const user: CurrentUserProps = useCurrentLoggedUser()!;
     const nameValues = Object.keys(valuesTaskType);
 
 
