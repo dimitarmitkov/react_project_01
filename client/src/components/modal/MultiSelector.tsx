@@ -39,6 +39,11 @@ interface UserOfUsersProps {
     label: string;
 };
 
+interface CurrentOptionProps {
+    isSelected: boolean;
+    label: string;
+}
+
 const Option = (props: any) => {
     return (
         <div>
@@ -58,7 +63,13 @@ const Option = (props: any) => {
 
 interface UserOfAllowedUsersList {
     id: number;
-}
+};
+
+
+// interface SelectedProps{
+//     value: number;
+//     label: string;
+// };
 
 const MultiSelector = (props: MultiSelectorProps) => {
 
@@ -71,7 +82,7 @@ const MultiSelector = (props: MultiSelectorProps) => {
     const taskIdGlobal = props.taskId ? props.taskId : props.id;
 
     const [users, setUsers] = useState<never[]>([]);
-    const [optionSelected, setOptionSelected] = useState(null);
+    const [optionSelected, setOptionSelected] = useState<[]>([]);
     const [allowedUsers, setAllowedUsers] = useState([]);
 
     const getAllowedUsers = async (currentTaskId: number) => {
@@ -112,8 +123,6 @@ const MultiSelector = (props: MultiSelectorProps) => {
     }, [taskIdGlobal]);
 
     if (users.length > 0) {
-
-        
 
         const handleChange = (selected: any) => {
             setOptionSelected(selected);
@@ -157,6 +166,7 @@ const MultiSelector = (props: MultiSelectorProps) => {
             >
                 <Row>
                     <Col sm={9} className="mt-3">
+                        {/* <ReactSelect options={users} isMulti closeMenuOnSelect={false} hideSelectedOptions={false} components={{ Option }} onChange={(e: SelectedProps[])=>{handleChange(e)}} value={optionSelected} /> */}
                         <ReactSelect options={users} isMulti closeMenuOnSelect={false} hideSelectedOptions={false} components={{ Option }} onChange={handleChange} value={optionSelected} />
                     </Col>
 

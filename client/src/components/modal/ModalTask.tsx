@@ -15,15 +15,15 @@ const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
 const ws = new WebSocket(configData.WEBSOCKET_URL);
 
-interface PropsShowUsers {
+interface ShowUsersProps {
     type: JSX.Element;
 };
 
-interface PropsActionDataObj {
+interface ActionDataObjProps {
     [propName: string]: {}
 };
 
-interface PropsCurrentUser {
+interface CurrentUserProps {
     id?: number;
     role?: string;
     userName?: string;
@@ -45,27 +45,27 @@ interface Props {
     show: boolean;
 };
 
-interface NameOfNameList{
+interface NameOfNameListProps{
     id: number;
     firstName: string;
     lastName: string;
 };
 
-interface UserOfAllowedUsersList{
+interface UserOfAllowedUsersListProps{
     id: number;
 };
 
 const VerticallyCenteredModal = (props: Props) => {
-    const [showUsers, setShowUsers] = useState<PropsShowUsers>();
+    const [showUsers, setShowUsers] = useState<ShowUsersProps>();
     const [allowedUsers, setAllowedUsers] = useState([]);
     const [hasError, setHasError] = useState(false);
 
-    const user: PropsCurrentUser = CurrentLoggedUser()!;
+    const user: CurrentUserProps = CurrentLoggedUser()!;
     const currentDate = new Date(Date.now()).toISOString();
 
     let queryData = {};
 
-    const actionDataObject: PropsActionDataObj = user ? {
+    const actionDataObject: ActionDataObjProps = user ? {
         initial: { initiatedAt: currentDate, initiatedByUserId: props.data.userId ? props.data.userId : user.id },
         selected: { selectedAt: currentDate, selectedByUserId: props.data.userId ? props.data.userId : user.id },
         progress: { progressAt: currentDate, progressByUserId: props.data.userId ? props.data.userId : user.id },
@@ -99,13 +99,11 @@ const VerticallyCenteredModal = (props: Props) => {
         axios.patch(url, usersQuery)
             .then(result => {
 
-                
-
                 const currentData = result.data;
 
                 const NamesList = () => (
                     <div>
-                        <ul>{currentData.map((name: NameOfNameList) =>
+                        <ul>{currentData.map((name: NameOfNameListProps) =>
                             <li key={name.id}>
                                 {user && user.role === valuesUsersTypes.Admin ? <Link to={`${valuesLinks.Users}/${name.id}`}>{name.firstName} {name.lastName} </Link> :
                                     <div>{name.firstName} {name.lastName} </div>}
@@ -114,12 +112,8 @@ const VerticallyCenteredModal = (props: Props) => {
                     </div>
                 );
 
-                const allowedUsersList = () => (
-                    currentData.map((user: UserOfAllowedUsersList) => user.id)
-                );
-
                 setShowUsers(NamesList);
-                setAllowedUsers(allowedUsersList);
+                setAllowedUsers(currentData.map((user: UserOfAllowedUsersListProps) => user.id));
             })
             .catch(err => setHasError(true));
     }
@@ -154,7 +148,7 @@ const VerticallyCenteredModal = (props: Props) => {
         return showUsers;
     }
 
-    let dropdownButtonsArray = props.data.taskType === valuesTaskType.Project ? valuesProjectProgress.map((element: string, k: number) => {
+    const dropdownButtonsArray = props.data.taskType === valuesTaskType.Project ? valuesProjectProgress.map((element: string, k: number) => {
         return <Dropdown.Item as="button" key={'bbd' + k}>{element}</Dropdown.Item>
     }) :
         valuesMeetingProgress.map((element: string, k: number) => {

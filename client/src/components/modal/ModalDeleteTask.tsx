@@ -26,19 +26,19 @@ interface Props {
   onHide: () => void;
 };
 
-interface UserOfAllowedUsers{
+interface UserOfAllowedUsers {
   id: number;
-}; 
+};
 
-interface DeleteTaskModalAppProps{
-    userId: number;
-    taskId: number;
-    id: number;
-    taskType: string;
-    taskName: string;
-    taskProgress: string;
-    createdAt: string;
-    firstName: string;
+interface DeleteTaskModalAppProps {
+  userId: number;
+  taskId: number;
+  id: number;
+  taskType: string;
+  taskName: string;
+  taskProgress: string;
+  createdAt: string;
+  firstName: string;
 };
 
 const DeleteTaskModal = (props: Props) => {
@@ -61,7 +61,7 @@ const DeleteTaskModal = (props: Props) => {
     }
   }
 
-  const HandleDiscardDeleteTask = () => {
+  const handleDiscardDeleteTask = () => {
 
     try {
       setShowDeleteTaskModal(false);
@@ -70,9 +70,9 @@ const DeleteTaskModal = (props: Props) => {
     }
   }
 
-  
 
-  const HandleDeleteTask = async () => {
+
+  const handleDeleteTask = async () => {
 
     const usersQuery = { idData: currentTaskId };
     const url = SERVER_URL + valuesLinks.UserTasks;
@@ -94,7 +94,7 @@ const DeleteTaskModal = (props: Props) => {
       <>
         <Modal {...props} show={showDeleteTaskModal}>
 
-          <Modal.Header closeButton onClick={HandleDiscardDeleteTask}>
+          <Modal.Header closeButton onClick={handleDiscardDeleteTask}>
             <Modal.Title>Delete Task {props.data.firstName}</Modal.Title>
           </Modal.Header>
 
@@ -108,7 +108,7 @@ const DeleteTaskModal = (props: Props) => {
               Discard
             </ButtonBs>
 
-            <ButtonBs variant="danger" onClick={HandleDeleteTask}>
+            <ButtonBs variant="danger" onClick={handleDeleteTask}>
               Delete
             </ButtonBs>
           </Modal.Footer>

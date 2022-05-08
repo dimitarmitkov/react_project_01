@@ -9,14 +9,14 @@ import ErrorComponent from '../error/ErrorComponent';
 import { valuesProgress, valuesTaskType, valuesLinks } from '../../enumerators';
 import axiosFunction from '../functions/axiosFunctions';
 
-type PropsFormValues = {
+type FormValuesProps = {
     taskType: string;
     taskName: string;
     taskProgress: string;
     initiatedByUserId: string;
 };
 
-interface PropsCurrentUser {
+interface CurrentUserProps {
     id?: number;
     role?: string;
     userName?: string;
@@ -30,11 +30,11 @@ interface OnValuesChangeProps {
 
 const CreateTaskGroup = () => {
 
-    const { register, handleSubmit } = useForm<PropsFormValues>();
+    const { register, handleSubmit } = useForm<FormValuesProps>();
     const [selectValues, setSelectValues] = useState(undefined);
     const [hasError, setHasError] = useState(false);
 
-    const user: PropsCurrentUser = CurrentLoggedUser()!;
+    const user: CurrentUserProps = CurrentLoggedUser()!;
     const nameValues = Object.keys(valuesTaskType);
 
 
@@ -54,7 +54,7 @@ const CreateTaskGroup = () => {
         }
     };
 
-    const onSubmit: SubmitHandler<PropsFormValues> = async data => {
+    const onSubmit: SubmitHandler<FormValuesProps> = async data => {
 
         const query = {
             taskType: selectValues,

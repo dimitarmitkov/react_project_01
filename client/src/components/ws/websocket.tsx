@@ -14,13 +14,34 @@ interface IncomingMessage {
 
 interface PropsElement {
   type: JSX.Element;
-}
+};
 
 interface PropsCurrentUser {
-    id?: number;
-    role?: string;
-    userName?: string;
-}
+  id?: number;
+  role?: string;
+  userName?: string;
+};
+
+interface MessageParsedValueProps {
+  action: string;
+  type: string;
+  allowedList: [];
+  generator: {
+    userGeneratorId: number;
+    userGeneratorName: string;
+    userGeneratorRole: string;
+  }
+  main: {
+    createdAt: string;
+    id: number;
+    initiatedByUserId: number;
+    taskName: string;
+    taskProgress: string;
+    taskType: string;
+    taskId: number;
+    firstName: string
+  }
+};
 
 let storedNames: string[] = [];
 
@@ -28,7 +49,7 @@ const ws = new WebSocket(configData.WEBSOCKET_URL);
 
 const WebsocketData = () => {
 
-  const [messageList, setMessageList] = useState<IncomingMessage[]>([]);
+  const [messageList, setMessageList] = useState<MessageParsedValueProps[]>([]);
   const [messageListElement, setMessageListElement] = useState<PropsElement>();
   const [hasError, setHasError] = useState(false);
 
@@ -65,14 +86,16 @@ const WebsocketData = () => {
       }));
     };
 
-    ws.onmessage = (evt: any) => {
-      const messageReceived: {type: string, serverMessage: [] } = JSON.parse(evt.data);
+    ws.onmessage = (evt: MessageEvent) => {
+      const messageReceived: { type: string, serverMessage: [] } = JSON.parse(evt.data);
+
 
       if (messageReceived.type === 'fromServer' && (messageReceived.serverMessage).length > 0) {
-        const mappingArray: IncomingMessage[] = [];
+        const mappingArray: MessageParsedValueProps[] = [];
         messageReceived.serverMessage.forEach((message: string) => {
-          const messageParsedValue = JSON.parse(message);
+          const messageParsedValue: MessageParsedValueProps = JSON.parse(message);
           if (messageParsedValue.type !== 'userEvent') {
+
             mappingArray.push(messageParsedValue);
           }
         })
@@ -83,62 +106,56 @@ const WebsocketData = () => {
         }
       }
 
-      const hasUserId = user ? user.id : null;
-      const hasUserName = user ? user.userName : null;
+      if(user.id !== undefined){
 
-      interface MessageListProps extends IncomingMessage{
-          createdAt: string;
-          taskName: string;
-          taskType: string;
-          firstName: string;
-          taskId: number;
-      }
+        const hasUserId = user.id! as never;
+        const hasUserName = user.userName;
 
-      const MessagesList = () => (
+        const MessagesList = () => (
 
-        <Row className="sidebar-row">
-          {messageList.length > 0 ?
-            // <ul>{messageList.map((message: IncomingMessage) =>
-            <ul>{messageList.map((message: any) =>
-              ((message.allowedList).includes(hasUserId) && message.action !== "added") && (!storedNames.includes(`${Date.parse(message.main.createdAt)}_${message.action}_${hasUserName}`)) ?
-                <div key={message.main.taskName + message.main.createdAt + message.action} id={`task_${Date.parse(message.main.createdAt)}_${message.action}_${hasUserName}`} className="websocket-show">
-                  <li>
-                    <div>
-                      <span id="task-span">{message.main.taskType}</span>
-                      &nbsp;'{message.main.taskName}'&nbsp;was changed by&nbsp;
-                      <span id="user-span">{message.generator.userGeneratorName ? message.generator.userGeneratorName : hasUserName}</span>
-                      ,&nbsp;new status:&nbsp;
-                      <span id="message-span">{message.action}</span>
-                      <FormCheck type="checkbox" id={`default-${message.main.taskId}`} label={`dismiss`} onChange={() => handleChange(`${Date.parse(message.main.createdAt)}_${message.action}_${hasUserName}`)} />
-                    </div>
-                  </li>
-                </div>
-                :
-                ((message.allowedList).includes(hasUserId) && message.action === "added") && (!storedNames.includes(`${Date.parse(message.main.createdAt)}_${message.action}_${message.main.firstName}`)) ?
-                  <div key={message.main.taskName + message.main.createdAt + message.action + message.main.firstName.replace(/\s/g, "")}
-                    id={`task_${Date.parse(message.main.createdAt)}_${message.action}_${message.main.firstName}`} className="websocket-show"> 
+          <Row className="sidebar-row">
+            {messageList.length > 0 ?
+              <ul>{messageList.map((message: MessageParsedValueProps) =>
+                ((message.allowedList).includes(hasUserId) && message.action !== "added") && (!storedNames.includes(`${Date.parse(message.main.createdAt)}_${message.action}_${hasUserName}`)) ?
+                  <div key={message.main.taskName + message.main.createdAt + message.action} id={`task_${Date.parse(message.main.createdAt)}_${message.action}_${hasUserName}`} className="websocket-show">
                     <li>
                       <div>
                         <span id="task-span">{message.main.taskType}</span>
-                        &nbsp; '{message.main.taskName}'&nbsp;was changed, new user &nbsp;
-                        <span id="user-span">{message.main.firstName}</span>
-                        , was&nbsp;
+                        &nbsp;'{message.main.taskName}'&nbsp;was changed by&nbsp;
+                        <span id="user-span">{message.generator.userGeneratorName ? message.generator.userGeneratorName : hasUserName}</span>
+                        ,&nbsp;new status:&nbsp;
                         <span id="message-span">{message.action}</span>
-                        <FormCheck type="checkbox" id={`default-${message.main.taskId}`} label={`dismiss`} onChange={() => handleChange(`${Date.parse(message.main.createdAt)}_${message.action}_${message.main.firstName}`)} />
+                        <FormCheck type="checkbox" id={`default-${message.main.taskId}`} label={`dismiss`} onChange={() => handleChange(`${Date.parse(message.main.createdAt)}_${message.action}_${hasUserName}`)} />
                       </div>
                     </li>
                   </div>
-                  : null
-            )}</ul>
-            : <div>no messages</div>
-          }
-        </Row>
-      );
+                  :
+                  ((message.allowedList).includes(hasUserId) && message.action === "added") && (!storedNames.includes(`${Date.parse(message.main.createdAt)}_${message.action}_${message.main.firstName}`)) ?
+                    <div key={message.main.taskName + message.main.createdAt + message.action + message.main.firstName.replace(/\s/g, "")}
+                      id={`task_${Date.parse(message.main.createdAt)}_${message.action}_${message.main.firstName}`} className="websocket-show">
+                      <li>
+                        <div>
+                          <span id="task-span">{message.main.taskType}</span>
+                          &nbsp; '{message.main.taskName}'&nbsp;was changed, new user &nbsp;
+                          <span id="user-span">{message.main.firstName}</span>
+                          , was&nbsp;
+                          <span id="message-span">{message.action}</span>
+                          <FormCheck type="checkbox" id={`default-${message.main.taskId}`} label={`dismiss`} onChange={() => handleChange(`${Date.parse(message.main.createdAt)}_${message.action}_${message.main.firstName}`)} />
+                        </div>
+                      </li>
+                    </div>
+                    : null
+              )}</ul>
+              : <div>no messages</div>
+            }
+          </Row>
+        );
 
-      try {
-        setMessageListElement(MessagesList);
-      } catch (error) {
-        setHasError(true);
+        try {
+          setMessageListElement(MessagesList);
+        } catch (error) {
+          setHasError(true);
+        }
       }
     }
 
