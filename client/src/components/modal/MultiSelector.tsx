@@ -39,10 +39,9 @@ interface UserOfUsersProps {
     label: string;
 };
 
-interface CurrentOptionProps {
-    isSelected: boolean;
-    label: string;
-}
+interface UserOfAllowedUsersListProps {
+    id: number;
+};
 
 const Option = (props: any) => {
     return (
@@ -61,15 +60,7 @@ const Option = (props: any) => {
 
 
 
-interface UserOfAllowedUsersList {
-    id: number;
-};
 
-
-// interface SelectedProps{
-//     value: number;
-//     label: string;
-// };
 
 const MultiSelector = (props: MultiSelectorProps) => {
 
@@ -95,7 +86,7 @@ const MultiSelector = (props: MultiSelectorProps) => {
 
         if (currentData.length > 0) {
             const allowedUsersList = () => (
-                currentData.map((user: UserOfAllowedUsersList) => user.id)
+                currentData.map((user: UserOfAllowedUsersListProps) => user.id)
             );
 
             setAllowedUsers(allowedUsersList);
@@ -104,8 +95,6 @@ const MultiSelector = (props: MultiSelectorProps) => {
             toast('No users attached to this task.');
         }
     }
-
-
 
     const getUsers = async () => {
 
@@ -134,11 +123,8 @@ const MultiSelector = (props: MultiSelectorProps) => {
             const urlLogData = SERVER_URL + valuesLinks.UserTasks;
             const queryLogData = { userIdArray: resArray, taskId: taskIdGlobal }
 
-
             const result = await axios.put(urlLogData, queryLogData);
             if (result.status === 200) {
-
-
 
                 const idArray = result.data.map((r: IdArrayResultProps) => r.userId);
                 const resultAllowedUsersArray = [...allowedUsers, ...idArray];
