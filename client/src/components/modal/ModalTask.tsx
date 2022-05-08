@@ -29,7 +29,7 @@ interface CurrentUserProps {
     userName?: string;
 };
 
-interface Props {
+interface VerticallyCenteredModalProps {
     data: {
         userId: number;
         taskId: number;
@@ -45,17 +45,28 @@ interface Props {
     show: boolean;
 };
 
-interface NameOfNameListProps{
+interface NameOfNameListProps {
     id: number;
     firstName: string;
     lastName: string;
 };
 
-interface UserOfAllowedUsersListProps{
+interface UserOfAllowedUsersListProps {
     id: number;
 };
 
-const VerticallyCenteredModal = (props: Props) => {
+interface ModalAppProps {
+    userId: number;
+    taskId: number;
+    id: number;
+    taskType: string;
+    taskName: string;
+    taskProgress: string;
+    createdAt: string;
+    firstName: string;
+};
+
+const VerticallyCenteredModal = (props: VerticallyCenteredModalProps) => {
     const [showUsers, setShowUsers] = useState<ShowUsersProps>();
     const [allowedUsers, setAllowedUsers] = useState([]);
     const [hasError, setHasError] = useState(false);
@@ -217,17 +228,6 @@ const VerticallyCenteredModal = (props: Props) => {
     } else {
         return <ErrorComponent />
     }
-}
-
-interface ModalAppProps {
-    userId: number;
-    taskId: number;
-    id: number;
-    taskType: string;
-    taskName: string;
-    taskProgress: string;
-    createdAt: string;
-    firstName: string;
 }
 
 const ModalApp = (props: ModalAppProps) => {
