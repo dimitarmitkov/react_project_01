@@ -1,7 +1,7 @@
 import { Card } from 'react-bootstrap';
 import ModalApp from '../modal/ModalTask';
-import './tasks.css';
 import { valuesTaskType } from '../../enumerators';
+import './tasks.css';
 
 interface TaskCardProp {
     taskType: string;
