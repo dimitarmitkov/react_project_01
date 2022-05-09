@@ -145,7 +145,6 @@ const MultiSelector = (props: MultiSelectorProps) => {
             >
                 <Row>
                     <Col sm={9} className="mt-3">
-                        {/* <ReactSelect options={users} isMulti closeMenuOnSelect={false} hideSelectedOptions={false} components={{ Option }} onChange={(e: SelectedProps[])=>{handleChange(e)}} value={optionSelected} /> */}
                         <ReactSelect options={users} isMulti closeMenuOnSelect={false} hideSelectedOptions={false} components={{ Option }} onChange={handleChange} value={optionSelected} />
                     </Col>
 

@@ -149,17 +149,6 @@ const VerticallyCenteredModal = (props: VerticallyCenteredModalProps) => {
         }
     };
 
-    const showRelatedUsers = (props: number) => {
-
-        try {
-            getUsers(props);
-        } catch (error) {
-            setHasError(true);
-        }
-
-        return showUsers;
-    }
-
     const dropdownButtonsArray = props.data.taskType === valuesTaskType.Project ? valuesProjectProgress.map((element: string, k: number) => {
         return <Dropdown.Item as="button" key={'bbd' + k}>{element}</Dropdown.Item>
     }) :
@@ -176,7 +165,7 @@ const VerticallyCenteredModal = (props: VerticallyCenteredModalProps) => {
                 size="lg"
                 aria-labelledby="contained-modal-title-vcenter"
                 centered
-                onShow={() => showRelatedUsers(props.data.taskId ? props.data.taskId : props.data.id)}
+                onShow={() => getUsers(props.data.taskId ? props.data.taskId : props.data.id)}
             >
                 <Modal.Header>
                     <Modal.Title id="contained-modal-title-vcenter">

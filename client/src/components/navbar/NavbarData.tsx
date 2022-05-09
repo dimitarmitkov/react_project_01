@@ -43,7 +43,7 @@ const NavbarMenu: React.FunctionComponent = () => {
                 </Row>
             )
         } else {
-            return (null)
+            return (null);
         }
     }
 
