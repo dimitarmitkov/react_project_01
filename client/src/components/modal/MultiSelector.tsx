@@ -1,10 +1,10 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Button, Row, Col } from 'react-bootstrap';
 import { default as ReactSelect } from 'react-select';
 import { components } from 'react-select';
 import { ToastContainer, toast } from 'react-toastify';
 import { valuesLinks } from '../../enumerators';
+import axios from 'axios';
 import configData from '../../config.json';
 import './multiSelector.css';
 import 'react-toastify/dist/ReactToastify.css';

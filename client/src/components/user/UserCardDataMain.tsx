@@ -3,7 +3,7 @@ import { Password } from 'primereact/password';
 import { Row, Col, Container, Image, Form } from 'react-bootstrap';
 import { Checkbox } from 'primereact/checkbox';
 import { valuesUsersTypes } from '../../enumerators';
-import { SubmitHandler } from 'react-hook-form';
+import { FieldError, SubmitHandler } from 'react-hook-form';
 
 interface UserProps {
     [propName: string]: string;
@@ -23,9 +23,19 @@ interface OnImageChangeProps extends Blob {
     name:string;
 }; 
 
-const UserElement = (user: UserProps, handleSubmit: any, onSubmit: SubmitHandler<FormValuesProps>, onImageChange: (props: OnImageChangeProps) => void, allowPasswordChange: boolean, changePasswordSelected: boolean, 
+interface ErrorsProps {
+        firstName?: FieldError | undefined;
+        userName?: FieldError | undefined;
+        lastName?: FieldError | undefined;
+        password?: FieldError | undefined;
+        email?: FieldError | undefined;
+        role?: FieldError | undefined;
+        picture?: FieldError | undefined;
+};
+
+const UserElement = (user: UserProps, handleSubmit: FormValuesProps | any, onSubmit: SubmitHandler<FormValuesProps>, onImageChange: (props: OnImageChangeProps) => void, allowPasswordChange: boolean, changePasswordSelected: boolean, 
     setChangePasswordSelected: React.Dispatch<React.SetStateAction<boolean>>, passwordValue : string,
-    setPasswordValue: React.Dispatch<React.SetStateAction<string>>, errors: any, currentUserPicture: string, editUserRoute: () => void) => {
+    setPasswordValue: React.Dispatch<React.SetStateAction<string>>, errors: ErrorsProps, currentUserPicture: string, editUserRoute: () => void) => {
     
         return (
             <>
