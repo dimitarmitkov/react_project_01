@@ -1,18 +1,18 @@
-import axios from 'axios';
-import capitalizeFirstLetter from '../functions/capitalizeFirstLetter';
 import { Button } from 'primereact/button';
 import { Card, Col, Row } from 'react-bootstrap';
 import { Dropdown } from 'primereact/dropdown';
-import ReactPaginate from 'react-paginate';
-import TasksCard from '../tasks/TasksCard';
 import { Checkbox } from 'primereact/checkbox';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { valuesLinks, valuesPages, valuesProgress, valuesTaskType, valuesUsersTypes } from '../../enumerators';
+import axios from 'axios';
+import capitalizeFirstLetter from '../functions/capitalizeFirstLetter';
+import ErrorComponent from '../error/ErrorComponent';
+import ReactPaginate from 'react-paginate';
+import TasksCard from '../tasks/TasksCard';
 import './DropdownButton.css';
 import './paginate.css';
 import 'primereact/resources/themes/my-buttons/theme.css';
-import ErrorComponent from '../error/ErrorComponent';
-import { valuesLinks, valuesPages, valuesProgress, valuesTaskType, valuesUsersTypes } from '../../enumerators';
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 

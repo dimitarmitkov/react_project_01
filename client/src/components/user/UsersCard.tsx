@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
 import { Row, Col, Container } from 'react-bootstrap';
+import { valuesLinks, valuesUsersTypes } from '../../enumerators';
 import EditUserApp from './EditUser';
 import DeleteUserModalApp from '../modal/ModalDeleteUser';
-import useCurrentLoggedUser from '../../hooks/setCurrentLoggedUser';
-import { valuesLinks, valuesUsersTypes } from '../../enumerators';
+import useCurrentLoggedUser from '../../hooks/useCurrentLoggedUser';
 import './userCard.css';
 
 interface CurrentUserProps {

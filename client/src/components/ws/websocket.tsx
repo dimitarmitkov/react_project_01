@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import useCurrentLoggedUser from '../../hooks/setCurrentLoggedUser';
+import useCurrentLoggedUser from '../../hooks/useCurrentLoggedUser';
 import { FormCheck, Row } from 'react-bootstrap';
 import './websocket.css';
 import ErrorComponent from '../error/ErrorComponent';
@@ -152,26 +152,7 @@ const WebsocketData = () => {
 
       } catch (error) {
         console.log(error);
-        // console.log(window.location.pathname);
-
-        if (error instanceof Error) {
-          if (window.location.pathname !== '/login' && error.message.includes('Cannot read properties of undefined (reading \'id\')')) {
-
-            setTimeout(()=>{ 
-              if(!user){
-    
-                window.location.reload();
-              }
-        }, 5000);
-
-
-            // setTimeout(()=>{ 
-            //   window.location.reload();
-            // }, 5000);
-          }
-        }
       }
-
     }
 
     ws.onerror = () => {
@@ -193,8 +174,7 @@ const WebsocketData = () => {
     );
   } else {
 
-    // return <ErrorComponent />
-    return <h5>Mitko</h5>
+    return <ErrorComponent />
   }
 }
 

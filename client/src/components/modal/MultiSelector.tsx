@@ -3,11 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { Button, Row, Col } from 'react-bootstrap';
 import { default as ReactSelect } from 'react-select';
 import { components } from 'react-select';
-import './multiSelector.css';
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import configData from '../../config.json';
 import { valuesLinks } from '../../enumerators';
+import configData from '../../config.json';
+import './multiSelector.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 const ws = new WebSocket(configData.WEBSOCKET_URL);

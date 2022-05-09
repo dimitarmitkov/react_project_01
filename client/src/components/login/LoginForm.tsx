@@ -5,9 +5,9 @@ import { Password } from 'primereact/password';
 import { Link } from "react-router-dom";
 import { Row, Col, Container } from 'react-bootstrap';
 import { useState } from "react";
+import { valuesLinks } from '../../enumerators';
 import axiosFunction from '../../utils/axiosFunctions';
 import ErrorComponent from '../error/ErrorComponent';
-import { valuesLinks } from '../../enumerators';
 import './loginForm.css';
 
 type FormValuesProps = {
@@ -37,6 +37,7 @@ const LoginGroup = () => {
             setHasError(true);
         }
     };
+
     if (!hasError) {
 
         return (

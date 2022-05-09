@@ -1,13 +1,13 @@
-import useCurrentLoggedUser from '../../hooks/setCurrentLoggedUser';
-import useCurrentUserCardData from '../functions/currentUserData';
-import UserElement from './UserCardDataMain';
-import axiosFunction from '../../utils/axiosFunctions';
-import ErrorComponent from '../error/ErrorComponent';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { valuesLinks } from '../../enumerators';
+import useCurrentLoggedUser from '../../hooks/useCurrentLoggedUser';
+import useCurrentUserCardData from '../../hooks/useCurrentUserData';
+import UserElement from './UserCardDataMain';
+import axiosFunction from '../../utils/axiosFunctions';
+import ErrorComponent from '../error/ErrorComponent';
 
 interface UserProps {
     [propName: string]: string;

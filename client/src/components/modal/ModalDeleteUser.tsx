@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
+import { Button } from 'primereact/button';
+import { valuesLinks } from '../../enumerators';
 import Modal from 'react-bootstrap/Modal';
 import ButtonBs from 'react-bootstrap/Button';
-import { Button } from 'primereact/button';
 import axiosFunction from '../../utils/axiosFunctions';
 import ErrorComponent from '../error/ErrorComponent';
-import { valuesLinks } from '../../enumerators';
 
 interface DeleteUserModalProps{
   data:{

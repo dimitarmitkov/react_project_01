@@ -3,10 +3,10 @@ import { Container, Row, Col } from 'react-bootstrap';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
-import useCurrentLoggedUser from '../../hooks/setCurrentLoggedUser';
 import { Button } from "primereact/button";
-import ErrorComponent from '../error/ErrorComponent';
 import { valuesProgress, valuesTaskType, valuesLinks } from '../../enumerators';
+import ErrorComponent from '../error/ErrorComponent';
+import useCurrentLoggedUser from '../../hooks/useCurrentLoggedUser';
 import axiosFunction from '../../utils/axiosFunctions';
 
 type FormValuesProps = {

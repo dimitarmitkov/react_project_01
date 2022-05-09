@@ -1,5 +1,5 @@
-import useCurrentLoggedUser from '../../hooks/setCurrentLoggedUser';
-import useCurrentUserCardData from '../functions/currentUserData';
+import useCurrentLoggedUser from '../../hooks/useCurrentLoggedUser';
+import useCurrentUserCardData from '../../hooks/useCurrentUserData';
 import UserElement from './UserCardDataMain';
 import axiosFunction from '../../utils/axiosFunctions';
 import ErrorComponent from '../error/ErrorComponent';
@@ -31,6 +31,7 @@ type FormValuesProps = {
 };
 
 const CurrentUserCard = () => {
+    
     const [changePasswordSelected, setChangePasswordSelected] = useState(false);
     const { register, watch, formState: { errors }, handleSubmit } = useForm<FormValuesProps>();
     const [passwordValue, setPasswordValue] = useState('');

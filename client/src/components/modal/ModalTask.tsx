@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-import Modal from 'react-bootstrap/Modal';
 import { Button, DropdownButton, Dropdown, Form, Container, Row, Col } from 'react-bootstrap';
-import axios from 'axios';
-import useCurrentLoggedUser from '../../hooks/setCurrentLoggedUser';
-import './modalTask.css';
-import DeleteTaskModalApp from './ModalDeleteTask';
 import { Link } from 'react-router-dom';
+import { valuesProjectProgress, valuesMeetingProgress, valuesLinks, valuesTaskType, valuesUsersTypes } from '../../enumerators';
+import axios from 'axios';
+import Modal from 'react-bootstrap/Modal';
+import useCurrentLoggedUser from '../../hooks/useCurrentLoggedUser';
+import DeleteTaskModalApp from './ModalDeleteTask';
 import MultiSelector from './MultiSelector';
 import ErrorComponent from '../error/ErrorComponent';
 import configData from '../../config.json';
-import { valuesProjectProgress, valuesMeetingProgress, valuesLinks, valuesTaskType, valuesUsersTypes } from '../../enumerators';
+import './modalTask.css';
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 

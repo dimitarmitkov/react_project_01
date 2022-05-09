@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import axiosFunction from '../../utils/axiosFunctions';
-import ErrorComponent from '../error/ErrorComponent';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
@@ -8,6 +6,8 @@ import { Password } from 'primereact/password';
 import { Checkbox } from 'primereact/checkbox';
 import { Row, Col, Container } from 'react-bootstrap';
 import { valuesUsersTypes, valuesLinks } from '../../enumerators';
+import axiosFunction from '../../utils/axiosFunctions';
+import ErrorComponent from '../error/ErrorComponent';
 import './editUser.css';
 
 type FormValuesProps = {

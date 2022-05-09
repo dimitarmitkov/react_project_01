@@ -11,7 +11,7 @@ import PaginatedTasks from './components/paginate/PaginatedTasks';
 import PaginatedUsers from './components/paginate/PaginatedUsers';
 import PaginatedTasksByUser from './components/paginate/PaginatedTasksByUser';
 import CreateTask from './components/createTask/CreateTask';
-import useCurrentLoggedUser from './hooks/setCurrentLoggedUser';
+import useCurrentLoggedUser from './hooks/useCurrentLoggedUser';
 import UserCardData from './components/user/UserCardData';
 import CurrentUserCard from './components/user/CurrentUserDataCard';
 import WebsocketData from './components/ws/websocket';

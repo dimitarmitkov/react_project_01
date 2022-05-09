@@ -51,12 +51,12 @@
 
 .field-checkbox,
 .field-checkbox-label {
-    margin-left: 0.5rem;
+    margin-left: 0.5rem !important;
 }
 
 .paginate-p-button {
-    margin-top: 0.25rem;
-    margin-bottom: 0.25rem;
+    margin-top: 0.25rem !important;
+    margin-bottom: 0.25rem !important;
 }
 
 .field-checkbox-label {

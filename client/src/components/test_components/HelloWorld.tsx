@@ -1,6 +1,5 @@
-import useCurrentLoggedUser from '../../hooks/setCurrentLoggedUser';
+import useCurrentLoggedUser from '../../hooks/useCurrentLoggedUser';
 import { ProgressSpinner } from 'primereact/progressspinner';
-import './helloWorld.css';
 
 interface PropsCurrentUser {
     id?: number;

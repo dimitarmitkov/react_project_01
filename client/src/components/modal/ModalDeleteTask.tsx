@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
+import { valuesLinks } from '../../enumerators';
 import Modal from 'react-bootstrap/Modal';
 import ButtonBs from 'react-bootstrap/Button';
 import axiosFunction from '../../utils/axiosFunctions';
-import './modalDelete.css';
-import useCurrentLoggedUser from '../../hooks/setCurrentLoggedUser';
+import useCurrentLoggedUser from '../../hooks/useCurrentLoggedUser';
 import ErrorComponent from '../error/ErrorComponent';
 import axios from 'axios';
-import { valuesLinks } from '../../enumerators';
+import './modalDelete.css';
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -14,7 +14,7 @@ interface CurrentUserProps {
   id?: number;
   role?: string;
   userName?: string;
-}
+};
 
 interface DeleteTaskModalProps {
   data: {

@@ -1,15 +1,15 @@
-import axios from 'axios';
 import { Col, Row } from 'react-bootstrap';
 import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
-import ReactPaginate from 'react-paginate';
 import { useState, useEffect } from 'react'
-import UsersCard from '../user/UsersCard';
 import { useNavigate } from "react-router-dom";
-import './paginate.css';
-import './DropdownButton.css';
-import ErrorComponent from '../error/ErrorComponent';
 import { valuesLinks, valuesPages } from '../../enumerators';
+import axios from 'axios';
+import ErrorComponent from '../error/ErrorComponent';
+import ReactPaginate from 'react-paginate';
+import UsersCard from '../user/UsersCard';
+import './DropdownButton.css';
+import './paginate.css';
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 

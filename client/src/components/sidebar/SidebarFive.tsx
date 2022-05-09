@@ -1,7 +1,7 @@
 import React from 'react';
-import { Container, Row } from 'react-bootstrap';
-import useCurrentLoggedUser from '../../hooks/setCurrentLoggedUser';
+import useCurrentLoggedUser from '../../hooks/useCurrentLoggedUser';
 import WebsocketData from '../ws/websocket';
+import { Container, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { valuesLinks, valuesUsersTypes } from '../../enumerators';
 import './sidebarFive.css';

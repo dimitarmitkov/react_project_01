@@ -7,12 +7,6 @@ const serviceFactory = require("../services/serviceFactory");
 const fs = require('fs');
 const getFileName = require("../functions/getFileName.js");
 
-// const bcrypt = require("bcrypt");
-// const { QueryTypes } = require('sequelize');
-// const multer = require('multer');
-// const upload = multer({ dest: path.resolve(__dirname, 'public/images') });
-
-
 const sequelize = new Sequelize(cs.database, cs.username, cs.password, {
     host: cs.host,
     dialect: cs.dialect
@@ -172,16 +166,6 @@ module.exports.currentLoggedUser = function(req, res, next) {
 
     usersTable.currentLoggedUser(req, res, next, ['id', 'firstName', 'email', 'role', 'deletedAt'], 'user');
 }
-
-// module.exports.pictures = function(req, res, next) {
-
-//     userPicturesTable.pictures(req, res, next, ['id', 'userId', 'picture', 'deletedAt'], 'userPicture');
-// }
-
-// module.exports.picturesGet = function(req, res, next) {
-
-//     userPicturesTable.picturesGet(req, res, next, ['id', 'userId', 'picture', 'deletedAt'], 'userPicture');
-// }
 
 module.exports.photos = function(req, res, next) {
 

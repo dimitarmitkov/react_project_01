@@ -1,15 +1,15 @@
 import { Button } from 'primereact/button';
 import { useForm } from 'react-hook-form';
 import { Row, Col, Container } from 'react-bootstrap';
-import './loginForm.css';
-import axiosFunction from '../../utils/axiosFunctions';
 import { useState } from 'react';
-import ErrorComponent from '../error/ErrorComponent';
 import { valuesLinks } from '../../enumerators';
+import axiosFunction from '../../utils/axiosFunctions';
+import ErrorComponent from '../error/ErrorComponent';
+import './loginForm.css';
 
 const LogoutGroup = () => {
-    const [hasError, setHasError] = useState(false);
 
+    const [hasError, setHasError] = useState(false);
     const { handleSubmit } = useForm();
 
     const onSubmit = () => {
