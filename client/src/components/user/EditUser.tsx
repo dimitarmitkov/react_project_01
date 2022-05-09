@@ -21,7 +21,7 @@ type FormValuesProps = {
     id: number;
 };
 
-interface EditUserGroupProps{
+interface EditUserGroupProps {
     data: FormValuesProps;
 }
 

@@ -77,9 +77,9 @@ const PaginatedTasksByUser = (props: PaginateTasksByUserProps) => {
 
     const getData = (offset: number, perPage: number) => {
 
-        let url = meeting || project ? SERVER_URL + valuesLinks.UsersTasksMop : SERVER_URL + valuesLinks.UserTasks;
+        const url = meeting || project ? SERVER_URL + valuesLinks.UsersTasksMop : SERVER_URL + valuesLinks.UserTasks;
 
-        let callData = meeting || project ?
+        const callData = meeting || project ?
             {
                 offsetData: startValue,
                 limitData: endValue,
@@ -94,7 +94,7 @@ const PaginatedTasksByUser = (props: PaginateTasksByUserProps) => {
 
         axios.post(url, callData)
             .then(res => {
-                
+
                 const slice = res.data.responseData ? res.data.responseData : [];
 
                 rowsNumber = res.data.count ? +(res.data.count)[0].max : 0;

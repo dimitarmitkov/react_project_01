@@ -37,7 +37,7 @@ const useCurrentLoggedUser = () => {
 
     if (!user && window.location.pathname !== '/login') {
         axiosFunction();
-      }
+    }
 
     return user!;
 }

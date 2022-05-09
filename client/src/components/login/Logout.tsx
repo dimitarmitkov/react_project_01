@@ -22,7 +22,7 @@ const LogoutGroup = () => {
             setHasError(true);
         }
     };
-    
+
     if (!hasError) {
 
         return (

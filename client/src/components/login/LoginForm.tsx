@@ -30,7 +30,7 @@ const LoginGroup = () => {
             insertEmail: data.email,
             insertPassword: passwordValue
         };
-        
+
         try {
             axiosFunction(valuesLinks.UserLogin, query, 'post', 200);
         } catch (error) {

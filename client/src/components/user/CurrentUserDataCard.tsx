@@ -31,7 +31,7 @@ type FormValuesProps = {
 };
 
 const CurrentUserCard = () => {
-    
+
     const [changePasswordSelected, setChangePasswordSelected] = useState(false);
     const { register, watch, formState: { errors }, handleSubmit } = useForm<FormValuesProps>();
     const [passwordValue, setPasswordValue] = useState('');
@@ -47,8 +47,8 @@ const CurrentUserCard = () => {
     const currentUser: CurrentUserProps = useCurrentLoggedUser()!;
 
     interface OnImageChangeProps extends Blob {
-        name:string;
-    }; 
+        name: string;
+    };
 
     const onImageChange = (props: OnImageChangeProps) => {
 

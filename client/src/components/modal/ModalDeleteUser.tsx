@@ -6,8 +6,8 @@ import ButtonBs from 'react-bootstrap/Button';
 import axiosFunction from '../../utils/axiosFunctions';
 import ErrorComponent from '../error/ErrorComponent';
 
-interface DeleteUserModalProps{
-  data:{
+interface DeleteUserModalProps {
+  data: {
     id: number;
     firstName: string;
     lastName: string;
@@ -16,13 +16,13 @@ interface DeleteUserModalProps{
 
 interface DeleteUserModalAppProps {
   firstName: string;
-    userName: string;
-    lastName: string;
-    password: string;
-    email: string;
-    role: string;
-    picture: string;
-    id: number;
+  userName: string;
+  lastName: string;
+  password: string;
+  email: string;
+  role: string;
+  picture: string;
+  id: number;
 };
 
 const DeleteUserModal = (props: DeleteUserModalProps) => {

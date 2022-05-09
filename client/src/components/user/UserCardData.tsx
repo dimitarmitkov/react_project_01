@@ -30,8 +30,8 @@ interface CurrentUserProps {
 };
 
 interface OnImageChangeProps extends Blob {
-    name:string;
-}; 
+    name: string;
+};
 
 const UserCard = () => {
 
@@ -48,11 +48,11 @@ const UserCard = () => {
 
     const user: UserProps = useCurrentUserCardData(id);
 
-    const currentUser : CurrentUserProps = useCurrentLoggedUser()!;
+    const currentUser: CurrentUserProps = useCurrentLoggedUser()!;
 
     const onImageChange = (props: OnImageChangeProps) => {
 
-        let reader = new FileReader();
+        const reader = new FileReader();
         reader.readAsDataURL(props);
         reader.onload = () => {
 
@@ -126,7 +126,7 @@ const UserCard = () => {
             </>
         );
     } else {
-       return <ErrorComponent />
+        return <ErrorComponent />
     }
 }
 
