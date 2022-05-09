@@ -16,6 +16,7 @@ import UserCardData from './components/user/UserCardData';
 import CurrentUserCard from './components/user/CurrentUserDataCard';
 import WebsocketData from './components/ws/websocket';
 import SignUpForm from './components/signup/SignUpForm';
+import CreateUser from './components/createUser/createUser';
 import "primereact/resources/themes/lara-light-indigo/theme.css";  //theme
 import "primereact/resources/primereact.min.css";                  //core css
 import "primeicons/primeicons.css";                                //icons
@@ -46,6 +47,7 @@ function App() {
               < Route path={valuesLinks.LogIn} element={<LoginGroup />} />
               < Route path={valuesLinks.LogOut} element={<Logout />} />
               < Route path={valuesLinks.CreateTask} element={<CreateTask />} />
+              < Route path={valuesLinks.UserCreate} element={<CreateUser />} />
               < Route path={valuesLinks.UserTasks} element={<PaginatedTasksByUser data={user} />} />
               < Route path={valuesLinks.Users + "/:id"} element={<UserCardData />} />
               < Route path={valuesLinks.CurrentUser + ":id"} element={<CurrentUserCard />} />

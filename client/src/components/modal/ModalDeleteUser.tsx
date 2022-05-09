@@ -34,7 +34,7 @@ const DeleteUserModal = (props: DeleteUserModalProps) => {
     const query = { idData: props.data.id }
 
     try {
-      await axiosFunction(valuesLinks.UsersDelete, query, 'post', 200);
+      await axiosFunction(valuesLinks.UsersDelete, query, 'post', [200]);
     } catch (error) {
       setHasError(true);
     }

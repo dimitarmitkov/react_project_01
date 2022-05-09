@@ -54,7 +54,7 @@ const DeleteTaskModal = (props: DeleteTaskModalProps) => {
     const jsonStringGetData = JSON.stringify({ main: props.data, action: 'delete', allowedList: currentAllowedUsersList, generator: userGeneratedProcess });
 
     try {
-      axiosFunction(valuesLinks.TasksDelete, queryGetData, 'post', 200, jsonStringGetData);
+      axiosFunction(valuesLinks.TasksDelete, queryGetData, 'post', [200], jsonStringGetData);
     } catch (error) {
       setHasError(true);
     }

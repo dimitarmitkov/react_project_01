@@ -17,7 +17,7 @@ const LogoutGroup = () => {
         const query = { withCredentials: true };
 
         try {
-            axiosFunction(valuesLinks.UserLogout, query, 'get', 200);
+            axiosFunction(valuesLinks.UserLogout, query, 'get', [200]);
         } catch (error) {
             setHasError(true);
         }

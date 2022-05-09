@@ -101,7 +101,7 @@ const CurrentUserCard = () => {
                 id: user.id,
             };
 
-            await axiosFunction(valuesLinks.UsersEdit, queryDataPassword, 'post', 200);
+            await axiosFunction(valuesLinks.UsersEdit, queryDataPassword, 'post', [200]);
         }
 
         if (currentUserPicture.length > 0) {
@@ -114,7 +114,7 @@ const CurrentUserCard = () => {
                 picType: pictureType
             };
 
-            await axiosFunction(valuesLinks.PhotosUpload, queryDataPicture, 'post', 201);
+            await axiosFunction(valuesLinks.PhotosUpload, queryDataPicture, 'post', [201]);
         }
     };
 

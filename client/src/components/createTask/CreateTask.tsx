@@ -63,7 +63,7 @@ const CreateTaskGroup = () => {
             initiatedByUserId: user.id
         };
 
-        axiosFunction(valuesLinks.CreateTask, query, 'post', 201);
+        axiosFunction(valuesLinks.CreateTask, query, 'post', [201]);
     };
 
     if (!hasError) {

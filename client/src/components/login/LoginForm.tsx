@@ -32,7 +32,7 @@ const LoginGroup = () => {
         };
 
         try {
-            axiosFunction(valuesLinks.UserLogin, query, 'post', 200);
+            axiosFunction(valuesLinks.UserLogin, query, 'post', [200]);
         } catch (error) {
             setHasError(true);
         }

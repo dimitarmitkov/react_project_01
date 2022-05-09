@@ -46,7 +46,7 @@ const EditUserGroup = (props: EditUserGroupProps) => {
         };
 
         try {
-            await axiosFunction(valuesLinks.UsersEdit, query, 'post', 200);
+            await axiosFunction(valuesLinks.UsersEdit, query, 'post', [200]);
         } catch (error) {
             setHasError(true);
         }

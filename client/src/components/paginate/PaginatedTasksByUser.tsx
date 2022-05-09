@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { valuesLinks, valuesPages, valuesProgress, valuesTaskType, valuesUsersTypes } from '../../enumerators';
 import axios from 'axios';
-import capitalizeFirstLetter from '../functions/capitalizeFirstLetter';
+import capitalizeFirstLetter from '../../utils/capitalizeFirstLetter';
 import ErrorComponent from '../error/ErrorComponent';
 import ReactPaginate from 'react-paginate';
 import TasksCard from '../tasks/TasksCard';

@@ -6,7 +6,7 @@ import { valuesLinks } from '../enumerators';
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
-const axiosFunction = async (url: string, query: {}, action: string, resultValue: number, wsText: string | undefined = undefined, locationReload: string | undefined = 'reload') => {
+const axiosFunction = async (url: string, query: {}, action: string, resultValue: number[], wsText: string | undefined = undefined, locationReload: string | undefined = 'reload') => {
 
     toast.configure();
     const toastMessage = 'Something went wrong, you are not allowed.';
@@ -30,12 +30,12 @@ const axiosFunction = async (url: string, query: {}, action: string, resultValue
             onClose: () => window.location.href = location,
         });
 
-        const toaster = (text: string) => toast.info(text,
-            {
-                position: toast.POSITION.TOP_CENTER,
-                autoClose: 2000,
-                theme: 'colored',
-            });
+    const toaster = (text: string) => toast.info(text,
+        {
+            position: toast.POSITION.TOP_CENTER,
+            autoClose: 2000,
+            theme: 'colored',
+        });
 
     const axiosUrl = SERVER_URL + url;
 
@@ -45,8 +45,7 @@ const axiosFunction = async (url: string, query: {}, action: string, resultValue
 
     const result = (await axiosResult()).status;
 
-
-    if (result === resultValue && !wsText) {
+    if (resultValue.includes(result) && !wsText) {
         switch (url) {
             case valuesLinks.PhotosUpload: toaster('Picture changed successful.');
                 break;
@@ -58,18 +57,18 @@ const axiosFunction = async (url: string, query: {}, action: string, resultValue
                 break;
             case valuesLinks.UserLogout: toasterHref('Successful logout.', valuesLinks.LogIn);
                 break;
-            case valuesLinks.UserCreate: toasterHref('User created successful.', valuesLinks.Users);
-                break;
             case valuesLinks.CreateTask: toasterHref('Created successful.', valuesLinks.Tasks);
                 break;
             case valuesLinks.SignUp: toasterHref('Created successful.', valuesLinks.LogIn);
+                break;
+            case valuesLinks.UserCreate: toasterHref('Created successful.', valuesLinks.Users);
                 break;
 
             default: toast(toastMessage);
                 break;
         }
 
-    } else if (result === resultValue && wsText) {
+    } else if (resultValue.includes(result) && wsText) {
 
         if (wsText) {
             ws.send(wsText);

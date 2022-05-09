@@ -9,7 +9,7 @@ import { valuesUsersTypes, valuesLinks } from '../../enumerators';
 import { Row, Col, Container } from 'react-bootstrap';
 import axiosFunction from '../../utils/axiosFunctions';
 import ErrorComponent from '../error/ErrorComponent';
-import './signUpForm.css';
+import './createUser.css';
 
 type FormValues = {
     firstName: string;
@@ -21,7 +21,7 @@ type FormValues = {
     picture: string;
 };
 
-const SignUpGroup = () => {
+const CreateUserGroup = () => {
 
     const { register, formState: { errors }, handleSubmit } = useForm<FormValues>();
     const [passwordValue, setPasswordValue] = useState('');
@@ -39,7 +39,8 @@ const SignUpGroup = () => {
         };
 
         try {
-            axiosFunction(valuesLinks.SignUp, queryData, 'post', [200, 201]);
+
+            axiosFunction(valuesLinks.UserCreate, queryData, 'post', [200, 201]);
         } catch (error) {
             return <ErrorComponent />
         }
@@ -140,4 +141,4 @@ const SignUpGroup = () => {
     );
 }
 
-export default SignUpGroup;
+export default CreateUserGroup;

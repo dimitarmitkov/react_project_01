@@ -90,7 +90,7 @@ function PaginatedUsers() {
 
     const navigate = useNavigate();
     const redirectToCreateUser = () => {
-        navigate(valuesLinks.SignUp);
+        navigate(valuesLinks.UserCreate);
     }
 
     if (!hasError) {
