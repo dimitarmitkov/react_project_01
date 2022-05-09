@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Row } from 'react-bootstrap';
-import useCurrentLoggedUser from '../functions/currentLoggedUser';
+import useCurrentLoggedUser from '../../hooks/setCurrentLoggedUser';
 import WebsocketData from '../ws/websocket';
 import { useNavigate } from 'react-router-dom';
 import { valuesLinks, valuesUsersTypes } from '../../enumerators';

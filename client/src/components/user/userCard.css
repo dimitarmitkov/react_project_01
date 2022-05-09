@@ -1,26 +1,26 @@
     .p-button-danger {
-        margin-right: 1rem;
+        margin-right: 1rem !important;
     }
     
     .p-button-warning {
-        margin-top: .5rem;
+        margin-top: .5rem !important;
     }
     
     .p-button-warning,
     .p-button-danger {
-        min-width: 9rem;
-        justify-content: center;
-        align-items: center;
+        min-width: 9rem !important;
+        justify-content: center !important;
+        align-items: center !important;
     }
     
     .user-role-id {
-        font-weight: bold;
+        font-weight: bold !important;
     }
     
     #userRole {
-        margin-right: 1rem;
+        margin-right: 1rem !important;
     }
     
     .p-button-primary-hidden {
-        display: none;
+        display: none !important;
     }

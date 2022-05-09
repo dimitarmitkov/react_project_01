@@ -43,6 +43,9 @@ module.exports.connect = function(path, app) {
         .get(authMiddleware.auth, authMiddleware.isAdmin, tasksController.createSingleUser)
         .post(authMiddleware.auth, authMiddleware.isAdmin, tasksController.createSingleUser);
 
+    router.route("/signup")
+        .post(tasksController.createSingleUser);
+
     router.route("/createTask")
         .post(authMiddleware.auth, authMiddleware.isAdmin, tasksController.createSingleTask);
 

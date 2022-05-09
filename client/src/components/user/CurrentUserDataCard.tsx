@@ -1,7 +1,7 @@
-import useCurrentLoggedUser from '../functions/currentLoggedUser';
+import useCurrentLoggedUser from '../../hooks/setCurrentLoggedUser';
 import useCurrentUserCardData from '../functions/currentUserData';
 import UserElement from './UserCardDataMain';
-import axiosFunction from '../functions/axiosFunctions';
+import axiosFunction from '../../utils/axiosFunctions';
 import ErrorComponent from '../error/ErrorComponent';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
@@ -15,10 +15,10 @@ interface UserProps {
 };
 
 interface CurrentUserProps {
-    id?: string;
+    id?: number;
     role?: string;
     userName?: string;
-}
+};
 
 type FormValuesProps = {
     firstName: string;

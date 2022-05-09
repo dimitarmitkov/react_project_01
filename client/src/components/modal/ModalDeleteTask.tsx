@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import ButtonBs from 'react-bootstrap/Button';
-import axiosFunction from '../functions/axiosFunctions';
+import axiosFunction from '../../utils/axiosFunctions';
 import './modalDelete.css';
-import useCurrentLoggedUser from '../functions/currentLoggedUser';
+import useCurrentLoggedUser from '../../hooks/setCurrentLoggedUser';
 import ErrorComponent from '../error/ErrorComponent';
 import axios from 'axios';
 import { valuesLinks } from '../../enumerators';
@@ -14,7 +14,6 @@ interface CurrentUserProps {
   id?: number;
   role?: string;
   userName?: string;
-  any: [];
 }
 
 interface DeleteTaskModalProps {

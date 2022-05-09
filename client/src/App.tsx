@@ -1,12 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import './App.css';
-import "primereact/resources/themes/lara-light-indigo/theme.css";  //theme
-import "primereact/resources/primereact.min.css";                  //core css
-import "primeicons/primeicons.css";                                //icons
-import 'bootstrap/dist/css/bootstrap.min.css';
-import NavbarData from './components/navbar/NavbarData';
 import { Container, Row, Col } from 'react-bootstrap';
+import { valuesLinks } from './enumerators';
+import NavbarData from './components/navbar/NavbarData';
 import Hello from './components/test_components/HelloWorld';
 import SidebarFive from './components/sidebar/SidebarFive';
 import LoginGroup from './components/login/LoginForm';
@@ -15,11 +11,15 @@ import PaginatedTasks from './components/paginate/PaginatedTasks';
 import PaginatedUsers from './components/paginate/PaginatedUsers';
 import PaginatedTasksByUser from './components/paginate/PaginatedTasksByUser';
 import CreateTask from './components/createTask/CreateTask';
-import useCurrentLoggedUser from './components/functions/currentLoggedUser';
+import useCurrentLoggedUser from './hooks/setCurrentLoggedUser';
 import UserCardData from './components/user/UserCardData';
 import CurrentUserCard from './components/user/CurrentUserDataCard';
 import WebsocketData from './components/ws/websocket';
-import { valuesLinks } from './enumerators';
+import SignUpForm from './components/signup/SignUpForm';
+import "primereact/resources/themes/lara-light-indigo/theme.css";  //theme
+import "primereact/resources/primereact.min.css";                  //core css
+import "primeicons/primeicons.css";                                //icons
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
 
@@ -50,6 +50,7 @@ function App() {
               < Route path={valuesLinks.Users + "/:id"} element={<UserCardData />} />
               < Route path={valuesLinks.CurrentUser + ":id"} element={<CurrentUserCard />} />
               < Route path={valuesLinks.WebSocket} element={<WebsocketData />} />
+              < Route path={valuesLinks.SignUp} element={<SignUpForm />} />
 
             </Routes>
           </Col>

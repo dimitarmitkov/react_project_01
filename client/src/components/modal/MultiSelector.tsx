@@ -58,10 +58,6 @@ const Option = (props: any) => {
     );
 };
 
-
-
-
-
 const MultiSelector = (props: MultiSelectorProps) => {
 
     let main = {
@@ -85,11 +81,8 @@ const MultiSelector = (props: MultiSelectorProps) => {
         const currentData = result.data;
 
         if (currentData.length > 0) {
-            const allowedUsersList = () => (
-                currentData.map((user: UserOfAllowedUsersListProps) => user.id)
-            );
 
-            setAllowedUsers(allowedUsersList);
+            setAllowedUsers(currentData.map((user: UserOfAllowedUsersListProps) => user.id));
         } else {
             toast.configure();
             toast('No users attached to this task.');

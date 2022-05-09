@@ -17,7 +17,7 @@
     }
     
     .sidebar-messages {
-        margin-top: 1rem;
+        margin-top: 1rem !important;
         color: #64748B;
         font-weight: 700;
         overflow: auto;

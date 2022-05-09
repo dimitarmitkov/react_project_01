@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import useCurrentLoggedUser from '../functions/currentLoggedUser';
+import useCurrentLoggedUser from '../../hooks/setCurrentLoggedUser';
 import { FormCheck, Row } from 'react-bootstrap';
 import './websocket.css';
 import ErrorComponent from '../error/ErrorComponent';
@@ -47,13 +47,14 @@ const WebsocketData = () => {
   const [hasError, setHasError] = useState(false);
 
   const user: CurrentUserProps = useCurrentLoggedUser()!;
+  const currentUser = user!;
 
   const handleChange = (props: string) => {
 
     // set timestamp and and find element by id
-    let value: string = props;
+    const value: string = props;
 
-    let element = document.getElementById(`task_${value}`) as HTMLElement;
+    const element = document.getElementById(`task_${value}`) as HTMLElement;
 
     if (element && element !== null) {
 
@@ -66,7 +67,7 @@ const WebsocketData = () => {
   }
 
   // set local storage
-  let transferArray = localStorage.getItem('dismissed');
+  const transferArray = localStorage.getItem('dismissed');
   storedNames = transferArray !== null ? JSON.parse(transferArray) : [];
 
   useEffect(() => {
@@ -99,10 +100,9 @@ const WebsocketData = () => {
         }
       }
 
-      if(user.id !== undefined){
-
-        const hasUserId = user.id! as never;
-        const hasUserName = user.userName;
+      try {
+        const hasUserId = currentUser.id as never;
+        const hasUserName = currentUser.userName!;
 
         const MessagesList = () => (
 
@@ -149,7 +149,29 @@ const WebsocketData = () => {
         } catch (error) {
           setHasError(true);
         }
+
+      } catch (error) {
+        console.log(error);
+        // console.log(window.location.pathname);
+
+        if (error instanceof Error) {
+          if (window.location.pathname !== '/login' && error.message.includes('Cannot read properties of undefined (reading \'id\')')) {
+
+            setTimeout(()=>{ 
+              if(!user){
+    
+                window.location.reload();
+              }
+        }, 5000);
+
+
+            // setTimeout(()=>{ 
+            //   window.location.reload();
+            // }, 5000);
+          }
+        }
       }
+
     }
 
     ws.onerror = () => {
@@ -160,7 +182,7 @@ const WebsocketData = () => {
       localStorage.clear();
       console.log('connection closed');
     }
-  }, [messageList, user]);
+  }, [messageList, currentUser]);
 
   if (!hasError) {
 
@@ -171,7 +193,8 @@ const WebsocketData = () => {
     );
   } else {
 
-    return <ErrorComponent />
+    // return <ErrorComponent />
+    return <h5>Mitko</h5>
   }
 }
 

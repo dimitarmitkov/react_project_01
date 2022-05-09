@@ -3,11 +3,11 @@ import { Container, Row, Col } from 'react-bootstrap';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { InputText } from 'primereact/inputtext';
 import { Dropdown } from 'primereact/dropdown';
-import useCurrentLoggedUser from '../functions/currentLoggedUser';
+import useCurrentLoggedUser from '../../hooks/setCurrentLoggedUser';
 import { Button } from "primereact/button";
 import ErrorComponent from '../error/ErrorComponent';
 import { valuesProgress, valuesTaskType, valuesLinks } from '../../enumerators';
-import axiosFunction from '../functions/axiosFunctions';
+import axiosFunction from '../../utils/axiosFunctions';
 
 type FormValuesProps = {
     taskType: string;

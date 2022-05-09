@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import configData from '../../config.json';
-import { valuesLinks } from '../../enumerators';
+import configData from '../config.json';
+import { valuesLinks } from '../enumerators';
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -30,6 +30,13 @@ const axiosFunction = async (url: string, query: {}, action: string, resultValue
             onClose: () => window.location.href = location,
         });
 
+        const toaster = (text: string) => toast.info(text,
+            {
+                position: toast.POSITION.TOP_CENTER,
+                autoClose: 2000,
+                theme: 'colored',
+            });
+
     const axiosUrl = SERVER_URL + url;
 
     const axiosResult = async () => {
@@ -41,9 +48,9 @@ const axiosFunction = async (url: string, query: {}, action: string, resultValue
 
     if (result === resultValue && !wsText) {
         switch (url) {
-            case valuesLinks.PhotosUpload: toasterReload('Picture changed successful.');
+            case valuesLinks.PhotosUpload: toaster('Picture changed successful.');
                 break;
-            case valuesLinks.UsersEdit: toasterReload('Edit user successful.');
+            case valuesLinks.UsersEdit: toaster('Edit user successful.');
                 break;
             case valuesLinks.UsersDelete: toasterReload('User deleted successful.');
                 break;
@@ -54,6 +61,8 @@ const axiosFunction = async (url: string, query: {}, action: string, resultValue
             case valuesLinks.UserCreate: toasterHref('User created successful.', valuesLinks.Users);
                 break;
             case valuesLinks.CreateTask: toasterHref('Created successful.', valuesLinks.Tasks);
+                break;
+            case valuesLinks.SignUp: toasterHref('Created successful.', valuesLinks.LogIn);
                 break;
 
             default: toast(toastMessage);

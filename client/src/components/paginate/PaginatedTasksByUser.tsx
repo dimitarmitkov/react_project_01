@@ -41,8 +41,9 @@ interface HandlePageClickProps {
 
 interface PaginateTasksByUserProps {
     data: {
-        role: string;
-        id: number;
+        id?: number;
+        role?: string;
+        userName?: string;
     }
 };
 

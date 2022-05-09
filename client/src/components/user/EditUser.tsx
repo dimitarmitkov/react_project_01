@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axiosFunction from '../functions/axiosFunctions';
+import axiosFunction from '../../utils/axiosFunctions';
 import ErrorComponent from '../error/ErrorComponent';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Button } from 'primereact/button';

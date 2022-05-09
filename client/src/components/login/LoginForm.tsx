@@ -5,7 +5,7 @@ import { Password } from 'primereact/password';
 import { Link } from "react-router-dom";
 import { Row, Col, Container } from 'react-bootstrap';
 import { useState } from "react";
-import axiosFunction from '../functions/axiosFunctions';
+import axiosFunction from '../../utils/axiosFunctions';
 import ErrorComponent from '../error/ErrorComponent';
 import { valuesLinks } from '../../enumerators';
 import './loginForm.css';
@@ -30,6 +30,7 @@ const LoginGroup = () => {
             insertEmail: data.email,
             insertPassword: passwordValue
         };
+        
         try {
             axiosFunction(valuesLinks.UserLogin, query, 'post', 200);
         } catch (error) {

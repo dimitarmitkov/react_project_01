@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from 'primereact/button';
 import { Container, Navbar, Nav, Row, Col } from 'react-bootstrap';
-import useCurrentLoggedUser from '../functions/currentLoggedUser';
+import useCurrentLoggedUser from '../../hooks/setCurrentLoggedUser';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';

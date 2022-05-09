@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom';
-import './userCard.css';
 import { Row, Col, Container } from 'react-bootstrap';
 import EditUserApp from './EditUser';
 import DeleteUserModalApp from '../modal/ModalDeleteUser';
-import useCurrentLoggedUser from '../functions/currentLoggedUser';
+import useCurrentLoggedUser from '../../hooks/setCurrentLoggedUser';
 import { valuesLinks, valuesUsersTypes } from '../../enumerators';
+import './userCard.css';
 
 interface CurrentUserProps {
     id?: number;

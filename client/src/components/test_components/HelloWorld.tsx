@@ -1,5 +1,6 @@
-import useCurrentLoggedUser from '../functions/currentLoggedUser';
-import ErrorComponent from '../error/ErrorComponent';
+import useCurrentLoggedUser from '../../hooks/setCurrentLoggedUser';
+import { ProgressSpinner } from 'primereact/progressspinner';
+import './helloWorld.css';
 
 interface PropsCurrentUser {
     id?: number;
@@ -15,7 +16,10 @@ const Hello = () => {
 
         return <h1>Hello, {user.userName}</h1>
     } else {
-        return <ErrorComponent/>
+
+        return <div className="d-flex align-items-center justify-content-center">
+            <ProgressSpinner style={{ width: '50px', height: '50px' }} strokeWidth="8" fill="var(--surface-ground)" animationDuration=".5s" />
+        </div>
     }
 }
 

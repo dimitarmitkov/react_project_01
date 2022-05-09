@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import { Button, DropdownButton, Dropdown, Form, Container, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
-import useCurrentLoggedUser from '../functions/currentLoggedUser';
+import useCurrentLoggedUser from '../../hooks/setCurrentLoggedUser';
 import './modalTask.css';
 import DeleteTaskModalApp from './ModalDeleteTask';
 import { Link } from 'react-router-dom';
@@ -131,13 +131,14 @@ const VerticallyCenteredModal = (props: VerticallyCenteredModalProps) => {
 
     const changeTaskStatus = (e: React.MouseEvent) => {
 
-        const checkValue = e.target as HTMLElement;;
+        const checkValue = e.target as HTMLElement;
+
         if (checkValue && (valuesProjectProgress.includes(checkValue.innerText) || valuesMeetingProgress.includes(checkValue.innerText))) {
 
             queryData = {
                 changeData: actionDataObject[checkValue.innerText],
                 idData: props.data.taskId ? props.data.taskId : props.data.id,
-                taskProgress: checkValue
+                taskProgress: checkValue.innerText
             };
 
             try {
