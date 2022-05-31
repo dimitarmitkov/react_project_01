@@ -37,6 +37,8 @@ All db connection data have to be added into config.json, like that:
 
 postgres dialect is a must, because postgres db is used in this project.
 
+Then create database with credentials above, migrate and seed.
+
 **Starting project:**
 
 From main directory you need to type `npm start`. Enjoy it :) 
